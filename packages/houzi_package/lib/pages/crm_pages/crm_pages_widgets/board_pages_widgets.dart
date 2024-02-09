@@ -183,22 +183,22 @@ class CRMFeatures extends StatelessWidget {
         children: [
           if (bed != null && bed!.isNotEmpty)
             CRMIconAndText(
-              AppThemePreferences.bedIcon,
+              AppThemePreferences.pdSmallBedImagePath,
               bed,
             ),
           if (bath != null && bath!.isNotEmpty)
             CRMIconAndText(
-              AppThemePreferences.bathtubIcon,
+              AppThemePreferences.pdSmallBathtubImagePath,
               bath,
             ),
           if (area != null && area!.isNotEmpty)
             CRMIconAndText(
-              AppThemePreferences.areaSizeIcon,
+              AppThemePreferences.pdSmallAreaSizeImagePath,
               area,
             ),
           if (price != null && price!.isNotEmpty)
             CRMIconAndText(
-              AppThemePreferences.priceTagIcon,
+              AppThemePreferences.pdSmallBathtubImagePath,
               UtilityMethods.priceFormatter(price!, ""),
             ),
         ],
@@ -208,7 +208,7 @@ class CRMFeatures extends StatelessWidget {
 }
 
 class CRMIconAndText extends StatelessWidget {
-  final IconData icon;
+  final String? icon;
   final String? text;
   final bool addBottomPadding;
 
@@ -232,11 +232,7 @@ class CRMIconAndText extends StatelessWidget {
                     left: UtilityMethods.isRTL(context) ? 6.0 : 0.0,
                     right: UtilityMethods.isRTL(context) ? 0.0 : 6.0,
                   ),
-                  child: Icon(
-                    icon,
-                    color: AppThemePreferences().appTheme.crmIconColor,
-                    size: 20,
-                  ),
+                  child: SvgPicture.asset('$icon'),
                 ),
                 GenericTextWidget(UtilityMethods.getLocalizedString(text!),
                     overflow: TextOverflow.clip,
@@ -247,6 +243,47 @@ class CRMIconAndText extends StatelessWidget {
         : Container();
   }
 }
+
+// class CRMIconAndText extends StatelessWidget {
+//   final IconData icon;
+//   final String? text;
+//   final bool addBottomPadding;
+//
+//   const CRMIconAndText(
+//     this.icon,
+//     this.text, {
+//     this.addBottomPadding = false,
+//     Key? key,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return text != null && text!.isNotEmpty
+//         ? Padding(
+//             padding: EdgeInsets.only(
+//                 bottom: addBottomPadding ? crmBottomPadding : 0),
+//             child: Row(
+//               children: [
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                     left: UtilityMethods.isRTL(context) ? 6.0 : 0.0,
+//                     right: UtilityMethods.isRTL(context) ? 0.0 : 6.0,
+//                   ),
+//                   child: Icon(
+//                     icon,
+//                     color: AppThemePreferences().appTheme.crmIconColor,
+//                     size: 20,
+//                   ),
+//                 ),
+//                 GenericTextWidget(UtilityMethods.getLocalizedString(text!),
+//                     overflow: TextOverflow.clip,
+//                     style: AppThemePreferences().appTheme.crmNormalTextStyle)
+//               ],
+//             ),
+//           )
+//         : Container();
+//   }
+// }
 
 class CRMContactDetail extends StatelessWidget {
   final String? name;

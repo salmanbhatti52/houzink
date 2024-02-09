@@ -1426,14 +1426,41 @@ class AppThemePreferences{
   /// New About Icon Image Path:
   static String aboutImagePath = "assets/icon/about-icon.svg";
   ///
+  /// New Drawer Home Icon Image Path:
+  static String drawerHomeImagePath = "assets/icon/drawer-home-icon.svg";
+  ///
+  /// New Drawer Quick Add Properties Icon Image Path:
+  static String drawerQuickAddPropertiesImagePath = "assets/icon/drawer-quick-add-properties-icon.svg";
+  ///
   /// New Drawer Agent Icon Image Path:
   static String drawerAgentImagePath = "assets/icon/drawer-agent-icon.svg";
   ///
   /// New Drawer Agencies Icon Image Path:
   static String drawerAgenciesImagePath = "assets/icon/drawer-agencies-icon.svg";
   ///
+  /// New Drawer Real Estate Agent Icon Image Path:
+  static String drawerRealEstateAgentImagePath = "assets/icon/drawer-real-estate-agent-icon.svg";
+  ///
+  /// New Drawer Request Properties Icon Image Path:
+  static String drawerRequestPropertiesImagePath = "assets/icon/drawer-request-properties-icon.svg";
+  ///
+  /// New Drawer Favorite Icon Image Path:
+  static String drawerFavoriteImagePath = "assets/icon/drawer-favorite-icon.svg";
+  ///
+  /// New Drawer Saved Searches Icon Image Path:
+  static String drawerSavedSearchesImagePath = "assets/icon/drawer-saved-searches-icon.svg";
+  ///
   /// New Drawer Dashboard Icon Image Path:
   static String drawerDashboardImagePath = "assets/icon/drawer-dashboard-icon.svg";
+  ///
+  /// New Drawer Activities Icon Image Path:
+  static String drawerActivitiesImagePath = "assets/icon/drawer-activities-icon.svg";
+  ///
+  /// New Drawer Inquiries Icon Image Path:
+  static String drawerInquiriesImagePath = "assets/icon/drawer-inquiries-icon.svg";
+  ///
+  /// New Drawer Deals Icon Image Path:
+  static String drawerDealsImagePath = "assets/icon/drawer-deals-icon.svg";
   ///
   /// New Drawer Lead Icon Image Path:
   static String drawerLeadImagePath = "assets/icon/drawer-lead-icon.svg";
@@ -1458,6 +1485,24 @@ class AppThemePreferences{
   ///
   /// New Download Image Icon Image Path:
   static String downloadImagePath = "assets/icon/download-image-icon.svg";
+  ///
+  /// New Groups Icon Image Path:
+  static String groupsImagePath = "assets/icon/groups-icon.svg";
+  ///
+  /// New Price Tag Icon Image Path:
+  static String priceTagImagePath = "assets/icon/price-tag-icon.svg";
+  ///
+  /// New Status Icon Image Path:
+  static String statusImagePath = "assets/icon/status-icon.svg";
+  ///
+  /// New Timer Icon Image Path:
+  static String timerImagePath = "assets/icon/timer-icon.svg";
+  ///
+  /// New Filter Icon Image Path:
+  static String filterImagePath = "assets/icon/filter-icon.svg";
+  ///
+  /// New Calendar Month Icon Image Path:
+  static String calendarMonthImagePath = "assets/icon/calendar-month-icon.svg";
   ///
   /// Border Related:
   ///

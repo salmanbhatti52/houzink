@@ -437,23 +437,23 @@ class _HomeScreenDrawerWidgetsListingState extends State<HomeScreenDrawerWidgets
   String getSectionIcon(BuildContext context, sectionData){
     switch (sectionData) {
       case(homeSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerHomeImagePath;
         // return AppThemePreferences.homeIcon;
       }
       case(home0SectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerHomeImagePath;
         //   return AppThemePreferences.homeIcon;
       }
       case(home01SectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerHomeImagePath;
         // return AppThemePreferences.homeIcon;
       }
       case(home02SectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerHomeImagePath;
         // return AppThemePreferences.homeIcon;
       }
       case(home03SectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerHomeImagePath;
         // return AppThemePreferences.homeIcon;
       }
       case(addPropertySectionType): {
@@ -461,7 +461,7 @@ class _HomeScreenDrawerWidgetsListingState extends State<HomeScreenDrawerWidgets
         // return AppThemePreferences.addPropertyIcon;
       }
       case(quickAddPropertySectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerQuickAddPropertiesImagePath;
         // return AppThemePreferences.quickAddPropertyIcon;
       }
       case(propertiesSectionType): {
@@ -477,31 +477,31 @@ class _HomeScreenDrawerWidgetsListingState extends State<HomeScreenDrawerWidgets
         // return AppThemePreferences.agencyIcon;
       }
       case(myAgentsSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerRealEstateAgentImagePath;
         // return AppThemePreferences.realEstateAgent;
       }
       case(requestPropertySectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerRequestPropertiesImagePath;
         // return AppThemePreferences.requestPropertyIcon;
       }
       case(favoritesSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerFavoriteImagePath;
         // return AppThemePreferences.favouriteBorderIcon;
       }
       case(savedSearchesSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerSavedSearchesImagePath;
         // return AppThemePreferences.savedSearchesIcon;
       }
       case(activitiesSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerActivitiesImagePath;
         // return AppThemePreferences.activitiesIcon;
       }
       case(inquiriesSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerInquiriesImagePath;
         // return AppThemePreferences.inquiriesIcon;
       }
       case(dealsSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.drawerDealsImagePath;
         // return AppThemePreferences.dealsIcon;
       }
       case(leadsSectionType): {
@@ -525,7 +525,7 @@ class _HomeScreenDrawerWidgetsListingState extends State<HomeScreenDrawerWidgets
         // return AppThemePreferences.logOutIcon;
       }
       case(menuTermSectionType): {
-        return AppThemePreferences.aboutImagePath;
+        return AppThemePreferences.propertiesImagePath;
         // return AppThemePreferences.propertiesIcon;
       }
       case(aboutScreenSectionType): {

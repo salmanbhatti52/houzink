@@ -323,7 +323,9 @@ class _InquiriesFromBoardState extends State<InquiriesFromBoard> {
                 );
               },
             ),
-            header: const MaterialClassicHeader(),
+            header: MaterialClassicHeader(
+              color: AppThemePreferences().appTheme.primaryColor,
+            ),
             controller: _refreshController,
             onRefresh: loadDataFromApi,
             onLoading: () => loadDataFromApi(forPullToRefresh: false),

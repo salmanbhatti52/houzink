@@ -532,7 +532,7 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
                                   context, true, deal.mobile,
                                 ),
                               ),
-                              CRMIconAndText(AppThemePreferences.agentsIcon, deal.agentName),
+                              CRMIconAndText(AppThemePreferences.groupsImagePath, deal.agentName),
                             ],
                           ),
                         ),
