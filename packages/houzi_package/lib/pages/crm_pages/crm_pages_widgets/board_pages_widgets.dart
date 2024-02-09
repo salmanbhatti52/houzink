@@ -198,7 +198,7 @@ class CRMFeatures extends StatelessWidget {
             ),
           if (price != null && price!.isNotEmpty)
             CRMIconAndText(
-              AppThemePreferences.pdSmallBathtubImagePath,
+              AppThemePreferences.smallPriceTagImagePath,
               UtilityMethods.priceFormatter(price!, ""),
             ),
         ],

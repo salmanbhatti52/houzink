@@ -1504,6 +1504,9 @@ class AppThemePreferences{
   /// New Calendar Month Icon Image Path:
   static String calendarMonthImagePath = "assets/icon/calendar-month-icon.svg";
   ///
+  /// New Small Price Tag Icon Image Path:
+  static String smallPriceTagImagePath = "assets/icon/price-tag-small-icon.svg";
+  ///
   /// Border Related:
   ///
   ///
