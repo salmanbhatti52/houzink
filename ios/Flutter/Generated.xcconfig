@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/salmanahmad/flutter
-FLUTTER_APPLICATION_PATH=/Users/salmanahmad/Desktop/houzi
+FLUTTER_APPLICATION_PATH=/Users/salmanahmad/Desktop/houzink
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
@@ -11,4 +11,4 @@ EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=false
 TREE_SHAKE_ICONS=true
-PACKAGE_CONFIG=/Users/salmanahmad/Desktop/houzi/.dart_tool/package_config.json
+PACKAGE_CONFIG=/Users/salmanahmad/Desktop/houzink/.dart_tool/package_config.json

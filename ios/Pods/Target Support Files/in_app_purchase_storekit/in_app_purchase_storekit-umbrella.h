@@ -17,6 +17,7 @@
 #import "FIAPRequestHandler.h"
 #import "FIATransactionCache.h"
 #import "InAppPurchasePlugin.h"
+#import "messages.g.h"
 
 FOUNDATION_EXPORT double in_app_purchase_storekitVersionNumber;
 FOUNDATION_EXPORT const unsigned char in_app_purchase_storekitVersionString[];
