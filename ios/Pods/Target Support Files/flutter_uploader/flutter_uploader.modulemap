@@ -1,0 +1,6 @@
+framework module flutter_uploader {
+  umbrella header "flutter_uploader-umbrella.h"
+
+  export *
+  module * { export * }
+}

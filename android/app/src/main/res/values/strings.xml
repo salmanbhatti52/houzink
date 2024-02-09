@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="backgroundColor">#ffffff</color>
+    <string name="facebook_app_id">824903619040137</string>
+    <string name="facebook_client_token">46921d471bea0483244f129070b6e7d4</string>
+    <string name="google_maps_api_key">AIzaSyB85XQmpPtljn9Kz_AfGx-he2kXySi6R9s</string>
+    <string name="google_ads_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="scheme">http</string>
+    <string name="host">houzink.co.uk</string>
+    <string name="path_prefix">/property</string>
+</resources>

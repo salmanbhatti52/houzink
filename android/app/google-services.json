@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "328867726104",
+    "project_id": "houzink-3afb7",
+    "storage_bucket": "houzink-3afb7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328867726104:android:f029b900f2a923bd38146d",
+        "android_client_info": {
+          "package_name": "com.houzink.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328867726104-d3mm7kh0n2jbe61p8v3dp9csb8cdfp3e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.houzink.app",
+            "certificate_hash": "77886e5c84d8603b03169cd850fbdbfc986d5c53"
+          }
+        },
+        {
+          "client_id": "328867726104-3lm1pksqrito4o1858udoro9d78kdi2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn8W97M4B8YNUFpUOZof-MJ50KAV7k4Ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328867726104-3lm1pksqrito4o1858udoro9d78kdi2u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328867726104-84j0i3lbo94caii8eohung5h59sdjkv8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.houzink.app",
+                "app_store_id": "6448892493"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

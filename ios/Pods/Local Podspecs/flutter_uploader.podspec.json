@@ -1,0 +1,34 @@
+{
+  "name": "flutter_uploader",
+  "version": "1.2.0",
+  "summary": "background upload plugin for flutter",
+  "description": "A new flutter plugin project.",
+  "homepage": "http://example.com",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Your Company": "email@example.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "public_header_files": "Classes/**/*.h",
+  "dependencies": {
+    "Flutter": [
+
+    ],
+    "Alamofire": [
+      "5.2.2"
+    ]
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "swift_versions": "5.2",
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  },
+  "swift_version": "5.2"
+}
