@@ -34,7 +34,7 @@ import google_mobile_ads
         //DEEP LINKING RELATED CODE END
 
 
-        GeneratedPluginRegistrant.register(with: self)
+        GeneratedPluginRegistrant.register(withRegistry: self)
         // TODO: Add your API key
         GMSServices.provideAPIKey("AIzaSyBqQMpR73ry257vNlpmgigNJ73qcKCpuOk")
 
@@ -53,7 +53,7 @@ import google_mobile_ads
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-    override func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         eventChannel?.setStreamHandler(linkStreamHandler)
         print("url \(url)");
         return linkStreamHandler.handleLink(url.absoluteString)
