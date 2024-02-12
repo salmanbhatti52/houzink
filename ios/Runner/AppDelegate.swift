@@ -34,19 +34,19 @@ import google_mobile_ads
         //DEEP LINKING RELATED CODE END
 
 
-        GeneratedPluginRegistrant.register(withRegistry: self)
+        GeneratedPluginRegistrant.register(with: self)
         // TODO: Add your API key
         GMSServices.provideAPIKey("AIzaSyBqQMpR73ry257vNlpmgigNJ73qcKCpuOk")
 
         //Mobile Ads - uncomment if ads required.
-        let listTileFactory = ListTileNativeAdViewFactory()
-        FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+        // let listTileFactory = ListTileNativeAdViewFactory()
+        // FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
 
-            self, factoryId: "listTile", nativeAdFactory: listTileFactory)
+        //     self, factoryId: "listTile", nativeAdFactory: listTileFactory)
 
-        let homeTileFactory = HomeNativeAdViewFactory()
-        FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
-            self, factoryId: "homeNativeAd", nativeAdFactory: homeTileFactory)
+        // let homeTileFactory = HomeNativeAdViewFactory()
+        // FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+        //     self, factoryId: "homeNativeAd", nativeAdFactory: homeTileFactory)
 
         eventChannel?.setStreamHandler(linkStreamHandler)
 
@@ -59,7 +59,7 @@ import google_mobile_ads
         return linkStreamHandler.handleLink(url.absoluteString)
     }
 
-    override func application(_ application: UIApplication,
+     func application(_ application: UIApplication,
                               continue userActivity: NSUserActivity,
                               restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         if let url = userActivity.webpageURL  {
