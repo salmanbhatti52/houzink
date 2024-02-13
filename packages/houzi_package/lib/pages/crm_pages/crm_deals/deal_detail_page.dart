@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:houzi_package/blocs/property_bloc.dart';
 import 'package:houzi_package/common/constants.dart';
 import 'package:houzi_package/files/app_preferences/app_preferences.dart';
@@ -115,23 +116,55 @@ class _DealDetailPageState extends State<DealDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarWidget(
-          appBarTitle: UtilityMethods.getLocalizedString("deal_detail"),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: IconButton(
-                icon: Icon(
-                    Icons.more_vert_outlined,
-                    color: AppThemePreferences.backgroundColorLight
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+          leading: GestureDetector(
+            onTap: () => onBackPressedFunc(context),
+            child: SvgPicture.asset(
+              AppThemePreferences.backIconImagePath,
+              width: 20,
+              height: 20,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          title: GenericTextWidget(
+            UtilityMethods.getLocalizedString("deal_detail"),
+            style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+          ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.more_horiz_rounded,
+                    color: AppThemePreferences().appTheme.primaryColor,
+                  ),
+                  onPressed: () {
+                    onMenuPressed();
+                  },
                 ),
-                onPressed: () {
-                  onMenuPressed();
-                },
-              ),
-            )
-          ],
+              )
+            ]
         ),
+        // appBar: AppBarWidget(
+        //   appBarTitle: UtilityMethods.getLocalizedString("deal_detail"),
+        //   actions: <Widget>[
+        //     Padding(
+        //       padding: const EdgeInsets.only(right: 5),
+        //       child: IconButton(
+        //         icon: Icon(
+        //             Icons.more_horiz_rounded,
+        //             color: AppThemePreferences().appTheme.primaryColor,
+        //         ),
+        //         onPressed: () {
+        //           onMenuPressed();
+        //         },
+        //       ),
+        //     )
+        //   ],
+        // ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
@@ -377,7 +410,7 @@ class _DealDetailPageState extends State<DealDetailPage> {
         children: [
           Icon(
             iconData,
-            color: AppThemePreferences().appTheme.iconsColor,
+            color: AppThemePreferences().appTheme.primaryColor,
           ),
           SizedBox(width: 10),
           GenericTextWidget(text),

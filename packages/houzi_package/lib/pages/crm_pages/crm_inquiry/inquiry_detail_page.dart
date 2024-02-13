@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:houzi_package/common/constants.dart';
 import 'package:houzi_package/files/app_preferences/app_preferences.dart';
 import 'package:houzi_package/files/generic_methods/utility_methods.dart';
@@ -67,22 +68,53 @@ class _InquiryDetailPageState extends State<InquiryDetailPage> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
-        appBar: AppBarWidget(
-          appBarTitle: UtilityMethods.getLocalizedString("inquiry_detail"),
-          actions: <Widget>[
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+          leading: GestureDetector(
+            onTap: () => onBackPressedFunc(context),
+            child: SvgPicture.asset(
+              AppThemePreferences.backIconImagePath,
+              width: 20,
+              height: 20,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          title: GenericTextWidget(
+            UtilityMethods.getLocalizedString("inquiry_detail"),
+            style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+          ),
+          actions: [
             if (_selectedIndex == 0)
               Padding(
                 padding: const EdgeInsets.only(right: 5),
                 child: IconButton(
                   icon: Icon(
-                    Icons.more_vert_outlined,
-                    color: AppThemePreferences.backgroundColorLight,
+                    Icons.more_horiz_rounded,
+                    color: AppThemePreferences().appTheme.primaryColor,
                   ),
                   onPressed: ()=> onMenuPressed(context),
                 ),
               )
           ],
         ),
+        // appBar: AppBarWidget(
+        //   appBarTitle: UtilityMethods.getLocalizedString("inquiry_detail"),
+        //   actions: <Widget>[
+        //     if (_selectedIndex == 0)
+        //       Padding(
+        //         padding: const EdgeInsets.only(right: 5),
+        //         child: IconButton(
+        //           icon: Icon(
+        //             Icons.more_vert_outlined,
+        //             color: AppThemePreferences.backgroundColorLight,
+        //           ),
+        //           onPressed: ()=> onMenuPressed(context),
+        //         ),
+        //       )
+        //   ],
+        // ),
         extendBody: true,
         body: IndexedStack(
           index: _selectedIndex,
@@ -93,11 +125,9 @@ class _InquiryDetailPageState extends State<InquiryDetailPage> {
           currentIndex: _selectedIndex,
           itemsMap: bottomNavBarItemsMap,
           onTap: _onItemTapped,
-          backgroundColor:
-              AppThemePreferences().appTheme.bottomNavBarBackgroundColor,
-          selectedItemColor: AppThemePreferences.bottomNavBarTintColor,
-          unselectedItemColor:
-              AppThemePreferences.unSelectedBottomNavBarTintColor,
+          backgroundColor: AppThemePreferences().appTheme.bottomNavBarBackgroundColor,
+          selectedItemColor: AppThemePreferences().appTheme.primaryColor,
+          unselectedItemColor: AppThemePreferences.unSelectedBottomNavBarTintColor.withOpacity(0.5),
         ),
       ),
     );
@@ -156,7 +186,9 @@ class _InquiryDetailPageState extends State<InquiryDetailPage> {
                 addBottomPadding: true,
             ),
             const CRMDetailGap(),
-            CRMIconBottomText(AppThemePreferences.messageIcon, "message",
+            CRMIconBottomText(
+                AppThemePreferences.messageIcon,
+                "message",
                 widget.inquiryDetail.leads?.message)
           ],
         ),
@@ -236,7 +268,7 @@ class _InquiryDetailPageState extends State<InquiryDetailPage> {
         children: [
           Icon(
             iconData,
-            color: AppThemePreferences().appTheme.iconsColor,
+            color: AppThemePreferences().appTheme.primaryColor,
           ),
           const SizedBox(width: 10),
           GenericTextWidget(text),

@@ -307,7 +307,9 @@ class _ActivitiesFromBoardState extends State<ActivitiesFromBoard> {
           SmartRefresher(
             enablePullDown: true,
             enablePullUp: true,
-            header: const MaterialClassicHeader(),
+            header: MaterialClassicHeader(
+              color: AppThemePreferences().appTheme.primaryColor,
+            ),
             controller: _refreshController,
             onRefresh: loadDataFromApi,
             onLoading: () => loadDataFromApi(forPullToRefresh: false),

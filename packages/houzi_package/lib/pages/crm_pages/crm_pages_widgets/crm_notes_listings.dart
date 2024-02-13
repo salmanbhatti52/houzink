@@ -267,7 +267,9 @@ class _CRMNotesListingsState extends State<CRMNotesListings> {
                 controller: _noteTextController,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 labelText: UtilityMethods.getLocalizedString("notes"),
+                cursorColor: AppThemePreferences().appTheme.primaryColor,
                 hintText: UtilityMethods.getLocalizedString("enter_note"),
+                focusedBorderColor: AppThemePreferences().appTheme.primaryColor,
                 maxLines: 5,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -281,6 +283,7 @@ class _CRMNotesListingsState extends State<CRMNotesListings> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ButtonWidget(
+            color: AppThemePreferences().appTheme.primaryColor,
               text: UtilityMethods.getLocalizedString("add_notes"),
               onPressed: () async {
                 if (formKey.currentState!.validate()) {

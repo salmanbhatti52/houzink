@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:houzi_package/Mixins/validation_mixins.dart';
 import 'package:houzi_package/common/constants.dart';
 import 'package:houzi_package/files/app_preferences/app_preferences.dart';
@@ -204,11 +205,31 @@ class _AddNewDealState extends State<AddNewDeal> with ValidationMixin {
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
-        appBar: AppBarWidget(
-          appBarTitle: widget.forEditDeal
-              ? UtilityMethods.getLocalizedString("edit_deal")
-              : UtilityMethods.getLocalizedString("add_new_deal"),
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+          leading: GestureDetector(
+            onTap: () => onBackPressedFunc(context),
+            child: SvgPicture.asset(
+              AppThemePreferences.backIconImagePath,
+              width: 20,
+              height: 20,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          title: GenericTextWidget(
+            widget.forEditDeal ?
+            UtilityMethods.getLocalizedString("edit_deal")
+                : UtilityMethods.getLocalizedString("add_new_deal"),
+            style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+          ),
         ),
+        // appBar: AppBarWidget(
+        //   appBarTitle: widget.forEditDeal
+        //       ? UtilityMethods.getLocalizedString("edit_deal")
+        //       : UtilityMethods.getLocalizedString("add_new_deal"),
+        // ),
         body: isInternetConnected == false
             ? Align(
                 alignment: Alignment.topCenter,
@@ -269,7 +290,10 @@ class _AddNewDealState extends State<AddNewDeal> with ValidationMixin {
             child: DropdownButtonFormField<String>(
               dropdownColor: AppThemePreferences().appTheme.dropdownMenuBgColor,
               icon: Icon(AppThemePreferences.dropDownArrowIcon),
-              decoration: AppThemePreferences.formFieldDecoration(hintText: UtilityMethods.getLocalizedString("select")),
+              decoration: AppThemePreferences.formFieldDecoration(
+                  hintText: UtilityMethods.getLocalizedString("select"),
+                  focusedBorderColor: AppThemePreferences().appTheme.primaryColor,
+              ),
               items: groupOptions
                   .map((description, value) {
                 return MapEntry(
@@ -318,6 +342,8 @@ class _AddNewDealState extends State<AddNewDeal> with ValidationMixin {
       hintText: hintText,
       keyboardType: textInputType,
       initialValue: initialValue ?? "",
+      cursorColor: AppThemePreferences().appTheme.primaryColor,
+      focusedBorderColor: AppThemePreferences().appTheme.primaryColor,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return UtilityMethods.getLocalizedString("this_field_cannot_be_empty");
@@ -348,7 +374,10 @@ class _AddNewDealState extends State<AddNewDeal> with ValidationMixin {
             child: DropdownButtonFormField(
               dropdownColor: AppThemePreferences().appTheme.dropdownMenuBgColor,
               icon: Icon(AppThemePreferences.dropDownArrowIcon),
-              decoration: AppThemePreferences.formFieldDecoration(hintText: UtilityMethods.getLocalizedString("select")),
+              decoration: AppThemePreferences.formFieldDecoration(
+                  hintText: UtilityMethods.getLocalizedString("select"),
+                  focusedBorderColor: AppThemePreferences().appTheme.primaryColor,
+              ),
               items: contactList.map((map) {
                 return DropdownMenuItem(
                   child: GenericTextWidget(UtilityMethods.getLocalizedString(map['displayName'] ?? "")),
@@ -458,7 +487,10 @@ class _AddNewDealState extends State<AddNewDeal> with ValidationMixin {
       },
       isExpanded: true,
       icon: Icon(AppThemePreferences.dropDownArrowIcon),
-      decoration: AppThemePreferences.formFieldDecoration(hintText: UtilityMethods.getLocalizedString("select")),//AppLocalizations.of(context).select),
+      decoration: AppThemePreferences.formFieldDecoration(
+        hintText: UtilityMethods.getLocalizedString("select"),
+        focusedBorderColor: AppThemePreferences().appTheme.primaryColor,
+      ),//AppLocalizations.of(context).select),
       onSaved: onSaved,
       items: list.map<DropdownMenuItem<String>>((item) {
         return DropdownMenuItem<String>(
@@ -478,6 +510,7 @@ class _AddNewDealState extends State<AddNewDeal> with ValidationMixin {
         text: widget.forEditDeal
             ? UtilityMethods.getLocalizedString("edit_deal")
             : UtilityMethods.getLocalizedString("add_new_deal"),
+        color: AppThemePreferences().appTheme.primaryColor,
         onPressed: () async {
           if (formKey.currentState!.validate()) {
             formKey.currentState!.save();

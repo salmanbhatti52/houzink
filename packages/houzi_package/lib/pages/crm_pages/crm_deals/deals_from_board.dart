@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:houzi_package/blocs/property_bloc.dart';
 import 'package:houzi_package/common/constants.dart';
 import 'package:houzi_package/files/app_preferences/app_preferences.dart';
@@ -23,7 +24,8 @@ class DealsFromBoard extends StatefulWidget {
   _DealsFromBoardState createState() => _DealsFromBoardState();
 }
 
-class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStateMixin {
+class _DealsFromBoardState extends State<DealsFromBoard>
+    with TickerProviderStateMixin {
   final CRMRepository _crmRepository = CRMRepository();
 
   List<dynamic> activeDealsFromBoardList = [];
@@ -34,9 +36,12 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
   Future<List<dynamic>>? _futureWonDealsFromBoard;
   Future<List<dynamic>>? _futureLostDealsFromBoard;
 
-  final RefreshController _refreshActiveController = RefreshController(initialRefresh: false);
-  final RefreshController _refreshWonController = RefreshController(initialRefresh: false);
-  final RefreshController _refreshLostController = RefreshController(initialRefresh: false);
+  final RefreshController _refreshActiveController =
+      RefreshController(initialRefresh: false);
+  final RefreshController _refreshWonController =
+      RefreshController(initialRefresh: false);
+  final RefreshController _refreshLostController =
+      RefreshController(initialRefresh: false);
 
   TabController? _tabController;
 
@@ -96,30 +101,31 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       if (activeDealIsLoading) {
         return;
       }
-      if(mounted){
+      if (mounted) {
         setState(() {
           activeDealIsLoading = true;
         });
       }
 
       activeDealPage = 1;
-      _futureActiveDealsFromBoard = fetchDealsFromBoard(activeDealPage, ACTIVE_OPTION);
+      _futureActiveDealsFromBoard =
+          fetchDealsFromBoard(activeDealPage, ACTIVE_OPTION);
       _refreshActiveController.refreshCompleted();
     } else {
       if (!activeDealShouldLoadMore || activeDealIsLoading) {
         _refreshActiveController.loadComplete();
         return;
       }
-      if(mounted){
+      if (mounted) {
         setState(() {
           activeDealIsLoading = true;
         });
       }
 
       activeDealPage++;
-      _futureActiveDealsFromBoard = fetchDealsFromBoard(activeDealPage, ACTIVE_OPTION);
+      _futureActiveDealsFromBoard =
+          fetchDealsFromBoard(activeDealPage, ACTIVE_OPTION);
       _refreshActiveController.loadComplete();
-
     }
   }
 
@@ -128,7 +134,7 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       if (wonDealIsLoading) {
         return;
       }
-      if(mounted){
+      if (mounted) {
         setState(() {
           wonDealIsLoading = true;
         });
@@ -142,7 +148,7 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
         _refreshWonController.loadComplete();
         return;
       }
-      if(mounted){
+      if (mounted) {
         setState(() {
           wonDealIsLoading = true;
         });
@@ -150,7 +156,6 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       wonDealPage++;
       _futureWonDealsFromBoard = fetchDealsFromBoard(wonDealPage, WON_OPTION);
       _refreshWonController.loadComplete();
-
     }
   }
 
@@ -159,29 +164,30 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       if (lostDealIsLoading) {
         return;
       }
-      if(mounted){
+      if (mounted) {
         setState(() {
           lostDealIsLoading = true;
         });
       }
 
       lostDealPage = 1;
-      _futureLostDealsFromBoard = fetchDealsFromBoard(lostDealPage, LOST_OPTION);
+      _futureLostDealsFromBoard =
+          fetchDealsFromBoard(lostDealPage, LOST_OPTION);
       _refreshLostController.refreshCompleted();
     } else {
       if (!lostDealShouldLoadMore || lostDealIsLoading) {
         _refreshLostController.loadComplete();
         return;
       }
-      if(mounted){
+      if (mounted) {
         setState(() {
           lostDealIsLoading = true;
         });
       }
       lostDealPage++;
-      _futureLostDealsFromBoard = fetchDealsFromBoard(lostDealPage, LOST_OPTION);
+      _futureLostDealsFromBoard =
+          fetchDealsFromBoard(lostDealPage, LOST_OPTION);
       _refreshLostController.loadComplete();
-
     }
   }
 
@@ -192,7 +198,8 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
           activeDealShouldLoadMore = true;
         });
       }
-      Map<String, dynamic> map = await _crmRepository.fetchDealsFromBoard(page, perPage, tab);
+      Map<String, dynamic> map =
+          await _crmRepository.fetchDealsFromBoard(page, perPage, tab);
       List<dynamic>? tempList = map["list"];
       if (map["actions"] != null && map["actions"].isNotEmpty) {
         action = map["actions"];
@@ -200,21 +207,23 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       if (map["status"] != null && map["status"].isNotEmpty) {
         status = map["status"];
       }
-      if(tempList == null || (tempList.isNotEmpty && tempList[0] == null) || (tempList.isNotEmpty && tempList[0].runtimeType == Response)){
-        if(mounted){
+      if (tempList == null ||
+          (tempList.isNotEmpty && tempList[0] == null) ||
+          (tempList.isNotEmpty && tempList[0].runtimeType == Response)) {
+        if (mounted) {
           setState(() {
             isActiveDealsLoaded = false;
           });
         }
         return activeDealsFromBoardList;
-      }else{
-        if(mounted){
+      } else {
+        if (mounted) {
           setState(() {
             isActiveDealsLoaded = true;
           });
         }
-        if(tempList.isEmpty || tempList.length < perPage){
-          if(mounted){
+        if (tempList.isEmpty || tempList.length < perPage) {
+          if (mounted) {
             setState(() {
               activeDealShouldLoadMore = false;
             });
@@ -235,7 +244,8 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
           wonDealShouldLoadMore = true;
         });
       }
-      Map<String, dynamic> map = await _crmRepository.fetchDealsFromBoard(page, perPage, tab);
+      Map<String, dynamic> map =
+          await _crmRepository.fetchDealsFromBoard(page, perPage, tab);
 
       List<dynamic>? tempList = map["list"];
       // if (map["action"] != null && map["action"].isNotEmpty) {
@@ -245,21 +255,23 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       //   action = map["action"];
       // }
 
-      if(tempList == null || (tempList.isNotEmpty && tempList[0] == null) || (tempList.isNotEmpty && tempList[0].runtimeType == Response)){
-        if(mounted){
+      if (tempList == null ||
+          (tempList.isNotEmpty && tempList[0] == null) ||
+          (tempList.isNotEmpty && tempList[0].runtimeType == Response)) {
+        if (mounted) {
           setState(() {
             isWonDealsLoaded = false;
           });
         }
         return wonDealsFromBoardList;
-      }else {
+      } else {
         if (mounted) {
           setState(() {
             isWonDealsLoaded = true;
           });
         }
-        if(tempList.isEmpty || tempList.length < perPage){
-          if(mounted){
+        if (tempList.isEmpty || tempList.length < perPage) {
+          if (mounted) {
             setState(() {
               wonDealShouldLoadMore = false;
             });
@@ -274,13 +286,14 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
         }
       }
       return wonDealsFromBoardList;
-    } else  {
+    } else {
       if (page == 1) {
         setState(() {
           lostDealShouldLoadMore = true;
         });
       }
-      Map<String, dynamic> map = await _crmRepository.fetchDealsFromBoard(page, perPage, tab);
+      Map<String, dynamic> map =
+          await _crmRepository.fetchDealsFromBoard(page, perPage, tab);
       List<dynamic>? tempList = map["list"];
       // if (map["action"] != null && map["action"].isNotEmpty) {
       //   action = map["action"];
@@ -288,21 +301,23 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       // if (map["status"] != null && map["status"].isNotEmpty) {
       //   action = map["action"];
       // }
-      if(tempList == null || (tempList.isNotEmpty && tempList[0] == null) || (tempList.isNotEmpty && tempList[0].runtimeType == Response)){
-        if(mounted){
+      if (tempList == null ||
+          (tempList.isNotEmpty && tempList[0] == null) ||
+          (tempList.isNotEmpty && tempList[0].runtimeType == Response)) {
+        if (mounted) {
           setState(() {
             isLostDealsLoaded = false;
           });
         }
         return lostDealsFromBoardList;
-      }else {
+      } else {
         if (mounted) {
           setState(() {
             isLostDealsLoaded = true;
           });
         }
-        if(tempList.isEmpty || tempList.length < perPage){
-          if(mounted){
+        if (tempList.isEmpty || tempList.length < perPage) {
+          if (mounted) {
             setState(() {
               lostDealShouldLoadMore = false;
             });
@@ -333,18 +348,18 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
             isActiveDealsLoaded == false
                 ? noInternetWidget()
                 : Stack(
-                  children: [
-                    showDealsList(
+                    children: [
+                      showDealsList(
                         context,
                         _futureActiveDealsFromBoard!,
                         ACTIVE_OPTION,
                         _refreshActiveController,
                         loadActiveDealDataFromApi,
-                    ),
-                    if (_refreshActiveController.isLoading)
-                      const CRMPaginationLoadingWidget(),
-                  ],
-                ),
+                      ),
+                      if (_refreshActiveController.isLoading)
+                        const CRMPaginationLoadingWidget(),
+                    ],
+                  ),
             isWonDealsLoaded == false
                 ? noInternetWidget()
                 : Stack(
@@ -381,10 +396,10 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
     );
   }
 
-  Widget noInternetWidget(){
+  Widget noInternetWidget() {
     return Align(
       alignment: Alignment.topCenter,
-      child: NoInternetConnectionErrorWidget(onPressed: (){
+      child: NoInternetConnectionErrorWidget(onPressed: () {
         checkInternetAndLoadData();
       }),
     );
@@ -469,7 +484,8 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
                     DEAL_DETAIL_ACTION_DUE_DATE: "${list[index].actionDueDate}",
                     DEAL_DETAIL_VALUE: "${list[index].dealValue}",
                     DEAL_DETAIL_EMAIL: "${list[index].email}",
-                    DEAL_DETAIL_LAST_CONTACT_DATE: "${list[index].lastContactDate}",
+                    DEAL_DETAIL_LAST_CONTACT_DATE:
+                        "${list[index].lastContactDate}",
                     DEAL_DETAIL_NEXT_ACTION: "${list[index].nextAction}",
                     DEAL_DETAIL_PHONE: "${list[index].mobile}",
                     DEAL_DETAIL_STATUS: "${list[index].resultStatus}",
@@ -478,7 +494,8 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                     child: CardWidget(
-                      shape: AppThemePreferences.roundedCorners(AppThemePreferences.globalRoundedCornersRadius),
+                      shape: AppThemePreferences.roundedCorners(
+                          AppThemePreferences.globalRoundedCornersRadius),
                       elevation: AppThemePreferences.boardPagesElevation,
                       child: InkWell(
                         onTap: () {
@@ -493,8 +510,8 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
                                 dealDetailMap: dealDetailMap,
                                 dealDetailPageListener: (
                                     {int? index,
-                                      bool? refresh,
-                                      String? dealOption}) {
+                                    bool? refresh,
+                                    String? dealOption}) {
                                   if (refresh!) {
                                     if (dealOption == "active") {
                                       loadActiveDealDataFromApi();
@@ -526,13 +543,19 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
                                 deal.email,
                                 deal.mobile,
                                 () => takeActionBottomSheet(
-                                  context, false, deal.email,
+                                  context,
+                                  false,
+                                  deal.email,
                                 ),
                                 () => takeActionBottomSheet(
-                                  context, true, deal.mobile,
+                                  context,
+                                  true,
+                                  deal.mobile,
                                 ),
                               ),
-                              CRMIconAndText(AppThemePreferences.groupsImagePath, deal.agentName),
+                              CRMIconAndText(
+                                  AppThemePreferences.groupsImagePath,
+                                  deal.agentName),
                             ],
                           ),
                         ),
@@ -570,69 +593,92 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
   }
 
   PreferredSizeWidget widgetAppBar() {
-    return AppBarWidget(
-      appBarTitle: UtilityMethods.getLocalizedString("deals"),
-      bottom: TabBar(
-        controller: _tabController,
-        indicatorColor: Colors.white,
-        tabs: [
-          Tab(
-            child: GenericTextWidget(
-              UtilityMethods.getLocalizedString("active"),
-              style:  AppThemePreferences().appTheme.genericTabBarTextStyle,
-            ),
-          ),
-          Tab(
-            child: GenericTextWidget(
-              UtilityMethods.getLocalizedString("won"),
-              style:  AppThemePreferences().appTheme.genericTabBarTextStyle,
-            ),
-          ),
-          Tab(
-            child: GenericTextWidget(
-              UtilityMethods.getLocalizedString("lost"),
-              style:  AppThemePreferences().appTheme.genericTabBarTextStyle,
-            ),
-          ),
-        ],
+    return AppBar(
+      elevation: 0,
+      centerTitle: true,
+      backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+      leading: GestureDetector(
+        onTap: () => onBackPressedFunc(context),
+        child: SvgPicture.asset(
+          AppThemePreferences.backIconImagePath,
+          width: 20,
+          height: 20,
+          fit: BoxFit.scaleDown,
+        ),
       ),
-      actions: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: IconButton(
-            icon: Icon(
-              AppThemePreferences.addIcon,
-              color: AppThemePreferences.genericAppBarIconsColorLight,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddNewDeal(
-                    forEditDeal: false,
-                    dealDetailMap: const {},
-                    addNewDealPageListenerPageListener:
-                        (bool refresh, String option) {
-                      if (refresh) {
-                        if (option == "active") {
-                          loadActiveDealDataFromApi();
-                        } else if (option == "won") {
-                          loadWonDealDataFromApi();
-                        } else {
-                          loadLostDealDataFromApi();
-                        }
-                      }
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-        )
-      ],
+      title: GenericTextWidget(
+        UtilityMethods.getLocalizedString("deals"),
+        style: AppThemePreferences()
+            .appTheme
+            .propertyDetailsPagePropertyTitleTextStyle,
+      ),
     );
-
   }
+
+  // PreferredSizeWidget widgetAppBar() {
+  //   return AppBarWidget(
+  //     appBarTitle: UtilityMethods.getLocalizedString("deals"),
+  //     bottom: TabBar(
+  //       controller: _tabController,
+  //       indicatorColor: Colors.white,
+  //       tabs: [
+  //         Tab(
+  //           child: GenericTextWidget(
+  //             UtilityMethods.getLocalizedString("active"),
+  //             style:  AppThemePreferences().appTheme.genericTabBarTextStyle,
+  //           ),
+  //         ),
+  //         Tab(
+  //           child: GenericTextWidget(
+  //             UtilityMethods.getLocalizedString("won"),
+  //             style:  AppThemePreferences().appTheme.genericTabBarTextStyle,
+  //           ),
+  //         ),
+  //         Tab(
+  //           child: GenericTextWidget(
+  //             UtilityMethods.getLocalizedString("lost"),
+  //             style:  AppThemePreferences().appTheme.genericTabBarTextStyle,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //     actions: <Widget>[
+  //       Padding(
+  //         padding: const EdgeInsets.only(right: 5),
+  //         child: IconButton(
+  //           icon: Icon(
+  //             AppThemePreferences.addIcon,
+  //             color: AppThemePreferences.genericAppBarIconsColorLight,
+  //           ),
+  //           onPressed: () {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => AddNewDeal(
+  //                   forEditDeal: false,
+  //                   dealDetailMap: const {},
+  //                   addNewDealPageListenerPageListener:
+  //                       (bool refresh, String option) {
+  //                     if (refresh) {
+  //                       if (option == "active") {
+  //                         loadActiveDealDataFromApi();
+  //                       } else if (option == "won") {
+  //                         loadWonDealDataFromApi();
+  //                       } else {
+  //                         loadLostDealDataFromApi();
+  //                       }
+  //                     }
+  //                   },
+  //                 ),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //       )
+  //     ],
+  //   );
+  //
+  // }
 
   Widget paginationLoadingWidget() {
     return Container(
@@ -649,5 +695,4 @@ class _DealsFromBoardState extends State<DealsFromBoard> with TickerProviderStat
       ),
     );
   }
-
 }

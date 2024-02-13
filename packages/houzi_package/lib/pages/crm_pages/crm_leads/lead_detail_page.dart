@@ -180,9 +180,8 @@ class _LeadDetailPageState extends State<LeadDetailPage> {
           onTap: _onItemTapped,
           backgroundColor:
           AppThemePreferences().appTheme.bottomNavBarBackgroundColor,
-          selectedItemColor: AppThemePreferences.bottomNavBarTintColor,
-          unselectedItemColor:
-          AppThemePreferences.unSelectedBottomNavBarTintColor,
+          selectedItemColor: AppThemePreferences().appTheme.primaryColor,
+          unselectedItemColor: AppThemePreferences.unSelectedBottomNavBarTintColor.withOpacity(0.5),
         ),
       ),
     );
