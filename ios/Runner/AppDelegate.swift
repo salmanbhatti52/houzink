@@ -39,27 +39,27 @@ import google_mobile_ads
         GMSServices.provideAPIKey("AIzaSyBqQMpR73ry257vNlpmgigNJ73qcKCpuOk")
 
         //Mobile Ads - uncomment if ads required.
-        let listTileFactory = ListTileNativeAdViewFactory()
-        FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+        // let listTileFactory = ListTileNativeAdViewFactory()
+        // FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
 
-            self, factoryId: "listTile", nativeAdFactory: listTileFactory)
+        //     self, factoryId: "listTile", nativeAdFactory: listTileFactory)
 
-        let homeTileFactory = HomeNativeAdViewFactory()
-        FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
-            self, factoryId: "homeNativeAd", nativeAdFactory: homeTileFactory)
+        // let homeTileFactory = HomeNativeAdViewFactory()
+        // FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+        //     self, factoryId: "homeNativeAd", nativeAdFactory: homeTileFactory)
 
         eventChannel?.setStreamHandler(linkStreamHandler)
 
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-    override func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         eventChannel?.setStreamHandler(linkStreamHandler)
         print("url \(url)");
         return linkStreamHandler.handleLink(url.absoluteString)
     }
 
-    override func application(_ application: UIApplication,
+     func application(_ application: UIApplication,
                               continue userActivity: NSUserActivity,
                               restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         if let url = userActivity.webpageURL  {
