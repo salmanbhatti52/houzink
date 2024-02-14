@@ -11,6 +11,7 @@ import 'package:houzi_package/pages/home_page_screens/home_location_related/rela
 import '../../../../common/constants.dart';
 import '../../../../files/hive_storage_files/hive_storage_manager.dart';
 import '../../../../widgets/generic_text_widget.dart';
+import '../../../home_screen_drawer_menu_pages/favorites.dart';
 import '../../../home_screen_drawer_menu_pages/user_related/user_signin.dart';
 
 class HomeLocationSliverAppBarWidget extends StatefulWidget {
@@ -75,7 +76,7 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
       ),
       backgroundColor: const Color(0xFFC5EEFD),
       pinned: true,
-      leadingWidth: 150,
+      leadingWidth: 140,
       expandedHeight: extendedHeight,
       leading: Padding(
         padding: const EdgeInsets.only(left: 15),
@@ -87,6 +88,26 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
         Row(
           children: [
             defaultAddButton() ?? Container(),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Favorites(
+                      showAppBar: true,
+                      favoritesPageListener: (String closeOption) {
+                        if (closeOption == CLOSE) {
+                          Navigator.pop(context);
+                        }
+                      },
+                    ),
+                  ),
+                );
+              },
+              child:
+              SvgPicture.asset(AppThemePreferences.drawerFavoriteImagePath),
+            ),
             const SizedBox(width: 10),
             Padding(
               padding: const EdgeInsets.only(right: 15),

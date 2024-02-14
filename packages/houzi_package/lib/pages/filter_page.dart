@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:houzi_package/common/constants.dart';
 import 'package:houzi_package/files/hive_storage_files/hive_storage_manager.dart';
 import 'package:houzi_package/pages/filter_page_widgets.dart';
@@ -9,6 +10,9 @@ import 'package:houzi_package/widgets/filter_page_widgets/filter_bottom_action_b
 import 'package:houzi_package/files/generic_methods/general_notifier.dart';
 import 'package:houzi_package/files/generic_methods/utility_methods.dart';
 import 'package:houzi_package/models/filter_page_config.dart';
+
+import '../files/app_preferences/app_preferences.dart';
+import '../widgets/generic_text_widget.dart';
 
 typedef FilterPageListener = void Function(
   Map<String, dynamic> filterDataMap,
@@ -77,14 +81,36 @@ class _FilterPageState extends State<FilterPage>{
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBarWidget(
-            appBarTitle: UtilityMethods.getLocalizedString("filters"),
-            onBackPressed: (){
+        backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+          leading: GestureDetector(
+            onTap: () {
               HiveStorageManager.storeFilterDataInfo(map: _dataInitializationMap);
               widget.filterPageListener(_dataInitializationMap, CLOSE);
-            }
+              Navigator.of(context).pop();
+            },
+            child: SvgPicture.asset(
+              AppThemePreferences.backIconImagePath,
+              width: 20,
+              height: 20,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          title: GenericTextWidget(
+            UtilityMethods.getLocalizedString("filters"),
+            style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+          ),
         ),
+        // appBar: AppBarWidget(
+        //     appBarTitle: UtilityMethods.getLocalizedString("filters"),
+        //     onBackPressed: (){
+        //       HiveStorageManager.storeFilterDataInfo(map: _dataInitializationMap);
+        //       widget.filterPageListener(_dataInitializationMap, CLOSE);
+        //     }
+        // ),
         body: SafeArea(
           child: Stack(
             children:[

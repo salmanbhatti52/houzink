@@ -96,7 +96,7 @@ class ChildWidget extends StatelessWidget {
       children: [
         if(iconData != null) Icon(
           iconData,
-          color: AppThemePreferences().appTheme.iconsColor,
+          color: AppThemePreferences().appTheme.primaryColor,
         ),
         if(iconData != null) SizedBox(width: 10),
         GenericTextWidget(text!),

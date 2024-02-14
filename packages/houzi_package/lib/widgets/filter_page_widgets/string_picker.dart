@@ -111,7 +111,8 @@ class _StringPickerState extends State<StringPicker> {
                   ? widget.selectedItemsList.contains(item)
                   : _selectedItemsList.contains(item),
 
-              selectedColor: AppThemePreferences().appTheme.selectedItemBackgroundColor,
+              selectedColor: AppThemePreferences().appTheme.primaryColor!.withOpacity(0.2),
+              // selectedColor: AppThemePreferences().appTheme.selectedItemBackgroundColor,
               onSelected: (bool selected) {
                 if(selected){
                   _selectedItemsList.add(item);

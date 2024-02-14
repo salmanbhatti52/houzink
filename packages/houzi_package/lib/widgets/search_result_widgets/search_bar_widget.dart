@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:animate_icons/animate_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:houzi_package/blocs/property_bloc.dart';
 import 'package:houzi_package/common/constants.dart';
 import 'package:houzi_package/files/app_preferences/app_preferences.dart';
@@ -22,6 +23,8 @@ import 'package:houzi_package/widgets/generic_text_widget.dart';
 import 'package:houzi_package/widgets/search_result_widgets/search_choice_chip_widget.dart';
 import 'package:houzi_package/widgets/toast_widget.dart';
 
+import '../../pages/home_screen_drawer_menu_pages/favorites.dart';
+
 typedef SearchResultsSearchBarWidgetListener = Function({
   bool? showPanel,
   bool? onRefresh,
@@ -37,11 +40,13 @@ class SearchResultsSearchBarWidget extends StatefulWidget {
   final Map<String, dynamic> chipsSearchDataMap;
   final List filterChipsRelatedList;
   final void Function()? onBackPressed;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
   final AnimateIconController mapListAnimateIconController;
   final SearchResultsSearchBarWidgetListener listener;
 
   const SearchResultsSearchBarWidget({
     Key? key,
+    this.scaffoldKey,
     required this.opacity,
     required this.isLoggedIn,
     required this.canSaveSearch,
@@ -99,6 +104,55 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: [
+                GenericTextWidget(
+                  "Explore",
+                  style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+                ),
+                Row(
+                  children: [
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Favorites(
+                              showAppBar: true,
+                              favoritesPageListener: (String closeOption) {
+                                if (closeOption == CLOSE) {
+                                  Navigator.pop(context);
+                                }
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                      child:
+                      SvgPicture.asset(AppThemePreferences.drawerFavoriteImagePath),
+                    ),
+                    const SizedBox(width: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: Tooltip(
+                        message: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                        child: GestureDetector(
+                          onTap: () {
+                            widget.scaffoldKey!.currentState!.openEndDrawer();
+                          },
+                          child: SvgPicture.asset(AppThemePreferences.drawerMenuImagePath),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -154,8 +208,8 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
                       offset: const Offset(0, 50),
                       elevation: AppThemePreferences.popupMenuElevation,
                       icon: Icon(
-                        Icons.more_vert_outlined,
-                        color: AppThemePreferences().appTheme.iconsColor,
+                        Icons.more_horiz_rounded,
+                        color: AppThemePreferences().appTheme.primaryColor,
                       ),
                       onSelected: (value) => onPopupOptionSelected(value),
                       itemBuilder: (context) => [

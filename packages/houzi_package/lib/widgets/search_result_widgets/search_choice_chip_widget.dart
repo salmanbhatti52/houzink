@@ -22,7 +22,7 @@ class SearchResultsChoiceChipsWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: ChoiceChipWidget(
-        avatar: iconData != null ? Icon(iconData, color: AppThemePreferences().appTheme.iconsColor) : avatar,
+        avatar: iconData != null ? Icon(iconData, color: AppThemePreferences().appTheme.primaryColor) : avatar,
         labelPadding: const EdgeInsets.all(0),
         label: Padding(
           padding: label.isEmpty ? EdgeInsets.symmetric(vertical: 8) : EdgeInsets.all(8),//8

@@ -98,6 +98,7 @@ class FilterPageDoneButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonWidget(
+      color: AppThemePreferences().appTheme.primaryColor,
       buttonHeight: AppThemePreferences.filterPageSearchButtonHeight,
       fontSize: AppThemePreferences.filterPageSearchButtonTextFontSize,
       text: UtilityMethods.getLocalizedString("search"),
