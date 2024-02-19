@@ -13,7 +13,6 @@ import 'package:houzi_package/files/app_preferences/app_preferences.dart';
 import 'package:houzi_package/files/hive_storage_files/hive_storage_manager.dart';
 import 'package:houzi_package/pages/search_result.dart';
 
-
 class TermWithIconsWidget extends StatefulWidget {
   const TermWithIconsWidget({Key? key}) : super(key: key);
 
@@ -22,7 +21,6 @@ class TermWithIconsWidget extends StatefulWidget {
 }
 
 class _TermWithIconsWidgetState extends State<TermWithIconsWidget> {
-
   List<Term> dataList = [];
 
   final Map<String, dynamic> _iconMap = UtilityMethods.iconMap;
@@ -34,8 +32,9 @@ class _TermWithIconsWidgetState extends State<TermWithIconsWidget> {
     super.initState();
 
     generalNotifierListener = () {
-      if (GeneralNotifier().change == GeneralNotifier.FILTER_DATA_LOADING_COMPLETE) {
-        if(mounted){
+      if (GeneralNotifier().change ==
+          GeneralNotifier.FILTER_DATA_LOADING_COMPLETE) {
+        if (mounted) {
           setState(() {
             loadData();
           });
@@ -48,15 +47,20 @@ class _TermWithIconsWidgetState extends State<TermWithIconsWidget> {
   }
 
   void loadData() {
-    List<Term> propertyStatusDataList = HiveStorageManager.readPropertyStatusMetaData() ?? [];
-    List<Term> propertyTypesDataList = HiveStorageManager.readPropertyTypesMetaData() ?? [];
+    List<Term> propertyStatusDataList =
+        HiveStorageManager.readPropertyStatusMetaData() ?? [];
+    List<Term> propertyTypesDataList =
+        HiveStorageManager.readPropertyTypesMetaData() ?? [];
 
-    dataList = [...removeChildTypesStatus(propertyStatusDataList), ...removeChildTypesStatus(propertyTypesDataList)];
+    dataList = [
+      ...removeChildTypesStatus(propertyStatusDataList),
+      ...removeChildTypesStatus(propertyTypesDataList)
+    ];
   }
 
-
   removeChildTypesStatus(List<Term> dataList) {
-    dataList.removeWhere((element) => element.parent != 0 || element.totalPropertiesCount! <= 0);
+    dataList.removeWhere(
+        (element) => element.parent != 0 || element.totalPropertiesCount! <= 0);
     return dataList;
   }
 
@@ -74,7 +78,7 @@ class _TermWithIconsWidgetState extends State<TermWithIconsWidget> {
                   loadData();
                   return Container(
                     height: boxSize,
-                    margin: const EdgeInsets.only(bottom: 5),
+                    // margin: const EdgeInsets.only(bottom: 5),
                     padding: const EdgeInsets.only(left: 5),
                     child: ListView.builder(
                       itemCount: dataList.length,
@@ -110,59 +114,96 @@ class TermWithIconsBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Map<String, dynamic> map = {
-          "${propertyMetaData.taxonomy}_slug" : [propertyMetaData.slug],
-          "${propertyMetaData.taxonomy}" : [propertyMetaData.name]
-        };
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: () {
+          Map<String, dynamic> map = {
+            "${propertyMetaData.taxonomy}_slug": [propertyMetaData.slug],
+            "${propertyMetaData.taxonomy}": [propertyMetaData.name]
+          };
 
-        HiveStorageManager.storeFilterDataInfo(map: map);
+          HiveStorageManager.storeFilterDataInfo(map: map);
 
-        GeneralNotifier().publishChange(GeneralNotifier.FILTER_DATA_LOADING_COMPLETE);
+          GeneralNotifier()
+              .publishChange(GeneralNotifier.FILTER_DATA_LOADING_COMPLETE);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SearchResult(
-              dataInitializationMap: map,
-              searchPageListener: (Map<String, dynamic> map, String closeOption) {
-                if (closeOption == CLOSE) {
-                  Navigator.of(context).pop();
-                }
-              },
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchResult(
+                dataInitializationMap: map,
+                searchPageListener:
+                    (Map<String, dynamic> map, String closeOption) {
+                  if (closeOption == CLOSE) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ),
+          );
+          // TODO: HOME PAGE TOP CARD WIDGET
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: SizedBox(
+            width: 113,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.blue), // Add a blue border
+                  ),
+                  child: Row(
+                    // Add a Row to contain the text and the icon
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      _buildIconWidget(propertyMetaData.slug!),
+                      // const Icon(Icons.home_outlined,
+                      //     color: Colors.blue), // Replace with your icon
+                      GenericTextWidget(
+                          UtilityMethods.getLocalizedString(
+                              propertyMetaData.name!),
+                          strutStyle: StrutStyle(
+                              height: AppThemePreferences.genericTextHeight,
+                              forceStrutHeight: true),
+                          style:
+                              AppThemePreferences().appTheme.label01TextStyle,
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.center),
+                    ],
+                  ),
+                ),
+                // CardWidget(
+                //   elevation: AppThemePreferences.zeroElevation,
+                //   shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(AppThemePreferences
+                //         .propertyDetailFeaturesRoundedCornersRadius),
+                //   ),
+                //   color: AppThemePreferences().appTheme.containerBackgroundColor,
+                //   child: _buildIconWidget(propertyMetaData.slug!),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 5.0),
+                //   child: GenericTextWidget(
+                //       UtilityMethods.getLocalizedString(propertyMetaData.name!),
+                //       strutStyle: StrutStyle(
+                //           height: AppThemePreferences.genericTextHeight,
+                //           forceStrutHeight: true),
+                //       style: AppThemePreferences().appTheme.label01TextStyle,
+                //       maxLines: 1,
+                //       overflow: TextOverflow.clip,
+                //       textAlign: TextAlign.center),
+                // ),
+              ],
             ),
           ),
-        );
-        // TODO: HOME PAGE TOP CARD WIDGET
-      },
-      child: Container(
-        width: boxSize,
-        padding: EdgeInsets.only(left: 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CardWidget(
-              elevation: AppThemePreferences.zeroElevation,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppThemePreferences.propertyDetailFeaturesRoundedCornersRadius),
-              ),
-              color: AppThemePreferences().appTheme.containerBackgroundColor,
-              child: _buildIconWidget(propertyMetaData.slug!),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5.0),
-              child: GenericTextWidget(
-                  UtilityMethods.getLocalizedString(propertyMetaData.name!),
-                  strutStyle: StrutStyle(height: AppThemePreferences.genericTextHeight, forceStrutHeight: true),
-                  style: AppThemePreferences().appTheme.label01TextStyle,
-                  maxLines: 1,
-                  overflow: TextOverflow.clip,
-                  textAlign: TextAlign.center
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -172,29 +213,22 @@ class TermWithIconsBodyWidget extends StatelessWidget {
     if (iconMap.containsKey(slug)) {
       final icon = iconMap[slug];
       if (icon is IconData) {
-        return Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Icon(
-            icon,
-            size: AppThemePreferences.propertyDetailsFeaturesIconSize,
-          ),
+        return Icon(
+          icon,
+          size: AppThemePreferences.propertyDetailsFeaturesIconSize,
+          color: Colors.blue,
         );
       } else if (icon is Widget) {
         return SizedBox(
-          width: boxSize - 40,
-          height: boxSize - 40,
           child: icon,
         );
       }
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Icon(
-        AppThemePreferences.homeIcon,
-        size: AppThemePreferences.propertyDetailsFeaturesIconSize,
-      ),
+    return Icon(
+      AppThemePreferences.homeIcon,
+      size: AppThemePreferences.propertyDetailsFeaturesIconSize,
+      color: Colors.blue,
     );
   }
 }
-

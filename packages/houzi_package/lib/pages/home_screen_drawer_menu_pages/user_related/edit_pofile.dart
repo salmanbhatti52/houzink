@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -23,50 +24,51 @@ import 'package:houzi_package/Mixins/validation_mixins.dart';
 import 'package:houzi_package/files/generic_methods/utility_methods.dart';
 import 'package:houzi_package/widgets/header_widget.dart';
 
+import '../../../widgets/manage_profile_widgets/user_image_widget.dart';
+
 class EditProfile extends StatefulWidget {
+  const EditProfile({super.key});
 
   @override
   _EditProfileState createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> with ValidationMixin {
-  
   final formKey = GlobalKey<FormState>();
-  
+
   final PropertyBloc _propertyBloc = PropertyBloc();
 
   TextEditingController registerPass = TextEditingController();
   TextEditingController registerPassRetype = TextEditingController();
 
-  Map<String,dynamic> userInfoMap = {
-    FIRST_NAME : "",
-    LAST_NAME : "",
-    USER_LANGS : "",
-    USER_TITLE : "",
-    DESCRIPTION : "",
-    USER_COMPANY : "",
-    USER_PHONE : "",
-    USER_MOBILE : "",
-    FAX_NUMBER : "",
-    SERVICE_AREA : "",
-    SPECIALITIES : "",
-    LICENSE : "",
-    TAX_NUMBER : "",
-    USER_ADDRESS : "",
-    FACEBOOK : "",
-    TWITTER : "",
-    LINKEDIN : "",
-    INSTAGRAM : "",
-    YOUTUBE : "",
-    PINTEREST : "",
-    VIMEO : "",
-    SKYPE : "",
-    WEBSITE : ""
+  Map<String, dynamic> userInfoMap = {
+    FIRST_NAME: "",
+    LAST_NAME: "",
+    USER_LANGS: "",
+    USER_TITLE: "",
+    DESCRIPTION: "",
+    USER_COMPANY: "",
+    USER_PHONE: "",
+    USER_MOBILE: "",
+    FAX_NUMBER: "",
+    SERVICE_AREA: "",
+    SPECIALITIES: "",
+    LICENSE: "",
+    TAX_NUMBER: "",
+    USER_ADDRESS: "",
+    FACEBOOK: "",
+    TWITTER: "",
+    LINKEDIN: "",
+    INSTAGRAM: "",
+    YOUTUBE: "",
+    PINTEREST: "",
+    VIMEO: "",
+    SKYPE: "",
+    WEBSITE: ""
   };
 
-
   User? _userInfo;
-  
+
   final picker = ImagePicker();
 
   List<dynamic> userInfoList = [];
@@ -91,7 +93,8 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
   }
 
   fetchNonce() async {
-    ApiResponse response = await _propertyBloc.fetchUpdateProfileNonceResponse();
+    ApiResponse response =
+        await _propertyBloc.fetchUpdateProfileNonceResponse();
     if (response.success) {
       nonce = response.result;
     }
@@ -102,31 +105,32 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
   }
 
   void loadData() {
-    if(mounted){
+    if (mounted) {
       setState(() {
         _showWaitingWidget = true;
       });
     }
-    
+
     fetchUserInfo().then((value) {
-      if((value.isNotEmpty && value[0] == null) || (value.isNotEmpty && value[0].runtimeType == Response)){
-        if(mounted){
+      if ((value.isNotEmpty && value[0] == null) ||
+          (value.isNotEmpty && value[0].runtimeType == Response)) {
+        if (mounted) {
           setState(() {
             isInternetConnected = false;
             _showWaitingWidget = false;
           });
         }
-      }else{
+      } else {
         if (mounted) {
           setState(() {
             isInternetConnected = true;
             _showWaitingWidget = false;
           });
         }
-        if(value.isNotEmpty){
+        if (value.isNotEmpty) {
           userInfoList = value;
           _userInfo = userInfoList[0];
-          if(mounted){
+          if (mounted) {
             setState(() {
               userInfoMap[USER_NAME] = _userInfo!.username ?? "";
               userInfoMap[FIRST_NAME] = _userInfo!.firstName ?? "";
@@ -157,7 +161,7 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
               userInfoMap[WEBSITE] = _userInfo!.website ?? "";
 
               var nameForDisplay = _userInfo!.displayNameOptions;
-              if(nameForDisplay != null && nameForDisplay.isNotEmpty){
+              if (nameForDisplay != null && nameForDisplay.isNotEmpty) {
                 displayNameOptionsList = nameForDisplay.toSet().toList();
               }
 
@@ -199,9 +203,20 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
             ),
           ),
           title: GenericTextWidget(
-            UtilityMethods.getLocalizedString("manage_profile"),
-            style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+            UtilityMethods.getLocalizedString("manage_profile2"),
+            style: AppThemePreferences()
+                .appTheme
+                .propertyDetailsPagePropertyTitleTextStyle,
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.more_horiz,
+                  color: Colors.blue), // Three horizontal dots icon
+              onPressed: () {
+                // Handle the button's onPressed event here
+              },
+            ),
+          ],
         ),
         // appBar: AppBarWidget(
         //   appBarTitle: UtilityMethods.getLocalizedString("edit_profile"),
@@ -221,55 +236,169 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
     );
   }
 
+  String userAvatar = "";
+  final bool _showWaitingWidgetForPicUpload = false;
+  File? imageFile;
+
+  bool _showUploadPhotoButton = false;
   Widget showUserInfo(BuildContext context) {
     return Stack(
       children: [
-        showFields ? SingleChildScrollView(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(5),
-            child: Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  setValuesInFields(labelText: "user_name", initialValue: userInfoMap[USER_NAME], key: USER_NAME, readOnly: true, enabled: false),
-                  setValuesInFields(labelText: "first_name", initialValue: userInfoMap[FIRST_NAME], key: FIRST_NAME),
-                  setValuesInFields(labelText: "last_name", initialValue: userInfoMap[LAST_NAME], key: LAST_NAME),
-                  setValuesInFields(labelText: "email", initialValue: userInfoMap[USER_EMAIL], keyboardType: TextInputType.emailAddress, key: USER_EMAIL),
-                  displayNameWidget(context),
-                  setValuesInFields(labelText: "title_position", initialValue: userInfoMap[USER_TITLE], key: USER_TITLE),
-                  setValuesInFields(labelText: "license", initialValue: userInfoMap[LICENSE], key: LICENSE),
-                  setValuesInFields(labelText: "mobile", initialValue: userInfoMap[USER_MOBILE], keyboardType: TextInputType.number, key: USER_MOBILE),
-                  setValuesInFields(labelText: "whatsApp", initialValue: userInfoMap[USER_WHATSAPP], keyboardType: TextInputType.number, key: USER_WHATSAPP),
-                  setValuesInFields(labelText: "tax_number", initialValue: userInfoMap[TAX_NUMBER], key: TAX_NUMBER),
-                  setValuesInFields(labelText: "phone", initialValue: userInfoMap[USER_PHONE], keyboardType: TextInputType.number, key: USER_PHONE),
-                  setValuesInFields(labelText: "fax_number", initialValue: userInfoMap[FAX_NUMBER], keyboardType: TextInputType.number, key: FAX_NUMBER),
-                  setValuesInFields(labelText: "language_label", initialValue: userInfoMap[USER_LANGS], key: USER_LANGS),
-                  setValuesInFields(labelText: "company_name", initialValue: userInfoMap[USER_COMPANY], key: USER_COMPANY),
-                  setValuesInFields(labelText: "address", initialValue: userInfoMap[USER_ADDRESS], key: USER_ADDRESS),
-                  setValuesInFields(labelText: "service_areas", initialValue: userInfoMap[SERVICE_AREA], key: SERVICE_AREA),
-                  setValuesInFields(labelText: "specialties", initialValue: userInfoMap[SPECIALITIES], key: SPECIALITIES),
-                  setValuesInFields(labelText: "about_me", initialValue: userInfoMap[DESCRIPTION], key: DESCRIPTION, maxLines: 5),
-                  headerTextWidget(UtilityMethods.getLocalizedString("social")),
-                  setValuesInFields(labelText: "facebook", initialValue: userInfoMap[FACEBOOK], key: FACEBOOK),
-                  setValuesInFields(labelText: "twitter", initialValue: userInfoMap[TWITTER], key: TWITTER),
-                  setValuesInFields(labelText: "linkedIn", initialValue: userInfoMap[LINKEDIN], key: LINKEDIN),
-                  setValuesInFields(labelText: "instagram", initialValue: userInfoMap[INSTAGRAM], key: INSTAGRAM),
-                  setValuesInFields(labelText: "youtube", initialValue: userInfoMap[YOUTUBE], key: YOUTUBE),
-                  setValuesInFields(labelText: "pinterest", initialValue: userInfoMap[PINTEREST], key: PINTEREST),
-                  setValuesInFields(labelText: "vimeo", initialValue: userInfoMap[VIMEO], key: VIMEO),
-                  setValuesInFields(labelText: "skype", initialValue: userInfoMap[SKYPE], key: SKYPE),
-                  setValuesInFields(labelText: "website", initialValue: userInfoMap[WEBSITE], key: WEBSITE),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: updateProfileButtonWidget(context),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ) : Container(),
+        showFields
+            ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ManageProfileUserImageWidget(
+                      userAvatar: userAvatar,
+                      showWaitingWidgetForPicUpload:
+                          _showWaitingWidgetForPicUpload,
+                      listener: (bool showUploadPhotoButton, File? imgFile) {
+                        if (mounted) {
+                          setState(() {
+                            _showUploadPhotoButton = true;
+                            imageFile = imgFile;
+                          });
+                        }
+                      },
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(5),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            setValuesInFields(
+                                labelText: "user_name",
+                                initialValue: userInfoMap[USER_NAME],
+                                key: USER_NAME,
+                                readOnly: true,
+                                enabled: false),
+                            // setValuesInFields(
+                            //     labelText: "first_name",
+                            //     initialValue: userInfoMap[FIRST_NAME],
+                            //     key: FIRST_NAME),
+                            // setValuesInFields(
+                            //     labelText: "last_name",
+                            //     initialValue: userInfoMap[LAST_NAME],
+                            //     key: LAST_NAME),
+                            setValuesInFields(
+                                labelText: "email",
+                                initialValue: userInfoMap[USER_EMAIL],
+                                keyboardType: TextInputType.emailAddress,
+                                key: USER_EMAIL),
+                            // displayNameWidget(context),
+                            // setValuesInFields(
+                            //     labelText: "title_position",
+                            //     initialValue: userInfoMap[USER_TITLE],
+                            //     key: USER_TITLE),
+                            // setValuesInFields(
+                            //     labelText: "license",
+                            //     initialValue: userInfoMap[LICENSE],
+                            //     key: LICENSE),
+                            // setValuesInFields(
+                            //     labelText: "mobile",
+                            //     initialValue: userInfoMap[USER_MOBILE],
+                            //     keyboardType: TextInputType.number,
+                            //     key: USER_MOBILE),
+                            // setValuesInFields(
+                            //     labelText: "whatsApp",
+                            //     initialValue: userInfoMap[USER_WHATSAPP],
+                            //     keyboardType: TextInputType.number,
+                            //     key: USER_WHATSAPP),
+                            // setValuesInFields(
+                            //     labelText: "tax_number",
+                            //     initialValue: userInfoMap[TAX_NUMBER],
+                            //     key: TAX_NUMBER),
+                            // setValuesInFields(
+                            //     labelText: "phone",
+                            //     initialValue: userInfoMap[USER_PHONE],
+                            //     keyboardType: TextInputType.number,
+                            //     key: USER_PHONE),
+                            // setValuesInFields(
+                            //     labelText: "fax_number",
+                            //     initialValue: userInfoMap[FAX_NUMBER],
+                            //     keyboardType: TextInputType.number,
+                            //     key: FAX_NUMBER),
+                            // setValuesInFields(
+                            //     labelText: "language_label",
+                            //     initialValue: userInfoMap[USER_LANGS],
+                            //     key: USER_LANGS),
+                            // setValuesInFields(
+                            //     labelText: "company_name",
+                            //     initialValue: userInfoMap[USER_COMPANY],
+                            //     key: USER_COMPANY),
+                            setValuesInFields(
+                                labelText: "Location",
+                                initialValue: userInfoMap[USER_ADDRESS],
+                                key: USER_ADDRESS),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.12,
+                            ),
+                            // setValuesInFields(
+                            //     labelText: "service_areas",
+                            //     initialValue: userInfoMap[SERVICE_AREA],
+                            //     key: SERVICE_AREA),
+                            // setValuesInFields(
+                            //     labelText: "specialties",
+                            //     initialValue: userInfoMap[SPECIALITIES],
+                            //     key: SPECIALITIES),
+                            // setValuesInFields(
+                            //     labelText: "about_me",
+                            //     initialValue: userInfoMap[DESCRIPTION],
+                            //     key: DESCRIPTION,
+                            //     maxLines: 5),
+                            // headerTextWidget(
+                            //     UtilityMethods.getLocalizedString("social")),
+                            // setValuesInFields(
+                            //     labelText: "facebook",
+                            //     initialValue: userInfoMap[FACEBOOK],
+                            //     key: FACEBOOK),
+                            // setValuesInFields(
+                            //     labelText: "twitter",
+                            //     initialValue: userInfoMap[TWITTER],
+                            //     key: TWITTER),
+                            // setValuesInFields(
+                            //     labelText: "linkedIn",
+                            //     initialValue: userInfoMap[LINKEDIN],
+                            //     key: LINKEDIN),
+                            // setValuesInFields(
+                            //     labelText: "instagram",
+                            //     initialValue: userInfoMap[INSTAGRAM],
+                            //     key: INSTAGRAM),
+                            // setValuesInFields(
+                            //     labelText: "youtube",
+                            //     initialValue: userInfoMap[YOUTUBE],
+                            //     key: YOUTUBE),
+                            // setValuesInFields(
+                            //     labelText: "pinterest",
+                            //     initialValue: userInfoMap[PINTEREST],
+                            //     key: PINTEREST),
+                            // setValuesInFields(
+                            //     labelText: "vimeo",
+                            //     initialValue: userInfoMap[VIMEO],
+                            //     key: VIMEO),
+                            // setValuesInFields(
+                            //     labelText: "skype",
+                            //     initialValue: userInfoMap[SKYPE],
+                            //     key: SKYPE),
+                            // setValuesInFields(
+                            //     labelText: "website",
+                            //     initialValue: userInfoMap[WEBSITE],
+                            //     key: WEBSITE),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: updateProfileButtonWidget(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Container(),
         waitingWidget(),
       ],
     );
@@ -293,9 +422,11 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
       maxLines: maxLines,
       keyboardType: keyboardType,
       listener: (map) {
-        if(mounted) setState(() {
-          userInfoMap.addAll(map);
-        });
+        if (mounted) {
+          setState(() {
+            userInfoMap.addAll(map);
+          });
+        }
       },
     );
   }
@@ -307,7 +438,8 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
       alignment: Alignment.topLeft,
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AppThemePreferences().appTheme.dividerColor!),
+          bottom:
+              BorderSide(color: AppThemePreferences().appTheme.dividerColor!),
         ),
       ),
     );
@@ -319,14 +451,17 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GenericTextWidget(UtilityMethods.getLocalizedString("display_name"),
-              style: AppThemePreferences().appTheme.labelTextStyle),
+          GenericTextWidget(
+            UtilityMethods.getLocalizedString("display_name"),
+            style: AppThemePreferences().appTheme.labelTextStyle,
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: DropdownButtonFormField(
               dropdownColor: AppThemePreferences().appTheme.dropdownMenuBgColor,
               icon: Icon(AppThemePreferences.dropDownArrowIcon),
-              decoration: AppThemePreferences.formFieldDecoration(hintText: UtilityMethods.getLocalizedString("display_name")),
+              decoration: AppThemePreferences.formFieldDecoration(
+                  hintText: UtilityMethods.getLocalizedString("display_name")),
               value: _displayName,
               onSaved: (val) {
                 setState(() {
@@ -334,7 +469,8 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
                   userInfoMap[DISPLAY_NAME] = val;
                 });
               },
-              items: displayNameOptionsList.map<DropdownMenuItem<String>>((item) {
+              items:
+                  displayNameOptionsList.map<DropdownMenuItem<String>>((item) {
                 return DropdownMenuItem<String>(
                   child: GenericTextWidget(
                     item,
@@ -354,12 +490,11 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
       ),
     );
   }
-  
 
   Widget updateProfileButtonWidget(BuildContext context) {
     return ButtonWidget(
       color: AppThemePreferences().appTheme.primaryColor,
-      text: UtilityMethods.getLocalizedString("update_profile"),
+      text: UtilityMethods.getLocalizedString("update_profile2"),
       onPressed: () async {
         setState(() {
           _showWaitingWidget = true;
@@ -367,9 +502,10 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
 
         formKey.currentState!.save();
 
-        if(NEED_TO_FIX_PROFILE_PIC == 0){
-          final response = await _propertyBloc.fetchUpdateUserProfileResponse(userInfoMap, nonce);
-          if(mounted){
+        if (NEED_TO_FIX_PROFILE_PIC == 0) {
+          final response = await _propertyBloc.fetchUpdateUserProfileResponse(
+              userInfoMap, nonce);
+          if (mounted) {
             setState(() {
               _showWaitingWidget = false;
             });
@@ -377,36 +513,50 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
           if (response.statusCode == 200) {
             HiveStorageManager.setUserDisplayName(userInfoMap[DISPLAY_NAME]);
             HiveStorageManager.setUserEmail(userInfoMap[USER_EMAIL]);
-            GeneralNotifier().publishChange(GeneralNotifier.USER_PROFILE_UPDATE);
-            _showToast(context,UtilityMethods.getLocalizedString("profile_updated_successfully"));
+            GeneralNotifier()
+                .publishChange(GeneralNotifier.USER_PROFILE_UPDATE);
+            _showToast(
+                context,
+                UtilityMethods.getLocalizedString(
+                    "profile_updated_successfully"));
             Navigator.pop(context);
           } else {
-            _showToast(context, UtilityMethods.getLocalizedString("error_occurred"));
+            _showToast(
+                context, UtilityMethods.getLocalizedString("error_occurred"));
           }
+
           /// If need to fix agent profile image
-        }else if(NEED_TO_FIX_PROFILE_PIC == 1){
-          if(mounted){
+        } else if (NEED_TO_FIX_PROFILE_PIC == 1) {
+          if (mounted) {
             setState(() {
               _showWaitingWidget = false;
             });
           }
 
-          _propertyBloc.fetchUpdateUserProfileResponse(userInfoMap, nonce).then((value) async {
+          _propertyBloc
+              .fetchUpdateUserProfileResponse(userInfoMap, nonce)
+              .then((value) async {
             String tempResponseString = value.toString().split("{")[1];
             Map map = jsonDecode("{${tempResponseString.split("}")[0]}}");
-            if(map["success"] == true){
-              final responseForFix = await _propertyBloc.fetchFixProfileImageResponse();
+            if (map["success"] == true) {
+              final responseForFix =
+                  await _propertyBloc.fetchFixProfileImageResponse();
 
               final success = responseForFix.data["success"];
               if (success) {
-                HiveStorageManager.setUserDisplayName(userInfoMap[DISPLAY_NAME]);
+                HiveStorageManager.setUserDisplayName(
+                    userInfoMap[DISPLAY_NAME]);
                 HiveStorageManager.setUserEmail(userInfoMap[USER_EMAIL]);
-                GeneralNotifier().publishChange(GeneralNotifier.USER_PROFILE_UPDATE);
-                _showToast(context, UtilityMethods.getLocalizedString("profile_updated_successfully"));
+                GeneralNotifier()
+                    .publishChange(GeneralNotifier.USER_PROFILE_UPDATE);
+                _showToast(
+                    context,
+                    UtilityMethods.getLocalizedString(
+                        "profile_updated_successfully"));
                 Navigator.pop(context);
-              }
-              else{
-                _showToast(context, UtilityMethods.getLocalizedString("error_occurred"));
+              } else {
+                _showToast(context,
+                    UtilityMethods.getLocalizedString("error_occurred"));
               }
             }
 
@@ -427,7 +577,7 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
             child: Center(
               child: Container(
                 alignment: Alignment.center,
-                child: SizedBox(
+                child: const SizedBox(
                   width: 80,
                   height: 20,
                   child: BallBeatLoadingWidget(),
@@ -444,20 +594,20 @@ class _EditProfileState extends State<EditProfile> with ValidationMixin {
       text: text,
     );
   }
-
 }
 
 typedef EditProfileFormFieldWidgetListener = Function(Map<String, dynamic> map);
+
 class EditProfileFormFieldWidget extends StatelessWidget {
   final String labelText;
-  final String initialValue; 
-  final String mapKey; 
+  final String initialValue;
+  final String mapKey;
   final TextInputType keyboardType;
   final int maxLines;
   final bool readOnly;
   final bool enabled;
   final EditProfileFormFieldWidgetListener listener;
-  
+
   const EditProfileFormFieldWidget({
     Key? key,
     required this.labelText,
@@ -473,23 +623,22 @@ class EditProfileFormFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 10.0),
       child: TextFormFieldWidget(
         cursorColor: AppThemePreferences().appTheme.primaryColor,
         focusedBorderColor: AppThemePreferences().appTheme.primaryColor,
         labelText: UtilityMethods.getLocalizedString(labelText),
         initialValue: initialValue,
         enabled: enabled,
+        textFieldPadding: const EdgeInsets.symmetric(vertical: 10.0),
+        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         readOnly: readOnly,
         maxLines: maxLines,
         keyboardType: keyboardType,
         onSaved: (String? value) {
-          listener({mapKey : value ?? ""});
+          listener({mapKey: value ?? ""});
         },
       ),
     );
   }
 }
-
-
-

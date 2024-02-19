@@ -1,7 +1,11 @@
 import 'package:houzi_package/dataProvider/locale_provider.dart';
 import 'package:houzi_package/files/configurations/app_configurations.dart';
 import 'package:houzi_package/files/generic_methods/utility_methods.dart';
+import 'package:houzi_package/files/hooks_files/hooks_configurations.dart';
 import 'package:houzi_package/houzi_main.dart';
+import 'package:houzi_package/dataProvider/locale_provider.dart' as locale;
+import 'package:houzi_package/files/hooks_files/hooks_configurations.dart';
+
 import 'package:houzi_package/l10n/l10n.dart';
 import 'package:houzi_package/pages/home_page_screens/home_elegant_related/related_widgets/home_elegant_sliver_app_bar.dart';
 import 'package:houzi_package/pages/home_page_screens/parent_home_related/home_screen_widgets/home_screen_drawer_widgets/home_screen_drawer_widget.dart';
@@ -18,7 +22,7 @@ import 'package:houzi_package/widgets/explore_by_type_design_widgets/explore_by_
 import 'package:houzi_package/widgets/filter_page_widgets/term_picker_related/term_picker.dart';
 import 'package:houzi_package/widgets/generic_text_field_widgets/text_field_widget.dart';
 
-abstract class HooksV2Interface{
+abstract class HooksV2Interface {
   Map<String, dynamic> getHeaderMap();
   Map<String, dynamic> getPropertyDetailPageIconsMap();
   Map<String, dynamic> getElegantHomeTermsIconMap();
@@ -30,7 +34,8 @@ abstract class HooksV2Interface{
   AgencyItemHook getAgencyItemHook();
   PropertyPageWidgetsHook getWidgetHook();
   LanguageHook getLanguageCodeAndName();
-  DefaultLanguageCodeHook getDefaultLanguageHook();
+  locale.DefaultLanguageCodeHook getDefaultLanguageHook();
+
   DefaultHomePageHook getDefaultHomePageHook();
   DefaultCountryCodeHook getDefaultCountryCodeHook();
   SettingsHook getSettingsItemHook();

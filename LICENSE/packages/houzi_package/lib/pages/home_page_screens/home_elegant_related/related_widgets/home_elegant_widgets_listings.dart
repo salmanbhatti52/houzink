@@ -344,10 +344,10 @@ class _HomeElegantListingsWidgetState extends State<HomeElegantListingsWidget> {
             return [];
           }
         }
-        //
-        // print("sectionType: ${homeConfigMap[titleKey]}");
-        // print("dataMap: $dataMap");
-        // print("setRouteRelatedDataMap: $setRouteRelatedDataMap");
+        
+        print("sectionType: ${homeConfigMap[titleKey]}");
+        print("dataMap: $dataMap");
+        print("setRouteRelatedDataMap: $setRouteRelatedDataMap");
 
         Map<String, dynamic> tempMap = await _propertyBloc.fetchFilteredArticles(dataMap);
         if(tempMap["result"] != null){

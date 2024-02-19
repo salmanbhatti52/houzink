@@ -27,28 +27,29 @@ import '../../../../../widgets/button_widget.dart';
 import '../../../../home_screen_drawer_menu_pages/add_property_request.dart';
 import '../../../home_location_related/related_widgets/home_location_search_bar.dart';
 
-
-typedef HomeScreenListingsWidgetListener = void Function(bool errorWhileLoading, bool refreshData);
+typedef HomeScreenListingsWidgetListener = void Function(
+    bool errorWhileLoading, bool refreshData);
 
 class HomeScreenListingsWidget extends StatefulWidget {
   final homeScreenData;
   final bool refresh;
   final HomeScreenListingsWidgetListener homeScreenListingsWidgetListener;
 
-  HomeScreenListingsWidget({
+  const HomeScreenListingsWidget({
+    super.key,
     required this.homeScreenData,
     this.refresh = false,
     required this.homeScreenListingsWidgetListener,
   });
 
   @override
-  State<HomeScreenListingsWidget> createState() => _HomeScreenListingsWidgetState();
+  State<HomeScreenListingsWidget> createState() =>
+      _HomeScreenListingsWidgetState();
 }
 
-class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  with AutomaticKeepAliveClientMixin<HomeScreenListingsWidget>  {
-
-
-  Map<String, dynamic> _searchDataMap = {};
+class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>
+    with AutomaticKeepAliveClientMixin<HomeScreenListingsWidget> {
+  final Map<String, dynamic> _searchDataMap = {};
 
   int page = 1;
 
@@ -71,19 +72,18 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
 
   Widget _placeHolderWidget = Container();
 
-
   @override
   void initState() {
     super.initState();
 
     generalNotifierLister = () {
       if (GeneralNotifier().change == GeneralNotifier.CITY_DATA_UPDATE) {
-        if (homeConfigMap[sectionTypeKey] == allPropertyKey
-            && homeConfigMap[subTypeKey] == propertyCityDataType) {
+        if (homeConfigMap[sectionTypeKey] == allPropertyKey &&
+            homeConfigMap[subTypeKey] == propertyCityDataType) {
           setState(() {
             Map map = HiveStorageManager.readSelectedCityInfo() ?? {};
 
-            if(homeConfigMap[subTypeValueKey] != map[CITY_ID].toString()){
+            if (homeConfigMap[subTypeValueKey] != map[CITY_ID].toString()) {
               homeScreenList = [];
               isDataLoaded = false;
               noDataReceived = false;
@@ -94,22 +94,23 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
               }
 
               homeConfigMap[titleKey] = "";
-              if(map[CITY] != null && map[CITY].isNotEmpty && map[CITY_ID] != null){
+              if (map[CITY] != null &&
+                  map[CITY].isNotEmpty &&
+                  map[CITY_ID] != null) {
                 homeConfigMap[titleKey] = UtilityMethods.getLocalizedString(
-                    "latest_properties_in_city",inputWords: [map[CITY]]);
-              }
-              else{
-                homeConfigMap[titleKey] = UtilityMethods.getLocalizedString("latest_properties");
+                    "latest_properties_in_city",
+                    inputWords: [map[CITY]]);
+              } else {
+                homeConfigMap[titleKey] =
+                    UtilityMethods.getLocalizedString("latest_properties");
               }
 
               loadData();
             }
           });
-        }
-
-        else if (homeConfigMap[sectionTypeKey] == propertyKey
-            && homeConfigMap[subTypeKey] == propertyCityDataType
-            && homeConfigMap[subTypeValueKey] == userSelectedString) {
+        } else if (homeConfigMap[sectionTypeKey] == propertyKey &&
+            homeConfigMap[subTypeKey] == propertyCityDataType &&
+            homeConfigMap[subTypeValueKey] == userSelectedString) {
           if (mounted) {
             setState(() {
               Map map = HiveStorageManager.readSelectedCityInfo() ?? {};
@@ -119,12 +120,13 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
               noDataReceived = false;
               homeConfigMap[titleKey] = "";
 
-              if (map[CITY] != null && map[CITY].isNotEmpty &&
+              if (map[CITY] != null &&
+                  map[CITY].isNotEmpty &&
                   map[CITY_ID] != null) {
                 homeConfigMap[titleKey] = UtilityMethods.getLocalizedString(
-                    "latest_properties_in_city", inputWords: [map[CITY]]);
-              }
-              else {
+                    "latest_properties_in_city",
+                    inputWords: [map[CITY]]);
+              } else {
                 homeConfigMap[titleKey] =
                     UtilityMethods.getLocalizedString("latest_properties");
               }
@@ -133,11 +135,9 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
             });
           }
         }
-
-      }
-
-      else if(GeneralNotifier().change == GeneralNotifier.RECENT_DATA_UPDATE
-          && homeConfigMap[sectionTypeKey] == recentSearchKey){
+      } else if (GeneralNotifier().change ==
+              GeneralNotifier.RECENT_DATA_UPDATE &&
+          homeConfigMap[sectionTypeKey] == recentSearchKey) {
         if (mounted) {
           setState(() {
             homeScreenList.clear();
@@ -148,13 +148,12 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
             });
           });
         }
-      }
-
-      else if (GeneralNotifier().change == GeneralNotifier.TOUCH_BASE_DATA_LOADED
-          && homeConfigMap[sectionTypeKey] != adKey
-          && homeConfigMap[sectionTypeKey] != recentSearchKey
-          && homeConfigMap[sectionTypeKey] != PLACE_HOLDER_SECTION_TYPE) {
-        if(mounted){
+      } else if (GeneralNotifier().change ==
+              GeneralNotifier.TOUCH_BASE_DATA_LOADED &&
+          homeConfigMap[sectionTypeKey] != adKey &&
+          homeConfigMap[sectionTypeKey] != recentSearchKey &&
+          homeConfigMap[sectionTypeKey] != PLACE_HOLDER_SECTION_TYPE) {
+        if (mounted) {
           setState(() {
             loadData();
             widget.homeScreenListingsWidgetListener(false, false);
@@ -163,7 +162,6 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
       }
     };
 
-
     GeneralNotifier().addListener(generalNotifierLister!);
   }
 
@@ -171,7 +169,7 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
   void dispose() {
     super.dispose();
 
-    if(_nativeAd != null){
+    if (_nativeAd != null) {
       _nativeAd!.dispose();
     }
     homeScreenList = [];
@@ -182,7 +180,8 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
   }
 
   setUpNativeAd() {
-    String themeMode = ThemeStorageManager.readData(THEME_MODE_INFO) ?? LIGHT_THEME_MODE;
+    String themeMode =
+        ThemeStorageManager.readData(THEME_MODE_INFO) ?? LIGHT_THEME_MODE;
     bool isDarkMode = false;
     if (themeMode == DARK_THEME_MODE) {
       isDarkMode = true;
@@ -215,7 +214,7 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
   loadData() {
     _futureHomeScreenList = fetchRelatedList(context, page);
     _futureHomeScreenList!.then((value) {
-      if (value == null || value.isEmpty) {
+      if (value.isEmpty) {
         noDataReceived = true;
       } else {
         if (value[0].runtimeType == Response) {
@@ -230,7 +229,7 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
         }
       }
 
-      if(mounted){
+      if (mounted) {
         setState(() {});
       }
 
@@ -241,7 +240,8 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
   Future<List<dynamic>> fetchRelatedList(BuildContext context, int page) async {
     List<dynamic> tempList = [];
     if (homeConfigMap[showNearbyKey]) {
-      permissionGranted = await UtilityMethods.locationPermissionsHandling(permissionGranted);
+      permissionGranted =
+          await UtilityMethods.locationPermissionsHandling(permissionGranted);
     }
     try {
       /// Fetch featured properties
@@ -250,36 +250,40 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
       }
 
       /// Fetch All_properties (old)
-      else if (homeConfigMap[sectionTypeKey] == allPropertyKey
-          && homeConfigMap[subTypeKey] != propertyCityDataType) {
+      else if (homeConfigMap[sectionTypeKey] == allPropertyKey &&
+          homeConfigMap[subTypeKey] != propertyCityDataType) {
         String key = UtilityMethods.getSearchKey(homeConfigMap[subTypeKey]);
         String value = homeConfigMap[subTypeValueKey];
         Map<String, dynamic> dataMap = {};
-        if(value != allString && value.isNotEmpty){
+        if (value != allString && value.isNotEmpty) {
           dataMap = {key: value};
         }
-        Map<String, dynamic> tempMap = await _propertyBloc.fetchFilteredArticles(dataMap);
+        Map<String, dynamic> tempMap =
+            await _propertyBloc.fetchFilteredArticles(dataMap);
         tempList.addAll(tempMap["result"]);
       }
 
       /// Fetch latest and city selected properties (old)
-      else if (homeConfigMap[sectionTypeKey] == allPropertyKey
-          && homeConfigMap[subTypeKey] == propertyCityDataType) {
+      else if (homeConfigMap[sectionTypeKey] == allPropertyKey &&
+          homeConfigMap[subTypeKey] == propertyCityDataType) {
         Map map = HiveStorageManager.readSelectedCityInfo();
         if (map.isNotEmpty && map[CITY_ID] != null) {
           homeConfigMap[subTypeValueKey] = map[CITY_ID].toString();
           if (homeConfigMap[titleKey] != "Please Select") {
             homeConfigMap[titleKey] = "";
             homeConfigMap[titleKey] = UtilityMethods.getLocalizedString(
-                "latest_properties_in_city",inputWords: [map[CITY]]);
+                "latest_properties_in_city",
+                inputWords: [map[CITY]]);
           }
         }
-        if (homeConfigMap[subTypeValueKey] == userSelectedString || homeConfigMap[subTypeValueKey] == ""
-            || homeConfigMap[subTypeValueKey] == allString) {
+        if (homeConfigMap[subTypeValueKey] == userSelectedString ||
+            homeConfigMap[subTypeValueKey] == "" ||
+            homeConfigMap[subTypeValueKey] == allString) {
           tempList = await _propertyBloc.fetchLatestArticles(page);
         } else {
           int id = int.parse(homeConfigMap[subTypeValueKey]);
-          tempList = await _propertyBloc.fetchPropertiesInCityList(id, page, 16);
+          tempList =
+              await _propertyBloc.fetchPropertiesInCityList(id, page, 16);
         }
       }
 
@@ -287,15 +291,15 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
       else if (homeConfigMap[sectionTypeKey] == propertyKey) {
         Map<String, dynamic> dataMap = {};
 
-        if(homeConfigMap[subTypeKey] == propertyCityDataType &&
+        if (homeConfigMap[subTypeKey] == propertyCityDataType &&
             homeConfigMap[subTypeValueKey] == userSelectedString) {
-
           Map? map = HiveStorageManager.readSelectedCityInfo();
-          if (map != null && map.isNotEmpty && map[CITY_ID] != null) {
+          if (map.isNotEmpty && map[CITY_ID] != null) {
             if (homeConfigMap[titleKey] != "Please Select") {
               homeConfigMap[titleKey] = "";
               homeConfigMap[titleKey] = UtilityMethods.getLocalizedString(
-                  "latest_properties_in_city", inputWords: [map[CITY]]);
+                  "latest_properties_in_city",
+                  inputWords: [map[CITY]]);
             }
             String citySlug = map[CITY_SLUG] ?? "";
             if (citySlug.isNotEmpty) {
@@ -304,22 +308,27 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
           }
         }
 
-        if(homeConfigMap.containsKey(searchApiMapKey) && homeConfigMap.containsKey(searchRouteMapKey) &&
-            (homeConfigMap[searchApiMapKey] != null) && (homeConfigMap[searchRouteMapKey] != null)){
+        if (homeConfigMap.containsKey(searchApiMapKey) &&
+            homeConfigMap.containsKey(searchRouteMapKey) &&
+            (homeConfigMap[searchApiMapKey] != null) &&
+            (homeConfigMap[searchRouteMapKey] != null)) {
           dataMap.addAll(homeConfigMap[searchApiMapKey]);
-        }
-        else if(homeConfigMap.containsKey(subTypeListKey) && homeConfigMap.containsKey(subTypeValueListKey) &&
-            (homeConfigMap[subTypeListKey] != null && homeConfigMap[subTypeListKey].isNotEmpty) &&
-            (homeConfigMap[subTypeValueListKey] != null && homeConfigMap[subTypeValueListKey].isNotEmpty)){
+        } else if (homeConfigMap.containsKey(subTypeListKey) &&
+            homeConfigMap.containsKey(subTypeValueListKey) &&
+            (homeConfigMap[subTypeListKey] != null &&
+                homeConfigMap[subTypeListKey].isNotEmpty) &&
+            (homeConfigMap[subTypeValueListKey] != null &&
+                homeConfigMap[subTypeValueListKey].isNotEmpty)) {
           List subTypeList = homeConfigMap[subTypeListKey];
           List subTypeValueList = homeConfigMap[subTypeValueListKey];
           List tempList = [];
           String searchKey = "";
-          for(var item in subTypeList){
-            if(item != allString){
+          for (var item in subTypeList) {
+            if (item != allString) {
               searchKey = UtilityMethods.getSearchKey(item);
-              tempList = UtilityMethods.getSubTypeItemRelatedList(item, subTypeValueList);
-              if(tempList.isNotEmpty && tempList[0].isNotEmpty) {
+              tempList = UtilityMethods.getSubTypeItemRelatedList(
+                  item, subTypeValueList);
+              if (tempList.isNotEmpty && tempList[0].isNotEmpty) {
                 dataMap[searchKey] = tempList[0];
               }
             }
@@ -329,17 +338,20 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
           subTypeValueList = [];
           tempList = [];
           searchKey = "";
-        }
-
-        else{
-          String key = UtilityMethods.getSearchKey(homeConfigMap[subTypeKey] ?? "");
+        } else {
+          String key =
+              UtilityMethods.getSearchKey(homeConfigMap[subTypeKey] ?? "");
           String value = homeConfigMap[subTypeValueKey] ?? "";
-          if(value.isNotEmpty && value != allString && value != userSelectedString){
-            dataMap = {key: [value]};
+          if (value.isNotEmpty &&
+              value != allString &&
+              value != userSelectedString) {
+            dataMap = {
+              key: [value]
+            };
           }
         }
 
-        if(homeConfigMap[showFeaturedKey] ?? false){
+        if (homeConfigMap[showFeaturedKey] ?? false) {
           dataMap[SEARCH_RESULTS_FEATURED] = 1;
         }
 
@@ -355,10 +367,10 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
         //
         // print("dataMap: $dataMap");
 
-        Map<String, dynamic> tempMap = await _propertyBloc.fetchFilteredArticles(dataMap);
+        Map<String, dynamic> tempMap =
+            await _propertyBloc.fetchFilteredArticles(dataMap);
         tempList.addAll(tempMap["result"]);
       }
-
 
       /// Fetch realtors list
       else if (homeConfigMap[sectionTypeKey] == agenciesKey ||
@@ -370,27 +382,28 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
         }
       }
 
-
       /// Fetch Terms
       else if (homeConfigMap[sectionTypeKey] == termKey) {
-        if(homeConfigMap.containsKey(subTypeListKey) &&
+        if (homeConfigMap.containsKey(subTypeListKey) &&
             (homeConfigMap[subTypeListKey] != null &&
-                homeConfigMap[subTypeListKey].isNotEmpty)){
+                homeConfigMap[subTypeListKey].isNotEmpty)) {
           List subTypeList = homeConfigMap[subTypeListKey];
-          if(subTypeList.length == 1 && subTypeList[0] == allString){
+          if (subTypeList.length == 1 && subTypeList[0] == allString) {
             tempList = await _propertyBloc.fetchTermData(allTermsList);
-          }else{
-            if(subTypeList.contains(allString)){
+          } else {
+            if (subTypeList.contains(allString)) {
               subTypeList.remove(allString);
             }
             tempList = await _propertyBloc.fetchTermData(subTypeList);
           }
-        }else{
-          if(homeConfigMap[subTypeKey] != null && homeConfigMap[subTypeKey].isNotEmpty){
-            if(homeConfigMap[subTypeKey] == allString){
+        } else {
+          if (homeConfigMap[subTypeKey] != null &&
+              homeConfigMap[subTypeKey].isNotEmpty) {
+            if (homeConfigMap[subTypeKey] == allString) {
               tempList = await _propertyBloc.fetchTermData(allTermsList);
-            }else{
-              tempList = await _propertyBloc.fetchTermData(homeConfigMap[subTypeKey]);
+            } else {
+              tempList =
+                  await _propertyBloc.fetchTermData(homeConfigMap[subTypeKey]);
             }
           }
         }
@@ -404,9 +417,7 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
       /// Fetch partners list
       else if (homeConfigMap[sectionTypeKey] == partnersKey) {
         tempList = await _propertyBloc.fetchPartnersList();
-      }
-
-      else {
+      } else {
         tempList = [];
       }
     } on SocketException {
@@ -415,17 +426,21 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
     return tempList;
   }
 
-  Map<String, dynamic> removeRedundantLocationTermsKeys(List subTypeList){
+  Map<String, dynamic> removeRedundantLocationTermsKeys(List subTypeList) {
     Map<String, dynamic> tempMap = {};
-    for(var item in subTypeList){
+    for (var item in subTypeList) {
       String key = UtilityMethods.getSearchItemNameFilterKey(item);
       tempMap[key] = [allCapString];
     }
-    if(tempMap.isNotEmpty){
+    if (tempMap.isNotEmpty) {
       List<String> keysList = tempMap.keys.toList();
-      if(keysList.isNotEmpty) {
-        List<String> intersectionKeysList = locationRelatedList.toSet().intersection((keysList.toSet())).toList();
-        if (intersectionKeysList.isNotEmpty && intersectionKeysList.length > 1) {
+      if (keysList.isNotEmpty) {
+        List<String> intersectionKeysList = locationRelatedList
+            .toSet()
+            .intersection((keysList.toSet()))
+            .toList();
+        if (intersectionKeysList.isNotEmpty &&
+            intersectionKeysList.length > 1) {
           for (int i = 1; i < intersectionKeysList.length; i++) {
             String key = intersectionKeysList[i];
             tempMap.remove(key);
@@ -437,10 +452,10 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
     return tempMap;
   }
 
-  bool needToLoadData(Map oldDataMap, Map newDataMap){
-    if((oldDataMap[sectionTypeKey] != newDataMap[sectionTypeKey]) ||
+  bool needToLoadData(Map oldDataMap, Map newDataMap) {
+    if ((oldDataMap[sectionTypeKey] != newDataMap[sectionTypeKey]) ||
         (oldDataMap[subTypeKey] != newDataMap[subTypeKey]) ||
-        (oldDataMap[subTypeValueKey] != newDataMap[subTypeValueKey])){
+        (oldDataMap[subTypeValueKey] != newDataMap[subTypeValueKey])) {
       return true;
     }
     return false;
@@ -457,24 +472,23 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
       }
 
       if (!(mapEquals(newHomeConfigMap, homeConfigMap))) {
-        if (homeConfigMap[sectionTypeKey] != newHomeConfigMap[sectionTypeKey]
-            && newHomeConfigMap[sectionTypeKey] == recentSearchKey) {
+        if (homeConfigMap[sectionTypeKey] != newHomeConfigMap[sectionTypeKey] &&
+            newHomeConfigMap[sectionTypeKey] == recentSearchKey) {
           homeScreenList.clear();
           List tempList = HiveStorageManager.readRecentSearchesInfo() ?? [];
           homeScreenList.addAll(tempList);
         } else if (newHomeConfigMap[sectionTypeKey] == adKey) {
           if (SHOW_ADS_ON_HOME) {
-            if(!_isNativeAdLoaded){
+            if (!_isNativeAdLoaded) {
               setUpNativeAd();
             }
           }
-        } else if (newHomeConfigMap[sectionTypeKey] == PLACE_HOLDER_SECTION_TYPE){
+        } else if (newHomeConfigMap[sectionTypeKey] ==
+            PLACE_HOLDER_SECTION_TYPE) {
           _placeHolderWidget = HooksConfigurations.homeWidgetsHook(
-            context,
-            newHomeConfigMap[titleKey],
-            widget.refresh
-          ) ?? Container();
-        } else if (needToLoadData(homeConfigMap, newHomeConfigMap)){
+                  context, newHomeConfigMap[titleKey], widget.refresh) ??
+              Container();
+        } else if (needToLoadData(homeConfigMap, newHomeConfigMap)) {
           // Update Home Item
           homeConfigMap = newHomeConfigMap;
           loadData();
@@ -485,10 +499,10 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
       }
     }
 
-    if(widget.refresh
-        && homeConfigMap[sectionTypeKey] != adKey
-        && homeConfigMap[sectionTypeKey] != PLACE_HOLDER_SECTION_TYPE
-        && homeConfigMap[sectionTypeKey] != recentSearchKey ) {
+    if (widget.refresh &&
+        homeConfigMap[sectionTypeKey] != adKey &&
+        homeConfigMap[sectionTypeKey] != PLACE_HOLDER_SECTION_TYPE &&
+        homeConfigMap[sectionTypeKey] != recentSearchKey) {
       homeScreenList = [];
       isDataLoaded = false;
       noDataReceived = false;
@@ -498,17 +512,14 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
     if (widget.refresh &&
         homeConfigMap[sectionTypeKey] == PLACE_HOLDER_SECTION_TYPE) {
       _placeHolderWidget = HooksConfigurations.homeWidgetsHook(
-          context,
-          homeConfigMap[titleKey],
-          widget.refresh
-      ) ?? Container();
+              context, homeConfigMap[titleKey], widget.refresh) ??
+          Container();
     }
 
     // print("homeScreenItem: ${homeConfigMap}");
 
-    return Consumer<ThemeNotifier>(
-      builder: (context, theme, child) {
-        return Consumer<LocaleProvider>(
+    return Consumer<ThemeNotifier>(builder: (context, theme, child) {
+      return Consumer<LocaleProvider>(
           builder: (context, localeProvider, child) {
         if (homeConfigMap[sectionTypeKey] == allPropertyKey &&
             homeConfigMap[subTypeKey] == propertyCityDataType) {
@@ -524,132 +535,163 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>  wi
           }
         }
 
-        if (homeConfigMap[sectionTypeKey] == recentSearchKey
-              && homeScreenList.isNotEmpty) {
-            homeScreenList.removeWhere((element) => element is! Map);
-          }
+        if (homeConfigMap[sectionTypeKey] == recentSearchKey &&
+            homeScreenList.isNotEmpty) {
+          homeScreenList.removeWhere((element) => element is! Map);
+        }
 
         // TODO : HOME TITLE WIDGET
-          return noDataReceived
-              ? Container()
-              : Column(
-                  children: [
-                    // header widget
-                    if (homeConfigMap[sectionTypeKey] != adKey
-                        && homeConfigMap[sectionTypeKey] != PLACE_HOLDER_SECTION_TYPE
-                        && homeScreenList.isNotEmpty
-                        && homeConfigMap[titleKey] is String
-                        && homeConfigMap[titleKey].isNotEmpty)
-                      HeaderWidget(
-                        text: UtilityMethods.getLocalizedString(homeConfigMap[titleKey]),
-                        padding: homeConfigMap[sectionTypeKey] == termWithIconsTermKey ?
-                        const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 5.0) :
-                        const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
+        return noDataReceived
+            ? Container()
+            : Column(
+                children: [
+                  // header widget
+                  if (homeConfigMap[sectionTypeKey] != adKey &&
+                      homeConfigMap[sectionTypeKey] !=
+                          PLACE_HOLDER_SECTION_TYPE &&
+                      homeScreenList.isNotEmpty &&
+                      homeConfigMap[titleKey] is String &&
+                      homeConfigMap[titleKey].isNotEmpty)
+                    HeaderWidget(
+                      text: UtilityMethods.getLocalizedString(
+                          homeConfigMap[titleKey]),
+                      padding: homeConfigMap[sectionTypeKey] ==
+                              termWithIconsTermKey
+                          ? const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 5.0)
+                          : const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
+                    ),
+
+                  if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
+                    const TermWithIconsWidget(),
+
+                  if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: UtilityMethods.isRTL(context) ? 10 : 10,
+                          right: UtilityMethods.isRTL(context) ? 10 : 10),
+                      child: const HomeLocationSearchBarWidget(),
+                    ),
+
+                  if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 10,
+                          left: UtilityMethods.isRTL(context) ? 10 : 10,
+                          bottom: 10,
+                          right: UtilityMethods.isRTL(context) ? 10 : 10),
+                      child: ButtonWidget(
+                        color: AppThemePreferences().appTheme.primaryColor,
+                        text: UtilityMethods.getLocalizedString(
+                            "request_property"),
+                        onPressed: () {
+                          UtilityMethods.navigateToRoute(
+                            context: context,
+                            builder: (context) => AddPropertyRequest(),
+                          );
+                        },
                       ),
+                    ),
 
-                    if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
-                      const TermWithIconsWidget(),
-
-                    if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
-                      Padding(
-                        padding: EdgeInsets.only(top: 10, left: UtilityMethods.isRTL(context) ? 10 : 10, bottom: 10, right: UtilityMethods.isRTL(context) ? 10 : 10),
-                        child: const HomeLocationSearchBarWidget(),
+                  if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 10,
+                          left: UtilityMethods.isRTL(context) ? 10 : 10,
+                          bottom: 10,
+                          right: UtilityMethods.isRTL(context) ? 10 : 10),
+                      child: TransparentButtonWidget(
+                        color: AppThemePreferences().appTheme.backgroundColor,
+                        text: UtilityMethods.getLocalizedString(
+                            "search_property"),
+                        textColor: AppThemePreferences().appTheme.primaryColor,
+                        onPressed: () {
+                          onSearchPressed();
+                        },
                       ),
+                    ),
 
-                    if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
-                      Padding(
-                        padding: EdgeInsets.only(top: 10, left: UtilityMethods.isRTL(context) ? 10 : 10, bottom: 10, right: UtilityMethods.isRTL(context) ? 10 : 10),
-                        child: ButtonWidget(
-                          color: AppThemePreferences().appTheme.primaryColor,
-                          text: UtilityMethods.getLocalizedString("request_property"),
-                          onPressed: () {
-                            UtilityMethods.navigateToRoute(
-                              context: context,
-                              builder: (context) => AddPropertyRequest(),
-                            );
-                          },
-                        ),
-                      ),
+                  if (homeConfigMap[sectionTypeKey] == recentSearchKey)
+                    HomeScreenRecentSearchesWidget(
+                      recentSearchesInfoList:
+                          HiveStorageManager.readRecentSearchesInfo() ?? [],
+                      listingView: homeConfigMap[sectionListingViewKey] ??
+                          homeScreenWidgetsListingCarouselView,
+                    ),
 
-                    if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
-                      Padding(
-                        padding: EdgeInsets.only(top: 10, left: UtilityMethods.isRTL(context) ? 10 : 10, bottom: 10, right: UtilityMethods.isRTL(context) ? 10 : 10),
-                        child: TransparentButtonWidget(
-                          color: AppThemePreferences().appTheme.backgroundColor,
-                          text: UtilityMethods.getLocalizedString("search_property"),
-                          textColor: AppThemePreferences().appTheme.primaryColor,
-                          onPressed: () {
-                            onSearchPressed();
-                          },
-                        ),
-                      ),
+                  if (homeConfigMap[sectionTypeKey] == adKey &&
+                      SHOW_ADS_ON_HOME &&
+                      _isNativeAdLoaded)
+                    Container(
+                      padding: const EdgeInsets.only(left: 0, right: 0),
+                      height: 50,
+                      child: AdWidget(ad: _nativeAd!),
+                    ),
 
-                    if (homeConfigMap[sectionTypeKey] == recentSearchKey)
-                      HomeScreenRecentSearchesWidget(
-                        recentSearchesInfoList: HiveStorageManager.readRecentSearchesInfo() ?? [],
-                        listingView: homeConfigMap[sectionListingViewKey] ?? homeScreenWidgetsListingCarouselView,
-                      ),
+                  if (homeConfigMap[sectionTypeKey] == allPropertyKey ||
+                      homeConfigMap[sectionTypeKey] == propertyKey ||
+                      homeConfigMap[sectionTypeKey] == featuredPropertyKey)
+                    if (isDataLoaded)
+                      PropertiesListingGenericWidget(
+                        propertiesList: homeScreenList,
+                        design: UtilityMethods.getDesignValue(
+                                homeConfigMap[designKey]) ??
+                            DESIGN_01,
+                        listingView: homeConfigMap[sectionListingViewKey] ??
+                            homeScreenWidgetsListingCarouselView,
+                      )
+                    else
+                      genericLoadingWidgetForCarousalWithShimmerEffect(context),
 
-                    if(homeConfigMap[sectionTypeKey] == adKey
-                        && SHOW_ADS_ON_HOME && _isNativeAdLoaded)
-                      Container(
-                        padding: const EdgeInsets.only(left: 0,right: 0),
-                        height: 50,
-                        child: AdWidget(ad: _nativeAd!),
-                      ),
+                  if (homeConfigMap[sectionTypeKey] == termKey)
+                    if (isDataLoaded)
+                      ExplorePropertiesWidget(
+                        design: UtilityMethods.getDesignValue(
+                            homeConfigMap[designKey]),
+                        propertiesData: homeScreenList,
+                        listingView: homeConfigMap[sectionListingViewKey] ??
+                            homeScreenWidgetsListingCarouselView,
+                        explorePropertiesWidgetListener: ({filterDataMap}) {
+                          if (filterDataMap != null &&
+                              filterDataMap.isNotEmpty) {
+                            // do something
+                          }
+                        },
+                      )
+                    else
+                      genericLoadingWidgetForCarousalWithShimmerEffect(context),
 
+                  if (homeConfigMap[sectionTypeKey] == REST_API_AGENCY_ROUTE ||
+                      homeConfigMap[sectionTypeKey] == REST_API_AGENT_ROUTE)
+                    if (isDataLoaded &&
+                        homeScreenList.isNotEmpty &&
+                        homeScreenList[0] is List)
+                      RealtorListingsWidget(
+                        listingView: homeConfigMap[sectionListingViewKey] ??
+                            homeScreenWidgetsListingCarouselView,
+                        tag: homeConfigMap[subTypeKey] == REST_API_AGENT_ROUTE
+                            ? AGENTS_TAG
+                            : AGENCIES_TAG,
+                        realtorInfoList: homeScreenList[0],
+                      )
+                    else
+                      genericLoadingWidgetForCarousalWithShimmerEffect(context),
 
+                  if (homeConfigMap[sectionTypeKey] ==
+                      PLACE_HOLDER_SECTION_TYPE)
+                    _placeHolderWidget,
 
-                    if (homeConfigMap[sectionTypeKey] == allPropertyKey ||
-                        homeConfigMap[sectionTypeKey] == propertyKey ||
-                        homeConfigMap[sectionTypeKey] == featuredPropertyKey)
-                      if (isDataLoaded) PropertiesListingGenericWidget(
-                          propertiesList: homeScreenList,
-                          design: UtilityMethods.getDesignValue(homeConfigMap[designKey]) ?? DESIGN_01,
-                          listingView: homeConfigMap[sectionListingViewKey] ?? homeScreenWidgetsListingCarouselView,
-                        )
-                      else genericLoadingWidgetForCarousalWithShimmerEffect(context),
-
-                    if (homeConfigMap[sectionTypeKey] == termKey)
-                      if (isDataLoaded) ExplorePropertiesWidget(
-                          design: UtilityMethods.getDesignValue(homeConfigMap[designKey]),
-                          propertiesData: homeScreenList,
-                          listingView: homeConfigMap[sectionListingViewKey] ?? homeScreenWidgetsListingCarouselView,
-                          explorePropertiesWidgetListener: ({filterDataMap}) {
-                            if (filterDataMap != null && filterDataMap.isNotEmpty) {
-                              // do something
-                            }
-                          },
-                        )
-                      else genericLoadingWidgetForCarousalWithShimmerEffect(context),
-
-                    if (homeConfigMap[sectionTypeKey] == REST_API_AGENCY_ROUTE
-                        || homeConfigMap[sectionTypeKey] == REST_API_AGENT_ROUTE)
-                      if (isDataLoaded && homeScreenList.isNotEmpty && homeScreenList[0] is List)
-                        RealtorListingsWidget(
-                          listingView: homeConfigMap[sectionListingViewKey] ?? homeScreenWidgetsListingCarouselView,
-                          tag: homeConfigMap[subTypeKey] == REST_API_AGENT_ROUTE
-                              ? AGENTS_TAG
-                              : AGENCIES_TAG,
-                          realtorInfoList: homeScreenList[0],
-                        )
-                      else genericLoadingWidgetForCarousalWithShimmerEffect(context),
-
-                    if (homeConfigMap[sectionTypeKey] == PLACE_HOLDER_SECTION_TYPE)
-                      _placeHolderWidget,
-
-                    if (homeConfigMap[sectionTypeKey] == partnersKey)
-                      PartnerWidget(
-                        partnersList: homeScreenList,
-                        // listingView: LIST_VIEW,
-                        // listingView: CAROUSEL_VIEW,
-                        listingView: homeConfigMap[sectionListingViewKey] ?? CAROUSEL_VIEW,
-                      ),
-                  ],
-          );
-        });
-      }
-    );
+                  if (homeConfigMap[sectionTypeKey] == partnersKey)
+                    PartnerWidget(
+                      partnersList: homeScreenList,
+                      // listingView: LIST_VIEW,
+                      // listingView: CAROUSEL_VIEW,
+                      listingView:
+                          homeConfigMap[sectionListingViewKey] ?? CAROUSEL_VIEW,
+                    ),
+                ],
+              );
+      });
+    });
   }
 
   onSearchPressed() {

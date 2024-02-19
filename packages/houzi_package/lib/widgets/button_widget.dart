@@ -55,7 +55,7 @@ class ButtonWidget extends StatelessWidget {
                         fontSize: fontSize!,
                         rightIcon: iconOnRightSide!,
                         textColor: textColor),
-            ),
+                  ),
             iconOnRightSide! ? showIcon(icon) : Container(),
           ],
         ),
@@ -66,7 +66,7 @@ class ButtonWidget extends StatelessWidget {
               backgroundColor:
                   color ?? AppThemePreferences.actionButtonBackgroundColor,
               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
               // primary: color != null ? color : AppThemePreferences().current.primaryColor,
             ),

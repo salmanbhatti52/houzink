@@ -25,11 +25,12 @@ class HomeLocationSliverAppBarWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<HomeLocationSliverAppBarWidget> createState() => _HomeLocationSliverAppBarWidgetState();
+  State<HomeLocationSliverAppBarWidget> createState() =>
+      _HomeLocationSliverAppBarWidgetState();
 }
 
-class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBarWidget> {
-
+class _HomeLocationSliverAppBarWidgetState
+    extends State<HomeLocationSliverAppBarWidget> {
   bool isCollapsed = false;
   bool isStretched = true;
   bool increasePadding = true;
@@ -39,14 +40,15 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
   double currentHeight = 0.0;
   double previousHeight = 0.0;
 
-  AddPlusButtonInBottomBarHook addPlusButtonHook = HooksConfigurations.addPlusButtonInBottomBarHook;
-  HomeSliverAppBarBodyHook? homeSliverAppBarBodyHook = HooksConfigurations.homeSliverAppBarBodyHook;
+  AddPlusButtonInBottomBarHook addPlusButtonHook =
+      HooksConfigurations.addPlusButtonInBottomBarHook;
+  HomeSliverAppBarBodyHook? homeSliverAppBarBodyHook =
+      HooksConfigurations.homeSliverAppBarBodyHook;
   Map<String, dynamic>? sliverBodyMap;
   Widget? sliverBodyWidget;
 
   @override
   void initState() {
-
     if (homeSliverAppBarBodyHook != null) {
       sliverBodyMap = homeSliverAppBarBodyHook!(context);
     }
@@ -60,7 +62,7 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
       // get the body widget of Sliver App Bar
       if (sliverBodyMap!.containsKey("widget") &&
           sliverBodyMap!["widget"] is Widget?) {
-        sliverBodyWidget =  sliverBodyMap!["widget"];
+        sliverBodyWidget = sliverBodyMap!["widget"];
       }
     }
     super.initState();
@@ -71,9 +73,10 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
     return SliverAppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: const Color(0xFFC5EEFD),
-          statusBarIconBrightness: AppThemePreferences().appTheme.statusBarIconBrightness,
-          statusBarBrightness:AppThemePreferences().appTheme.statusBarBrightness
-      ),
+          statusBarIconBrightness:
+              AppThemePreferences().appTheme.statusBarIconBrightness,
+          statusBarBrightness:
+              AppThemePreferences().appTheme.statusBarBrightness),
       backgroundColor: const Color(0xFFC5EEFD),
       pinned: true,
       leadingWidth: 140,
@@ -106,7 +109,7 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
                 );
               },
               child:
-              SvgPicture.asset(AppThemePreferences.drawerFavoriteImagePath),
+                  SvgPicture.asset(AppThemePreferences.drawerFavoriteImagePath),
             ),
             const SizedBox(width: 10),
             Padding(
@@ -114,10 +117,11 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
               child: Tooltip(
                 message: MaterialLocalizations.of(context).openAppDrawerTooltip,
                 child: GestureDetector(
-                    onTap: () {
-                      widget.onLeadingIconPressed();
-                    },
-                    child: SvgPicture.asset(AppThemePreferences.drawerMenuImagePath),
+                  onTap: () {
+                    widget.onLeadingIconPressed();
+                  },
+                  child:
+                      SvgPicture.asset(AppThemePreferences.drawerMenuImagePath),
                 ),
               ),
             ),
@@ -190,58 +194,60 @@ class _HomeLocationSliverAppBarWidgetState extends State<HomeLocationSliverAppBa
       //         // ),
       //       );
       //     }),
-      elevation: 5,
+      elevation: 0,
     );
   }
 
   Widget? defaultAddButton() {
     //First we'll check if showing add button is allowed, then we'll check if the bottom tab bar design
     //is not design 2. then we'll check if hook is returning some widget.
-    if (SHOW_BOTTOM_NAV_BAR_ADD_BTN && BOTTOM_NAVIGATION_BAR_DESIGN != DESIGN_02 ) {
+    if (SHOW_BOTTOM_NAV_BAR_ADD_BTN &&
+        BOTTOM_NAVIGATION_BAR_DESIGN != DESIGN_02) {
       Widget? widgetFromHook = addPlusButtonHook(context);
-      return widgetFromHook ?? Container(
-        width: 108,
-        height: 30,
-        decoration: BoxDecoration(
-          color: AppThemePreferences().appTheme.backgroundColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: GestureDetector(
-          onTap: () {
-            UtilityMethods.navigateToRoute(
-              context: context,
-              builder: (context) =>
-              HiveStorageManager.isUserLoggedIn()
-                  ? UtilityMethods.navigateToAddPropertyPage(
-                  navigateToQuickAdd: true)
-                  : UserSignIn(
-                    (String closeOption) {
-                  if (closeOption == CLOSE) {
-                    Navigator.pop(context);
-                  }
-                },
+      return widgetFromHook ??
+          Container(
+            width: 108,
+            height: 30,
+            decoration: BoxDecoration(
+              color: AppThemePreferences().appTheme.backgroundColor,
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                UtilityMethods.navigateToRoute(
+                  context: context,
+                  builder: (context) => HiveStorageManager.isUserLoggedIn()
+                      ? UtilityMethods.navigateToAddPropertyPage(
+                          navigateToQuickAdd: true)
+                      : UserSignIn(
+                          (String closeOption) {
+                            if (closeOption == CLOSE) {
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                      AppThemePreferences.addPropertyButtonImagePath),
+                  const SizedBox(width: 5),
+                  GenericTextWidget(
+                    UtilityMethods.getLocalizedString('Add Property'),
+                    strutStyle: const StrutStyle(forceStrutHeight: true),
+                    style: TextStyle(
+                      fontSize: AppThemePreferences.tagFontSize,
+                      color: AppThemePreferences().appTheme.primaryColor,
+                      fontWeight: AppThemePreferences.tagFontWeight,
+                    ),
+                    // style: AppThemePreferences().appTheme.tagTextStyle,
+                  ),
+                ],
               ),
-            );
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(AppThemePreferences.addPropertyButtonImagePath),
-              const SizedBox(width: 5),
-              GenericTextWidget(
-                UtilityMethods.getLocalizedString('Add Property'),
-                strutStyle: const StrutStyle(forceStrutHeight: true),
-                style: TextStyle(
-                  fontSize: AppThemePreferences.tagFontSize,
-                  color: AppThemePreferences().appTheme.primaryColor,
-                  fontWeight: AppThemePreferences.tagFontWeight,
-                ),
-                // style: AppThemePreferences().appTheme.tagTextStyle,
-              ),
-            ],
-          ),
-        ),
-      );
+            ),
+          );
     }
     return null;
   }

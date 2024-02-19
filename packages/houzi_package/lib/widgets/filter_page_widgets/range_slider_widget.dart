@@ -9,7 +9,8 @@ import 'package:houzi_package/files/generic_methods/utility_methods.dart';
 import 'package:houzi_package/widgets/custom_widgets/showModelBottomSheetWidget.dart';
 import 'package:houzi_package/widgets/generic_text_widget.dart';
 
-typedef RangePickerListener = void Function(String _conversionUnit, String maxRangeValue, String minRangeValue);
+typedef RangePickerListener = void Function(
+    String _conversionUnit, String maxRangeValue, String minRangeValue);
 
 class RangePickerWidget extends StatefulWidget {
   final String pickerTitle;
@@ -41,26 +42,24 @@ class RangePickerWidget extends StatefulWidget {
     this.divisions,
   }) : super(key: key);
 
-
   @override
   State<StatefulWidget> createState() => _RangePickerWidgetState();
 }
 
-class _RangePickerWidgetState  extends State<RangePickerWidget>{
-
+class _RangePickerWidgetState extends State<RangePickerWidget> {
   double? _min;
   double? _max;
   int _div = 1000;
   int _bottomRadioValue = 0;
   String _conversionUnit = "";
-  String _startingRangeValue = "";
-  String _endingRangeValue = "";
+  final String _startingRangeValue = "";
+  final String _endingRangeValue = "";
 
   double? _startingValue;
   double? _endingValue;
 
-
-  final TextEditingController _startingValueController = TextEditingController();
+  final TextEditingController _startingValueController =
+      TextEditingController();
   final TextEditingController _endingValueController = TextEditingController();
 
   var numberFormat;
@@ -74,11 +73,11 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
     _min = widget.minRange;
     _max = widget.maxRange;
 
-    if(_min != null){
+    if (_min != null) {
       _startingValueController.addListener(_setStartValue);
     }
 
-    if(_max != null){
+    if (_max != null) {
       _endingValueController.addListener(_setEndValue);
     }
 
@@ -126,14 +125,16 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
   _setEndValue() {
     _handleFieldValuesChanged();
   }
+
   _handleFieldValuesChanged() {
-    String _startValue =  _startingValueController.text;
+    String _startValue = _startingValueController.text;
     String _endValue = _endingValueController.text;
 
     _startValue = cleanPrice(_startValue);
     _endValue = cleanPrice(_endValue);
 
-    double _startDoubleTemp = _startValue.isNotEmpty ? double.parse(_startValue) : 0;
+    double _startDoubleTemp =
+        _startValue.isNotEmpty ? double.parse(_startValue) : 0;
     double _endDoubleTemp = _endValue.isNotEmpty ? double.parse(_endValue) : 0;
 
     double _startDouble = min(_startDoubleTemp, _endDoubleTemp);
@@ -142,33 +143,36 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
     _startDouble = max(_startDouble, _min!);
     _endDouble = min(_max!, _endDouble);
 
-
     if (mounted) {
       setState(() {
         _startingValue = _startDouble;
         _endingValue = _endDouble;
-        setMinMaxValuesToField(max(_startDoubleTemp, _min!), min(_max!, _endDoubleTemp));
+        setMinMaxValuesToField(
+            max(_startDoubleTemp, _min!), min(_max!, _endDoubleTemp));
       });
     }
   }
 
   setMinMaxValuesToField(double _startDoubleTemp, double _endDoubleTemp) {
-
     String _startingValueString = _startDoubleTemp.round().toString();
     String _endingValueString = _endDoubleTemp.round().toString();
 
     if (numberFormat != null) {
-      _startingValueString = numberFormat.format(_startDoubleTemp.round()).toString();
-      _endingValueString = numberFormat.format(_endDoubleTemp.round()).toString();
+      _startingValueString =
+          numberFormat.format(_startDoubleTemp.round()).toString();
+      _endingValueString =
+          numberFormat.format(_endDoubleTemp.round()).toString();
     }
 
-    TextSelection startSelection = TextSelection.fromPosition(TextPosition(offset: _startingValueString.length));
+    TextSelection startSelection = TextSelection.fromPosition(
+        TextPosition(offset: _startingValueString.length));
     _startingValueController.value = TextEditingValue(
       text: _startingValueString,
       selection: startSelection,
     );
 
-    TextSelection selection = TextSelection.fromPosition(TextPosition(offset: _endingValueString.length));
+    TextSelection selection = TextSelection.fromPosition(
+        TextPosition(offset: _endingValueString.length));
     _endingValueController.value = TextEditingValue(
       text: _endingValueString,
       selection: selection,
@@ -177,7 +181,6 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
 
   @override
   Widget build(BuildContext context) {
-
     if (widget.divisions != null) {
       _div = widget.divisions!;
     }
@@ -185,25 +188,23 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
     _min = widget.minRange;
     _max = widget.maxRange;
 
-
-    if ((widget.selectedMinRange != _startingValue)
-        || (widget.selectedMaxRange != _endingValue)) {
-
+    if ((widget.selectedMinRange != _startingValue) ||
+        (widget.selectedMaxRange != _endingValue)) {
       _startingValue = widget.selectedMinRange;
       _endingValue = widget.selectedMaxRange;
       setMinMaxValuesToField(_startingValue!, _endingValue!);
     }
 
-    return Container(
-      height: 220,
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      decoration: BoxDecoration(
-        border: Border(
-          top: AppThemePreferences().appTheme.filterPageBorderSide!,
-        ),
-      ),
+    return SizedBox(
+      height: 170,
+
+      // decoration: BoxDecoration(
+      //   border: Border(
+      //     top: AppThemePreferences().appTheme.filterPageBorderSide!,
+      //   ),
+      // ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           titleBarWidget(),
@@ -213,247 +214,220 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
     );
   }
 
-  Widget titleBarWidget(){
+  Widget titleBarWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Expanded(
-          flex: 2,
-          child: widget.pickerIcon,
-        ),
+        // Expanded(
+        //   flex: 2,
+        //   child: widget.pickerIcon,
+        // ),
 
         // Title of Widget
-        Expanded(
-          flex: 6,
-          child:  GenericTextWidget(
+        Padding(
+          padding: const EdgeInsets.only(left: 10, top: 10),
+          child: GenericTextWidget(
             widget.pickerTitle,
-            style: AppThemePreferences().appTheme.filterPageHeadingTitleTextStyle,
+            style:
+                AppThemePreferences().appTheme.filterPageHeadingTitleTextStyle,
           ),
         ),
 
         /// CONVERSION UNIT TITLE
-        Expanded(
-          flex: 0,
-          child: GestureDetector(
-            child: GenericTextWidget(
-              _conversionUnit,
-              style: AppThemePreferences().appTheme.rangeSliderWidgetConversionUnitTextStyle,
-            ),
-            onTap: (){
-              if(widget.mapOfBottomSheetMenu != null &&
-                  widget.mapOfBottomSheetMenu!.isNotEmpty){
-                _bottomMenu(context);
-              }
-
-            },
-          ),
-        ),
+        // GestureDetector(
+        //   child: GenericTextWidget(
+        //     _conversionUnit,
+        //     style: AppThemePreferences()
+        //         .appTheme
+        //         .rangeSliderWidgetConversionUnitTextStyle,
+        //   ),
+        //   onTap: () {
+        //     if (widget.mapOfBottomSheetMenu != null &&
+        //         widget.mapOfBottomSheetMenu!.isNotEmpty) {
+        //       _bottomMenu(context);
+        //     }
+        //   },
+        // ),
 
         /// CONVERSION UNIT DROP DOWN MENU
-        SHOW_DEMO_CONFIGURATIONS && widget.bottomSheetMenuTitle.isNotEmpty &&
-            widget.mapOfBottomSheetMenu != null &&
-            widget.mapOfBottomSheetMenu!.isNotEmpty
-            ? Expanded(
-          flex: 2,
-          child: IconButton(
-            icon: AppThemePreferences()
-                .appTheme
-                .filterPageArrowDropDownIcon!,
-            onPressed: () {
-              if (widget.mapOfBottomSheetMenu != null &&
-                  widget.mapOfBottomSheetMenu!.isNotEmpty) {
-                _bottomMenu(context);
-              }
-            },
-          ),
-        )
-            : Expanded(
-          flex: 2,
-          child: Container(),
-        ),
+        SHOW_DEMO_CONFIGURATIONS &&
+                widget.bottomSheetMenuTitle.isNotEmpty &&
+                widget.mapOfBottomSheetMenu != null &&
+                widget.mapOfBottomSheetMenu!.isNotEmpty
+            ? IconButton(
+                icon:
+                    AppThemePreferences().appTheme.filterPageArrowDropDownIcon!,
+                onPressed: () {
+                  if (widget.mapOfBottomSheetMenu != null &&
+                      widget.mapOfBottomSheetMenu!.isNotEmpty) {
+                    _bottomMenu(context);
+                  }
+                },
+              )
+            : Container(),
       ],
     );
   }
 
-  Widget rangeSliderWidget(){
+  Widget rangeSliderWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        rangeInNumbersWidget(),
         sliderWidget(),
+        rangeInNumbersWidget(),
       ],
     );
   }
 
-  Widget rangeInNumbersWidget(){
-    return  Padding(
-      padding: const EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 0.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+  Widget rangeInNumbersWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 0.0),
+      child: Column(
         children: [
-          Expanded(
-            flex:4,
-            child: SizedBox(
-              height: 40,
-              child: TextField(
-                cursorColor: AppThemePreferences().appTheme.primaryColor,
-                controller: _startingValueController,
-                onChanged: (text) {
-                  //_setStartValue();
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 10, left: 5),
+                child: Text("Minimum"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 58, bottom: 10),
+                child: Text("Maximum"),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 4,
+                child: SizedBox(
+                  height: 40,
+                  child: TextField(
+                    cursorColor: AppThemePreferences().appTheme.primaryColor,
+                    controller: _startingValueController,
+                    onChanged: (text) {
+                      //_setStartValue();
 
-                  widget.rangePickerListener(_conversionUnit, _startingValue!.round().toString(),
-                      _endingValue!.round().toString());
-                },
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(
-                      color: AppThemePreferences().appTheme.primaryColor!,
+                      widget.rangePickerListener(
+                          _conversionUnit,
+                          _startingValue!.round().toString(),
+                          _endingValue!.round().toString());
+                    },
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                          color: AppThemePreferences().appTheme.primaryColor!,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(),
+                      ),
+                      contentPadding:
+                          const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      hintText: UtilityMethods.getLocalizedString("zero"),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ], // Only numbers can be entered
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Center(
+                  child: GenericTextWidget(
+                    UtilityMethods.getLocalizedString("to"),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: const BorderSide(),
-                  ),
-                  contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  hintText: UtilityMethods.getLocalizedString("zero"),
-                ),
-                keyboardType: TextInputType.number, inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-              ], // Only numbers can be entered
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: GenericTextWidget(
-                UtilityMethods.getLocalizedString("to"),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex:4,
-            child: SizedBox(
-              height: 40,
-              child: TextField(
-                cursorColor: AppThemePreferences().appTheme.primaryColor,
-                controller: _endingValueController,
-                onChanged: (text) {
-                  //_setEndValue();
-                  widget.rangePickerListener(
-                    _conversionUnit,
-                    _startingValue!.round().toString(),
-                    _endingValue!.round().toString(),
-                  );
-                },
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(
-                      color: AppThemePreferences().appTheme.primaryColor!,
+              Expanded(
+                flex: 4,
+                child: SizedBox(
+                  height: 40,
+                  child: TextField(
+                    cursorColor: AppThemePreferences().appTheme.primaryColor,
+                    controller: _endingValueController,
+                    onChanged: (text) {
+                      //_setEndValue();
+                      widget.rangePickerListener(
+                        _conversionUnit,
+                        _startingValue!.round().toString(),
+                        _endingValue!.round().toString(),
+                      );
+                    },
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                          color: AppThemePreferences().appTheme.primaryColor!,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(),
+                      ),
+                      contentPadding:
+                          const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      hintText: UtilityMethods.getLocalizedString("any"),
                     ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ], // Only numbers can be entered
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: const BorderSide(),
-                  ),
-                  contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  hintText: UtilityMethods.getLocalizedString("any"),
                 ),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly,
-                ], // Only numbers can be entered
               ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget sliderWidget(){
+  Widget sliderWidget() {
     return Padding(
-      padding: const EdgeInsets.only(top: 15.0),
+      padding: const EdgeInsets.only(top: 15.0, left: 10, right: 10),
       child: SliderTheme(
         data: SliderThemeData(
-            trackHeight: 2.5,//5.0
-            activeTrackColor:AppThemePreferences().appTheme.primaryColor,
-            inactiveTrackColor: AppThemePreferences().appTheme.primaryColor!.withOpacity(0.3),
-            activeTickMarkColor: Colors.transparent,
-            inactiveTickMarkColor: Colors.transparent,
-            thumbColor: AppThemePreferences().appTheme.primaryColor,
-            overlayColor: AppThemePreferences().appTheme.primaryColor!.withOpacity(0.3),
-            overlayShape: const RoundSliderOverlayShape(overlayRadius: 28.0),
-            valueIndicatorColor: AppThemePreferences().appTheme.primaryColor!.withOpacity(0.3),
-            valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
-            valueIndicatorTextStyle: TextStyle(
-              color:AppThemePreferences().appTheme.primaryColor,
-            )
-          // trackHeight: 2.5,//5.0
-          // activeTrackColor: AppThemePreferences.sliderTintColor,
-          // inactiveTrackColor: AppThemePreferences.sliderTintColor.withOpacity(0.3),
-          // activeTickMarkColor: Colors.transparent,
-          // inactiveTickMarkColor: Colors.transparent,
-          // thumbColor: AppThemePreferences.sliderTintColor,
-          // overlayColor: AppThemePreferences.sliderTintColor.withOpacity(0.3),
-          // overlayShape: const RoundSliderOverlayShape(overlayRadius: 28.0),
-          // valueIndicatorColor: AppThemePreferences.sliderTintColor.withOpacity(0.3),
-          // valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
-          // valueIndicatorTextStyle: TextStyle(
-          //   color: AppThemePreferences.sliderTintColor,
-          // )
-
+          trackHeight: 2.5,
+          activeTrackColor: AppThemePreferences().appTheme.primaryColor,
+          inactiveTrackColor: Colors.grey.withOpacity(0.3),
+          activeTickMarkColor: Colors.transparent,
+          inactiveTickMarkColor: Colors.transparent,
+          thumbColor: AppThemePreferences().appTheme.primaryColor,
+          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5.0),
+          overlayColor: Colors.blue.withOpacity(0.3),
+          overlayShape: const RoundSliderOverlayShape(overlayRadius: 16.0),
+          valueIndicatorColor: AppThemePreferences().appTheme.primaryColor,
+          valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+          valueIndicatorTextStyle: const TextStyle(
+            color: Colors.white,
+          ),
         ),
-
-        // data: SliderThemeData(
-        //     trackHeight: 5.0,
-        //     activeTrackColor: AppThemePreferences().appTheme.selectedItemTextColor,
-        //     inactiveTrackColor: AppThemePreferences().appTheme.selectedItemBackgroundColor,
-        //     // inactiveTrackColor: Colors.grey.shade400,
-        //     activeTickMarkColor: Colors.transparent,
-        //     inactiveTickMarkColor: Colors.transparent,
-        //     thumbColor: AppThemePreferences().appTheme.selectedItemTextColor,
-        //     overlayColor: AppThemePreferences().appTheme.selectedItemTextColor.withAlpha(32),
-        //     overlayShape: const RoundSliderOverlayShape(overlayRadius: 28.0),
-        //     valueIndicatorColor: AppThemePreferences().appTheme.selectedItemBackgroundColor,
-        //     // valueIndicatorColor: Theme.of(context).primaryColor,
-        //     valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
-        //     valueIndicatorTextStyle: TextStyle(
-        //       color: AppThemePreferences().appTheme.selectedItemTextColor,
-        //       // color: Colors.white,
-        //     )
-        // ),
-        child: RangeSlider(
-          // values: RangeValues(widget.minRange, widget.maxRange),
-          // min: widget.minRange,
-          // max: widget.maxRange,
-          // divisions: 1000,
-          values: RangeValues(_startingValue!, _endingValue!),
+        child: Slider(
+          value:
+              _endingValue!, // Use _endingValue as the value for the single slider
           min: _min!,
           max: _max!,
-          // min: widget.minRange,
-          // max: widget.maxRange,
           divisions: _div,
-          labels: RangeLabels(
-            '$_conversionUnit ${numberFormat != null
-                ? numberFormat.format(_startingValue!.round())
-                : _startingValue!.round()}',
-            '$_conversionUnit ${numberFormat != null
-                ? numberFormat.format(_endingValue!.round())
-                : _endingValue!.round()}',
-          ),
-          onChanged: (RangeValues values) {
-            if(mounted) setState(() {
-              _startingValue = values.start;
-              _endingValue = values.end;
-              setMinMaxValuesToField(_startingValue!, _endingValue!);
-            });
+          label:
+              '$_conversionUnit ${numberFormat != null ? numberFormat.format(_endingValue!.round()) : _endingValue!.round()}',
+          onChanged: (double value) {
+            if (mounted) {
+              setState(() {
+                _endingValue = value;
+                setMinMaxValuesToField(_startingValue!, _endingValue!);
+              });
+            }
             widget.rangePickerListener(
               _conversionUnit,
               _startingValue!.round().toString(),
@@ -465,7 +439,99 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
     );
   }
 
-  void _bottomMenu(BuildContext context){
+  // Widget sliderWidget() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 15, right: 10),
+  //     child: SliderTheme(
+  //       data: SliderThemeData(
+  //           tickMarkShape: SliderTickMarkShape.noTickMark,
+  //           trackHeight: 2.5, //5.0
+  //           activeTrackColor: AppThemePreferences().appTheme.primaryColor,
+  //           inactiveTrackColor:
+  //               AppThemePreferences().appTheme.primaryColor!.withOpacity(0.3),
+  //           activeTickMarkColor: Colors.transparent,
+  //           inactiveTickMarkColor: Colors.transparent,
+  //           thumbColor: AppThemePreferences().appTheme.primaryColor,
+  //           overlayColor:
+  //               AppThemePreferences().appTheme.primaryColor!.withOpacity(0.3),
+  //           overlayShape: const RoundSliderOverlayShape(
+  //               overlayRadius: 16.0), // Reduced overlay radius
+  //           thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8.0),
+  //           valueIndicatorColor:
+  //               AppThemePreferences().appTheme.primaryColor!.withOpacity(0.3),
+  //           valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+  // valueIndicatorTextStyle: TextStyle(
+  //   color: AppThemePreferences().appTheme.primaryColor,
+  // )
+  //           // trackHeight: 2.5,//5.0
+  //           // activeTrackColor: AppThemePreferences.sliderTintColor,
+  //           // inactiveTrackColor: AppThemePreferences.sliderTintColor.withOpacity(0.3),
+  //           // activeTickMarkColor: Colors.transparent,
+  //           // inactiveTickMarkColor: Colors.transparent,
+  //           // thumbColor: AppThemePreferences.sliderTintColor,
+  //           // overlayColor: AppThemePreferences.sliderTintColor.withOpacity(0.3),
+  //           // overlayShape: const RoundSliderOverlayShape(overlayRadius: 28.0),
+  //           // valueIndicatorColor: AppThemePreferences.sliderTintColor.withOpacity(0.3),
+  //           // valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+  //           // valueIndicatorTextStyle: TextStyle(
+  //           //   color: AppThemePreferences.sliderTintColor,
+  //           // )
+
+  //           ),
+
+  //       // data: SliderThemeData(
+  //       //     trackHeight: 5.0,
+  //       //     activeTrackColor: AppThemePreferences().appTheme.selectedItemTextColor,
+  //       //     inactiveTrackColor: AppThemePreferences().appTheme.selectedItemBackgroundColor,
+  //       //     // inactiveTrackColor: Colors.grey.shade400,
+  //       //     activeTickMarkColor: Colors.transparent,
+  //       //     inactiveTickMarkColor: Colors.transparent,
+  //       //     thumbColor: AppThemePreferences().appTheme.selectedItemTextColor,
+  //       //     overlayColor: AppThemePreferences().appTheme.selectedItemTextColor.withAlpha(32),
+  //       //     overlayShape: const RoundSliderOverlayShape(overlayRadius: 28.0),
+  //       //     valueIndicatorColor: AppThemePreferences().appTheme.selectedItemBackgroundColor,
+  //       //     // valueIndicatorColor: Theme.of(context).primaryColor,
+  //       //     valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+  //       //     valueIndicatorTextStyle: TextStyle(
+  //       //       color: AppThemePreferences().appTheme.selectedItemTextColor,
+  //       //       // color: Colors.white,
+  //       //     )
+  //       // ),
+  //       child: RangeSlider(
+  //         // values: RangeValues(widget.minRange, widget.maxRange),
+  //         // min: widget.minRange,
+  //         // max: widget.maxRange,
+  //         // divisions: 1000,
+  //         values: RangeValues(_startingValue!, _endingValue!),
+  //         min: _min!,
+  //         max: _max!,
+  //         // min: widget.minRange,
+  //         // max: widget.maxRange,
+  //         divisions: _div,
+  //         labels: RangeLabels(
+  //           '$_conversionUnit ${numberFormat != null ? numberFormat.format(_startingValue!.round()) : _startingValue!.round()}',
+  //           '$_conversionUnit ${numberFormat != null ? numberFormat.format(_endingValue!.round()) : _endingValue!.round()}',
+  //         ),
+  //         onChanged: (RangeValues values) {
+  //           if (mounted) {
+  //             setState(() {
+  //               _startingValue = values.start;
+  //               _endingValue = values.end;
+  //               setMinMaxValuesToField(_startingValue!, _endingValue!);
+  //             });
+  //           }
+  //           widget.rangePickerListener(
+  //             _conversionUnit,
+  //             _startingValue!.round().toString(),
+  //             _endingValue!.round().toString(),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  void _bottomMenu(BuildContext context) {
     showModelBottomSheetWidget(
       useSafeArea: true,
       shape: const RoundedRectangleBorder(
@@ -479,146 +545,171 @@ class _RangePickerWidgetState  extends State<RangePickerWidget>{
         return SafeArea(
           child: StatefulBuilder(
               builder: (BuildContext context, StateSetter state) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppThemePreferences().appTheme.bottomNavigationMenuColor,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(24),
-                          topRight: Radius.circular(24),
-                        ),
-                      ),
-                      padding: const EdgeInsets.fromLTRB(10, 20, 25, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          /// DROP DOWN MENU TITLE
-                          Expanded(
-                            flex: 9,
-                            child: GenericTextWidget(
-                              widget.bottomSheetMenuTitle,
-                              style: AppThemePreferences().appTheme.bottomSheetMenuTitleTextStyle,
-                            ),
-                          ),
-
-                          // ICON: TICK MARK => DONE
-                          Expanded(
-                            flex: 1,
-                            child: IconButton(
-                              icon: AppThemePreferences().appTheme.bottomNavigationMenuIcon!,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppThemePreferences()
+                        .appTheme
+                        .bottomNavigationMenuColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24),
                     ),
-
-                    /// DROP DOWN MENU GENERATION
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppThemePreferences().appTheme.bottomNavigationMenuColor,
-                        border: Border(
-                          top: AppThemePreferences().appTheme.bottomNavigationMenuBorderSide!,
+                  ),
+                  padding: const EdgeInsets.fromLTRB(10, 20, 25, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      /// DROP DOWN MENU TITLE
+                      Expanded(
+                        flex: 9,
+                        child: GenericTextWidget(
+                          widget.bottomSheetMenuTitle,
+                          style: AppThemePreferences()
+                              .appTheme
+                              .bottomSheetMenuTitleTextStyle,
                         ),
                       ),
 
-                      padding: const EdgeInsets.only(top: 15, left: 20, bottom: 0, right: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:
-                        widget.mapOfBottomSheetMenu!.entries.map<Widget>((item)=> Row(
-                          children: [
-                            Expanded(
-                              flex: 9,
-                              child: GestureDetector(
-                                child: GenericTextWidget(
-                                  item.key, // KEY CONTAINS THE OPTION
-                                  style: AppThemePreferences().appTheme.bottomNavigationMenuItemsTextStyle,
+                      // ICON: TICK MARK => DONE
+                      Expanded(
+                        flex: 1,
+                        child: IconButton(
+                          icon: AppThemePreferences()
+                              .appTheme
+                              .bottomNavigationMenuIcon!,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                /// DROP DOWN MENU GENERATION
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppThemePreferences()
+                        .appTheme
+                        .bottomNavigationMenuColor,
+                    border: Border(
+                      top: AppThemePreferences()
+                          .appTheme
+                          .bottomNavigationMenuBorderSide!,
+                    ),
+                  ),
+                  padding: const EdgeInsets.only(
+                      top: 15, left: 20, bottom: 0, right: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: widget.mapOfBottomSheetMenu!.entries
+                        .map<Widget>((item) => Row(
+                              children: [
+                                Expanded(
+                                  flex: 9,
+                                  child: GestureDetector(
+                                    child: GenericTextWidget(
+                                      item.key, // KEY CONTAINS THE OPTION
+                                      style: AppThemePreferences()
+                                          .appTheme
+                                          .bottomNavigationMenuItemsTextStyle,
+                                    ),
+                                    onTap: () {
+                                      if (mounted) {
+                                        setState(() {
+                                          _conversionUnit = item.value;
+                                          _bottomRadioValue = widget
+                                              .mapOfBottomSheetMenu!.entries
+                                              .map((e) => e.value)
+                                              .toList()
+                                              .indexWhere((element) =>
+                                                  item.value == element);
+                                        });
+                                      }
+                                      state(() {
+                                        _bottomRadioValue = widget
+                                            .mapOfBottomSheetMenu!.entries
+                                            .map((e) => e.value)
+                                            .toList()
+                                            .indexWhere((element) =>
+                                                item.value == element);
+                                      });
+
+                                      /// RETURNING CONVERSION UNIT AS CALL BACK
+                                      widget.rangePickerListener(
+                                          _conversionUnit,
+                                          _startingRangeValue,
+                                          _endingRangeValue);
+                                    },
+                                  ),
                                 ),
-                                onTap: (){
-                                  if(mounted) setState(() {
-                                    _conversionUnit = item.value;
-                                    _bottomRadioValue = widget
-                                        .mapOfBottomSheetMenu!.entries
+                                Expanded(
+                                  flex: 1,
+                                  child: Radio(
+                                    activeColor: AppThemePreferences()
+                                        .appTheme
+                                        .primaryColor,
+                                    value: widget.mapOfBottomSheetMenu!.entries
                                         .map((e) => e.value)
                                         .toList()
-                                        .indexWhere((element) =>
-                                    item.value == element);
-                                  });
-                                  state((){
-                                    _bottomRadioValue = widget
-                                        .mapOfBottomSheetMenu!.entries
-                                        .map((e) => e.value)
-                                        .toList()
-                                        .indexWhere((element) =>
-                                    item.value == element);
-                                  });
+                                        .indexWhere(
+                                            (element) => item.value == element),
+                                    groupValue: _bottomRadioValue,
+                                    onChanged: (value) {
+                                      if (mounted) {
+                                        setState(() {
+                                          _conversionUnit = item.value;
+                                          _bottomRadioValue = widget
+                                              .mapOfBottomSheetMenu!.entries
+                                              .map((e) => e.value)
+                                              .toList()
+                                              .indexWhere((element) =>
+                                                  item.value == element);
+                                        });
+                                      }
+                                      state(() {
+                                        _bottomRadioValue = widget
+                                            .mapOfBottomSheetMenu!.entries
+                                            .map((e) => e.value)
+                                            .toList()
+                                            .indexWhere((element) =>
+                                                item.value == element);
+                                      });
 
-                                  /// RETURNING CONVERSION UNIT AS CALL BACK
-                                  widget.rangePickerListener(_conversionUnit, _startingRangeValue, _endingRangeValue);
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child:Radio(
-                                activeColor: AppThemePreferences().appTheme.primaryColor,
-                                value: widget.mapOfBottomSheetMenu!.entries.map((e) => e.value).toList().
-                                indexWhere((element) => item.value == element),
-                                groupValue: _bottomRadioValue,
-                                onChanged: (value) {
-                                  if(mounted) setState(() {
-                                    _conversionUnit = item.value;
-                                    _bottomRadioValue = widget
-                                        .mapOfBottomSheetMenu!.entries
-                                        .map((e) => e.value)
-                                        .toList()
-                                        .indexWhere((element) =>
-                                    item.value == element);
-                                  });
-                                  state((){
-                                    _bottomRadioValue = widget
-                                        .mapOfBottomSheetMenu!.entries
-                                        .map((e) => e.value)
-                                        .toList()
-                                        .indexWhere((element) =>
-                                    item.value == element);
-                                  });
-
-                                  /// RETURNING CONVERSION UNIT AS CALL BACK
-                                  widget.rangePickerListener(
-                                    _conversionUnit,
-                                    _startingRangeValue,
-                                    _endingRangeValue,
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        )).toList(),
-                      ),
-                    ),
-                  ],
-                );
-              }),
+                                      /// RETURNING CONVERSION UNIT AS CALL BACK
+                                      widget.rangePickerListener(
+                                        _conversionUnit,
+                                        _startingRangeValue,
+                                        _endingRangeValue,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ))
+                        .toList(),
+                  ),
+                ),
+              ],
+            );
+          }),
         );
       },
     );
   }
 
   String cleanPrice(String value) {
-    if(value.contains(",")){
+    if (value.contains(",")) {
       value = value.replaceAll(",", "");
     }
-    if(value.contains(".")){
+    if (value.contains(".")) {
       value = value.replaceAll(".", "");
     }
-    if(value.contains("\u{202F}")){
+    if (value.contains("\u{202F}")) {
       value = value.replaceAll("\u{202F}", "");
     }
     return value;

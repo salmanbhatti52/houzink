@@ -9,21 +9,21 @@ import 'package:houzi_package/models/property_meta_data.dart';
 import 'package:houzi_package/widgets/search_type_widget.dart';
 import 'package:provider/provider.dart';
 
+typedef HomeScreenSearchTypeWidgetListener = void Function(
+    String selectedItem, String selectedItemSlug);
 
-typedef HomeScreenSearchTypeWidgetListener = void Function(String selectedItem, String selectedItemSlug);
-
-class HomeScreenSearchTypeWidget extends StatefulWidget{
-
+class HomeScreenSearchTypeWidget extends StatefulWidget {
   final HomeScreenSearchTypeWidgetListener homeScreenSearchTypeWidgetListener;
 
-  HomeScreenSearchTypeWidget({required this.homeScreenSearchTypeWidgetListener});
+  const HomeScreenSearchTypeWidget(
+      {super.key, required this.homeScreenSearchTypeWidgetListener});
 
   @override
   State<StatefulWidget> createState() => HomeScreenSearchTypeWidgetState();
 }
 
-class HomeScreenSearchTypeWidgetState extends State<HomeScreenSearchTypeWidget> {
-
+class HomeScreenSearchTypeWidgetState
+    extends State<HomeScreenSearchTypeWidget> {
   int _selectedIndex = 0;
   List<dynamic> propertyStatusMetaData = [];
   List<dynamic> propertyStatusListWithData = [];
@@ -40,12 +40,14 @@ class HomeScreenSearchTypeWidgetState extends State<HomeScreenSearchTypeWidget> 
   @override
   void initState() {
     super.initState();
-    propertyStatusMetaData = HiveStorageManager.readPropertyStatusMetaData() ?? [];
+    propertyStatusMetaData =
+        HiveStorageManager.readPropertyStatusMetaData() ?? [];
     loadData();
 
     /// General Notifier Listener
     generalNotifierListener = () {
-      if (GeneralNotifier().change == GeneralNotifier.APP_CONFIGURATIONS_UPDATED) {
+      if (GeneralNotifier().change ==
+          GeneralNotifier.APP_CONFIGURATIONS_UPDATED) {
         loadData();
       }
     };
@@ -53,100 +55,104 @@ class HomeScreenSearchTypeWidgetState extends State<HomeScreenSearchTypeWidget> 
     GeneralNotifier().addListener(generalNotifierListener!);
   }
 
-  loadData(){
+  loadData() {
     maxAllowed = defaultSearchTypeSwitchOptions;
     propertyStatusListWithData.clear();
     propertyStatusListOfLabels.clear();
-    if(propertyStatusMetaData.isNotEmpty && propertyStatusMetaData.length > 0){
-      propertyStatusMetaData.forEach((item) {
-        if(propertyStatusListWithData.length < maxAllowed){
+    if (propertyStatusMetaData.isNotEmpty &&
+        propertyStatusMetaData.isNotEmpty) {
+      for (var item in propertyStatusMetaData) {
+        if (propertyStatusListWithData.length < maxAllowed) {
           propertyStatusListWithData.add(item);
         }
         // if(item.totalPropertiesCount > 0 && propertyStatusListWithData.length < maxAllowed ){
         //   propertyStatusListWithData.add(item);
         // }
-      });
+      }
 
-      if(propertyStatusListWithData.isNotEmpty && propertyStatusListWithData.length > 0){
-        propertyStatusListWithData.forEach((item) {
-          propertyStatusListOfLabels.add(UtilityMethods.getLocalizedString(item.name));
-        });
-      }else{
+      if (propertyStatusListWithData.isNotEmpty &&
+          propertyStatusListWithData.isNotEmpty) {
+        for (var item in propertyStatusListWithData) {
+          propertyStatusListOfLabels
+              .add(UtilityMethods.getLocalizedString(item.name));
+        }
+      } else {
         propertyStatusListWithData.add(tempForRentObject);
         propertyStatusListWithData.add(tempForSaleObject);
-        propertyStatusListWithData.forEach((item) {
-          propertyStatusListOfLabels.add(UtilityMethods.getLocalizedString(item.name));
-        });
+        for (var item in propertyStatusListWithData) {
+          propertyStatusListOfLabels
+              .add(UtilityMethods.getLocalizedString(item.name));
+        }
       }
-    }
-    else{
+    } else {
       propertyStatusListWithData.add(tempForRentObject);
       propertyStatusListWithData.add(tempForSaleObject);
-      propertyStatusListWithData.forEach((item) {
-        propertyStatusListOfLabels.add(UtilityMethods.getLocalizedString(item.name));
-      });
+      for (var item in propertyStatusListWithData) {
+        propertyStatusListOfLabels
+            .add(UtilityMethods.getLocalizedString(item.name));
+      }
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    if(propertyStatusMetaData.isEmpty){
-      propertyStatusMetaData = HiveStorageManager.readPropertyStatusMetaData() ?? [];
+    if (propertyStatusMetaData.isEmpty) {
+      propertyStatusMetaData =
+          HiveStorageManager.readPropertyStatusMetaData() ?? [];
       loadData();
     }
-    return Consumer<LocaleProvider>(
-        builder: (context, localeProvider, child) {
-          loadData();
-          return Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: searchTypeWidget(
-                    cornerRadius: 24,
-                    minWidth: 100,//80
-                    minHeight: 45,
-                    radiusStyle: true,
-                    fontSize: AppThemePreferences.toggleSwitchTextFontSize,
-                    totalSwitches: propertyStatusListOfLabels.length,
-                    labels: propertyStatusListOfLabels,
-                    onToggle: (index) {
-                      _selectedIndex = index;
-                      widget.homeScreenSearchTypeWidgetListener(
-                          propertyStatusListWithData[index].name, propertyStatusListWithData[index].slug);
-                    },
-                  ),
-                ),
-                // ToggleSwitch(
-                //   cornerRadius: 24,
-                //   minWidth: 100,//80
-                //   minHeight: 45,
-                //   radiusStyle: true,
-                //   fontSize: AppThemePreferences.toggleSwitchTextFontSize,
-                //   inactiveBgColor: AppThemePreferences().appTheme.switchUnselectedBackgroundColor,
-                //   inactiveFgColor: AppThemePreferences().appTheme.switchUnselectedItemTextColor,
-                //   activeFgColor: AppThemePreferences().appTheme.switchSelectedItemTextColor,
-                //   activeBgColor: [
-                //     AppThemePreferences().appTheme.switchSelectedBackgroundColor,
-                //   ],
-                //   totalSwitches: _searchTypeList.length,
-                //   labels: _searchTypeList,
-                //   initialLabelIndex: filterDataMap != null && filterDataMap.containsKey(PROPERTY_STATUS)
-                //       && filterDataMap[PROPERTY_STATUS] != null && filterDataMap[PROPERTY_STATUS].isNotEmpty ?
-                //   _searchTypeList.indexOf(filterDataMap[PROPERTY_STATUS]) : 0,
-                //   onToggle: (index) {
-                //     filterDataMap[PROPERTY_STATUS] = _searchTypeList[index];
-                //     HiveStorageManager.storeFilterDataInfo(map: filterDataMap);
-                //     homeScreenSearchTypeWidgetListener(
-                //       filterDataMap: filterDataMap,
-                //     );
-                //   },
-                // ),
-              ],
+    return Consumer<LocaleProvider>(builder: (context, localeProvider, child) {
+      loadData();
+      return Container(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: searchTypeWidget(
+                cornerRadius: 24,
+                minWidth: 100, //80
+                minHeight: 45,
+                radiusStyle: true,
+                fontSize: AppThemePreferences.toggleSwitchTextFontSize,
+                totalSwitches: propertyStatusListOfLabels.length,
+                labels: propertyStatusListOfLabels,
+                onToggle: (index) {
+                  _selectedIndex = index;
+                  widget.homeScreenSearchTypeWidgetListener(
+                      propertyStatusListWithData[index].name,
+                      propertyStatusListWithData[index].slug);
+                },
+              ),
             ),
-          );
-        });
+            // ToggleSwitch(
+            //   cornerRadius: 24,
+            //   minWidth: 100,//80
+            //   minHeight: 45,
+            //   radiusStyle: true,
+            //   fontSize: AppThemePreferences.toggleSwitchTextFontSize,
+            //   inactiveBgColor: AppThemePreferences().appTheme.switchUnselectedBackgroundColor,
+            //   inactiveFgColor: AppThemePreferences().appTheme.switchUnselectedItemTextColor,
+            //   activeFgColor: AppThemePreferences().appTheme.switchSelectedItemTextColor,
+            //   activeBgColor: [
+            //     AppThemePreferences().appTheme.switchSelectedBackgroundColor,
+            //   ],
+            //   totalSwitches: _searchTypeList.length,
+            //   labels: _searchTypeList,
+            //   initialLabelIndex: filterDataMap != null && filterDataMap.containsKey(PROPERTY_STATUS)
+            //       && filterDataMap[PROPERTY_STATUS] != null && filterDataMap[PROPERTY_STATUS].isNotEmpty ?
+            //   _searchTypeList.indexOf(filterDataMap[PROPERTY_STATUS]) : 0,
+            //   onToggle: (index) {
+            //     filterDataMap[PROPERTY_STATUS] = _searchTypeList[index];
+            //     HiveStorageManager.storeFilterDataInfo(map: filterDataMap);
+            //     homeScreenSearchTypeWidgetListener(
+            //       filterDataMap: filterDataMap,
+            //     );
+            //   },
+            // ),
+          ],
+        ),
+      );
+    });
   }
 }

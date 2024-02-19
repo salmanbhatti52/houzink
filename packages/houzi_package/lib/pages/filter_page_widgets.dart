@@ -23,9 +23,8 @@ typedef FilterPageWidgetsListener = void Function(
 );
 
 class FilterPageWidgets extends StatefulWidget {
-
   final FilterPageElement filterPageConfigData;
-  final Map<String,dynamic> mapInitializeData;
+  final Map<String, dynamic> mapInitializeData;
   final FilterPageWidgetsListener filterPageWidgetsListener;
 
   const FilterPageWidgets({
@@ -40,9 +39,7 @@ class FilterPageWidgets extends StatefulWidget {
 }
 
 class _FilterPageWidgetsState extends State<FilterPageWidgets> {
-
   bool forReset = false;
-
   String _currency = '';
   String _areaType = '';
   String _selectedMinPrice = MIN_PRICE;
@@ -50,8 +47,9 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   String _selectedMinArea = MIN_AREA;
   String _selectedMaxArea = MAX_AREA;
   String _keywordString = "";
-  String _selectedAreaSymbol = MEASUREMENT_UNIT_TEXT;
-  String _selectedCurrencySymbol = HiveStorageManager.readDefaultCurrencyInfoData() ?? "\$";
+  final String _selectedAreaSymbol = MEASUREMENT_UNIT_TEXT;
+  final String _selectedCurrencySymbol =
+      HiveStorageManager.readDefaultCurrencyInfoData() ?? "\$";
 
   String? filterPageElementTitle;
   String? filterPageElementDataType;
@@ -63,8 +61,8 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   List<dynamic> _selectedBedroomsList = [];
   List<dynamic> _selectedBathroomsList = [];
 
-  List<String> _bathroomsDataList = ["1", "2", "3", "4", "5", "6+"];
-  List<String> _bedroomsDataList = ["1", "2", "3", "4", "5", "6+"];
+  final List<String> _bathroomsDataList = ["1", "2", "3", "4", "5", "6+"];
+  final List<String> _bedroomsDataList = ["1", "2", "3", "4", "5", "6+"];
 
   List<dynamic> _selectedPropertyTypesList = [];
   List<dynamic> _selectedPropertyStatusList = [];
@@ -85,27 +83,28 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   List<dynamic> _selectedPropertyCitySlugsList = [];
 
   List<dynamic> _customFieldsList = [];
-  List<String> _customFieldsSectionTypeList = [];
+  final List<String> _customFieldsSectionTypeList = [];
 
   VoidCallback? generalNotifierLister;
 
   TextEditingController keywordTextController = TextEditingController();
-  Map<String,dynamic> _keywordFiltersDataMap = {};
+  final Map<String, dynamic> _keywordFiltersDataMap = {};
   Map<String, dynamic> _tempMapHolder = {};
-
 
   @override
   void initState() {
-
-    filterPageConfigElementMap = FilterPageElement.toMap(widget.filterPageConfigData);
+    print("Hello Zainnnnnnnnnnnnnnnnnn i'm in the Filter_page_widget");
+    filterPageConfigElementMap =
+        FilterPageElement.toMap(widget.filterPageConfigData);
 
     var data = HiveStorageManager.readCustomFieldsDataMaps();
-    if(data != null){
+    if (data != null) {
       final custom = customFromJson(data);
       _customFieldsList = custom.customFields!;
-      if(_customFieldsList.isNotEmpty){
-        for(var customFieldItem in _customFieldsList){
-          _customFieldsSectionTypeList.add(CUSTOM_FIELDS_SECTION_TYPE_TEMPLATE_KEY + customFieldItem.label);
+      if (_customFieldsList.isNotEmpty) {
+        for (var customFieldItem in _customFieldsList) {
+          _customFieldsSectionTypeList.add(
+              CUSTOM_FIELDS_SECTION_TYPE_TEMPLATE_KEY + customFieldItem.label);
         }
       }
     }
@@ -116,13 +115,15 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
       }
 
       if (isSectionTypePropertyLocation() || isWidgetTypeTermPropertyCity()) {
-        if(GeneralNotifier().change == GeneralNotifier.CITY_DATA_UPDATE){
+        if (GeneralNotifier().change == GeneralNotifier.CITY_DATA_UPDATE) {
           Map cityData = HiveStorageManager.readSelectedCityInfo();
-          if(cityData.isNotEmpty && cityData[CITY] != null && cityData[CITY].isNotEmpty) {
+          if (cityData.isNotEmpty &&
+              cityData[CITY] != null &&
+              cityData[CITY].isNotEmpty) {
             Map<String, dynamic> map = HiveStorageManager.readFilterDataInfo();
             _dataInitializationMap.addAll(map);
             loadData();
-            if(mounted) setState(() {});
+            if (mounted) setState(() {});
           }
         }
       }
@@ -134,7 +135,6 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
 
     super.initState();
   }
-
 
   bool isSectionTypePropertyLocation() {
     if (filterPageConfigElementMap[sectionTypeKey] == locationPickerKey) {
@@ -150,6 +150,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeTermPropertyType() {
     if (filterPageConfigElementMap[sectionTypeKey] == termPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == propertyTypeDataType) {
@@ -157,6 +158,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeTermPropertyLabel() {
     if (filterPageConfigElementMap[sectionTypeKey] == termPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == propertyLabelDataType) {
@@ -164,6 +166,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeTermPropertyArea() {
     if (filterPageConfigElementMap[sectionTypeKey] == termPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == propertyAreaDataType) {
@@ -171,6 +174,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeTermPropertyState() {
     if (filterPageConfigElementMap[sectionTypeKey] == termPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == propertyStateDataType) {
@@ -178,6 +182,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeTermPropertyCountry() {
     if (filterPageConfigElementMap[sectionTypeKey] == termPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == propertyCountryDataType) {
@@ -185,6 +190,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeTermPropertyFeature() {
     if (filterPageConfigElementMap[sectionTypeKey] == termPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == propertyFeatureDataType) {
@@ -192,6 +198,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeTermPropertyCity() {
     if (filterPageConfigElementMap[sectionTypeKey] == termPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == propertyCityDataType) {
@@ -207,6 +214,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeAreaRangePicker() {
     if (filterPageConfigElementMap[sectionTypeKey] == rangePickerKey &&
         filterPageConfigElementMap[dataTypeKey] == rangePickerAreaKey) {
@@ -222,6 +230,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     }
     return false;
   }
+
   bool isWidgetTypeBathroomsStringPicker() {
     if (filterPageConfigElementMap[sectionTypeKey] == stringPickerKey &&
         filterPageConfigElementMap[dataTypeKey] == stringPickerBathroomsKey) {
@@ -365,7 +374,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
         if (_dataInitializationMap.containsKey(PROPERTY_AREA_SLUG) &&
             _dataInitializationMap[PROPERTY_AREA_SLUG] != null &&
             _dataInitializationMap[PROPERTY_AREA_SLUG].isNotEmpty) {
-          if(mounted){
+          if (mounted) {
             setState(() {
               var tempList = _dataInitializationMap[PROPERTY_AREA_SLUG];
               if (tempList is String) {
@@ -525,12 +534,11 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
         if (_dataInitializationMap.containsKey(BEDROOMS) &&
             _dataInitializationMap[BEDROOMS] != null &&
             _dataInitializationMap[BEDROOMS].isNotEmpty) {
-          if(_dataInitializationMap[BEDROOMS] is List) {
+          if (_dataInitializationMap[BEDROOMS] is List) {
             _selectedBedroomsList = _dataInitializationMap[BEDROOMS];
           } else {
             _selectedBedroomsList = [_dataInitializationMap[BEDROOMS]];
           }
-
         } else {
           _selectedBedroomsList = [];
         }
@@ -540,7 +548,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
         if (_dataInitializationMap.containsKey(BATHROOMS) &&
             _dataInitializationMap[BATHROOMS] != null &&
             _dataInitializationMap[BATHROOMS].isNotEmpty) {
-          if(_dataInitializationMap[BATHROOMS] is List) {
+          if (_dataInitializationMap[BATHROOMS] is List) {
             _selectedBathroomsList = _dataInitializationMap[BATHROOMS];
           } else {
             _selectedBathroomsList = [_dataInitializationMap[BATHROOMS]];
@@ -556,10 +564,12 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
             _dataInitializationMap[PROPERTY_KEYWORD].isNotEmpty &&
             _dataInitializationMap[PROPERTY_KEYWORD] is String) {
           _keywordString = _dataInitializationMap[PROPERTY_KEYWORD];
-          keywordTextController.text = UtilityMethods.getLocalizedString(_keywordString);
+          keywordTextController.text =
+              UtilityMethods.getLocalizedString(_keywordString);
         } else {
           _keywordString = "";
-          keywordTextController.text = UtilityMethods.getLocalizedString(_keywordString);
+          keywordTextController.text =
+              UtilityMethods.getLocalizedString(_keywordString);
         }
       }
       if (mounted) {
@@ -579,132 +589,153 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    switch(filterPageConfigElementMap[sectionTypeKey]) {
-      case (locationPickerKey): {
-        return LocationWidget(
-          showSearchBar: true,
-          pickerType: widget.filterPageConfigData.pickerType!,
-          fromFilterPage: true,
-          filterPageConfigData: widget.filterPageConfigData,
-          filterDataMap: widget.mapInitializeData,
-          selectedPropertyCitiesList: getSelectedTermDataList(propertyCityDataType),
-          selectedPropertyCitySlugsList: getSelectedTermSlugsList(propertyCityDataType),
-          locationWidgetListener: ({closeOption, filterDataMap, selectedTermsList, selectedTermsSlugsList}) {
+    print("Hi Zainnnnnnnnnnnnnnnnnnnn i'm in Filters Page:");
+    switch (filterPageConfigElementMap[sectionTypeKey]) {
+      case (locationPickerKey):
+        {
+          return LocationWidget(
+            showSearchBar: false,
+            pickerType: widget.filterPageConfigData.pickerType!,
+            fromFilterPage: true,
+            filterPageConfigData: widget.filterPageConfigData,
+            filterDataMap: widget.mapInitializeData,
+            selectedPropertyCitiesList:
+                getSelectedTermDataList(propertyCityDataType),
+            selectedPropertyCitySlugsList:
+                getSelectedTermSlugsList(propertyCityDataType),
+            locationWidgetListener: (
+                {closeOption,
+                filterDataMap,
+                selectedTermsList,
+                selectedTermsSlugsList}) {
+              if (filterDataMap != null && closeOption != null) {
+                widget.filterPageWidgetsListener(filterDataMap, closeOption);
+              }
 
-            if(filterDataMap != null && closeOption != null){
-              widget.filterPageWidgetsListener(filterDataMap, closeOption);
-            }
+              if (selectedTermsList != null && selectedTermsSlugsList != null) {
+                updateTermPickerData(
+                  termDataType: propertyCityDataType,
+                  selectedTermsList: selectedTermsList,
+                  selectedTermSlugsList: selectedTermsSlugsList,
+                );
+              }
+            },
+          );
+        }
 
-            if(selectedTermsList != null && selectedTermsSlugsList != null){
-              updateTermPickerData(
-                termDataType: propertyCityDataType,
-                selectedTermsList: selectedTermsList,
-                selectedTermSlugsList: selectedTermsSlugsList,
-              );
-            }
-          },
-        );
-      }
-
-      case (termPickerKey): {
-        return genericTermPickerWidget(
-            filterPageElement: widget.filterPageConfigData);
-      }
-
-      case (rangePickerKey): {
-        return genericRangePickerWidget(
-            filterPageElement: widget.filterPageConfigData);
-      }
-
-      case (stringPickerKey): {
-        return genericStringPickerWidget(
-            filterPageElement: widget.filterPageConfigData);
-      }
-
-      case (keywordPickerKey): {
-        return genericKeywordWidget(filterPageElement: widget.filterPageConfigData);
-      }
-
-      case (customKeywordPickerKey): {
-        return genericCustomKeywordWidget(
-            filterPageElement: widget.filterPageConfigData);
-      }
-
-      case (metaKeyPickerKey): {
-        return MetaKeyPickerWidget(
-          configItem: widget.filterPageConfigData,
-          initializeDataMap: widget.mapInitializeData,
-          listener: (dataMap) {
-            if (mounted) {
-              setState(() {
-                if (_dataInitializationMap[metaKeyFiltersKey] != null) {
-                  _tempMapHolder = Map<String, dynamic>.from(_dataInitializationMap[metaKeyFiltersKey]);
-                } else {
-                  _tempMapHolder = {};
-                }
-
-                _tempMapHolder.addAll(dataMap);
-                _dataInitializationMap[metaKeyFiltersKey] = _tempMapHolder;
-                widget.filterPageWidgetsListener(_dataInitializationMap, "");
-              });
-            }
-          },
-        );
-      }
-
-      case (keywordCustomQueryPickerKey): {
-        return genericKeywordCustomQueryWidget(
-            filterPageElement: widget.filterPageConfigData);
-      }
-
-      default: {
-        String tempSectionTypeKey =
-            filterPageConfigElementMap[sectionTypeKey] ?? "";
-        if (_customFieldsSectionTypeList.isNotEmpty &&
-            _customFieldsSectionTypeList.contains(tempSectionTypeKey)) {
-          return genericCustomFieldWidget(
+      case (termPickerKey):
+        {
+          return genericTermPickerWidget(
               filterPageElement: widget.filterPageConfigData);
         }
 
-        return Container();
-      }
+      case (rangePickerKey):
+        {
+          return genericRangePickerWidget(
+              filterPageElement: widget.filterPageConfigData);
+        }
+
+      case (stringPickerKey):
+        {
+          return genericStringPickerWidget(
+              filterPageElement: widget.filterPageConfigData);
+        }
+
+      case (keywordPickerKey):
+        {
+          return genericKeywordWidget(
+              filterPageElement: widget.filterPageConfigData);
+        }
+
+      case (customKeywordPickerKey):
+        {
+          return genericCustomKeywordWidget(
+              filterPageElement: widget.filterPageConfigData);
+        }
+
+      case (metaKeyPickerKey):
+        {
+          return MetaKeyPickerWidget(
+            configItem: widget.filterPageConfigData,
+            initializeDataMap: widget.mapInitializeData,
+            listener: (dataMap) {
+              if (mounted) {
+                setState(() {
+                  if (_dataInitializationMap[metaKeyFiltersKey] != null) {
+                    _tempMapHolder = Map<String, dynamic>.from(
+                        _dataInitializationMap[metaKeyFiltersKey]);
+                  } else {
+                    _tempMapHolder = {};
+                  }
+
+                  _tempMapHolder.addAll(dataMap);
+                  _dataInitializationMap[metaKeyFiltersKey] = _tempMapHolder;
+                  widget.filterPageWidgetsListener(_dataInitializationMap, "");
+                });
+              }
+            },
+          );
+        }
+
+      case (keywordCustomQueryPickerKey):
+        {
+          return genericKeywordCustomQueryWidget(
+              filterPageElement: widget.filterPageConfigData);
+        }
+
+      default:
+        {
+          String tempSectionTypeKey =
+              filterPageConfigElementMap[sectionTypeKey] ?? "";
+          if (_customFieldsSectionTypeList.isNotEmpty &&
+              _customFieldsSectionTypeList.contains(tempSectionTypeKey)) {
+            return genericCustomFieldWidget(
+                filterPageElement: widget.filterPageConfigData);
+          }
+
+          return Container();
+        }
     }
   }
 
   Widget genericCustomFieldWidget({
     required FilterPageElement filterPageElement,
-  }){
+  }) {
     String _tempSectionType = filterPageElement.sectionType!;
-    String _tempCustomFieldLabel = _tempSectionType.replaceAll(CUSTOM_FIELDS_SECTION_TYPE_TEMPLATE_KEY, "");
-    if(_customFieldsList.isNotEmpty) {
+    String _tempCustomFieldLabel = _tempSectionType.replaceAll(
+        CUSTOM_FIELDS_SECTION_TYPE_TEMPLATE_KEY, "");
+    if (_customFieldsList.isNotEmpty) {
       for (var customFieldItem in _customFieldsList) {
-        if(customFieldItem.label == _tempCustomFieldLabel){
+        if (customFieldItem.label == _tempCustomFieldLabel) {
           return CustomFieldsWidget(
             fromFilterPage: true,
             customFieldData: customFieldItem,
-            propertyInfoMap: _dataInitializationMap.containsKey(PROPERTY_CUSTOM_FIELDS) ?
-            _dataInitializationMap[PROPERTY_CUSTOM_FIELDS] : {},
-            customFieldsPageListener: (Map<String, dynamic> dataMap){
-              if(dataMap.isNotEmpty){
+            propertyInfoMap:
+                _dataInitializationMap.containsKey(PROPERTY_CUSTOM_FIELDS)
+                    ? _dataInitializationMap[PROPERTY_CUSTOM_FIELDS]
+                    : {},
+            customFieldsPageListener: (Map<String, dynamic> dataMap) {
+              if (dataMap.isNotEmpty) {
                 Map tempDataMap = {};
                 // _dataInitializationMap.addAll(dataMap);
-                if(_dataInitializationMap.containsKey(PROPERTY_CUSTOM_FIELDS)){
-                  tempDataMap.addAll(_dataInitializationMap[PROPERTY_CUSTOM_FIELDS]);
+                if (_dataInitializationMap
+                    .containsKey(PROPERTY_CUSTOM_FIELDS)) {
+                  tempDataMap
+                      .addAll(_dataInitializationMap[PROPERTY_CUSTOM_FIELDS]);
                   tempDataMap.addAll(dataMap);
-                }else{
+                } else {
                   tempDataMap.addAll(dataMap);
                 }
 
-                if(tempDataMap.containsKey("selectedRadioButton")){
+                if (tempDataMap.containsKey("selectedRadioButton")) {
                   tempDataMap.remove("selectedRadioButton");
                 }
 
                 _dataInitializationMap[PROPERTY_CUSTOM_FIELDS] = tempDataMap;
                 widget.filterPageWidgetsListener(_dataInitializationMap, "");
-                if(mounted) setState(() {});
+                if (mounted) setState(() {});
               }
             },
           );
@@ -723,10 +754,9 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     // );
   }
 
-
   Widget genericTermPickerWidget({
-  required FilterPageElement filterPageElement,
-}){
+    required FilterPageElement filterPageElement,
+  }) {
     // IconData iconData = GenericMethods.fromJsonToIconData(filterPageElement.iconData);
     String title = filterPageElement.title!;
     String dataType = filterPageElement.dataType!;
@@ -746,11 +776,12 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
       selectedTermsList: getSelectedTermDataList(dataType),
       selectedTermsSlugsList: getSelectedTermSlugsList(dataType),
       filterDataMap: widget.mapInitializeData,
-      termPickerListener: (List<dynamic> selectedTermSlugs, List<dynamic> selectedTerms) {
+      termPickerListener:
+          (List<dynamic> selectedTermSlugs, List<dynamic> selectedTerms) {
         updateTermPickerData(
-           termDataType: dataType,
-           selectedTermsList: selectedTerms,
-           selectedTermSlugsList: selectedTermSlugs,
+          termDataType: dataType,
+          selectedTermsList: selectedTerms,
+          selectedTermSlugsList: selectedTermSlugs,
         );
       },
     );
@@ -758,35 +789,34 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
 
   Widget genericStringPickerWidget({
     required FilterPageElement filterPageElement,
-  }){
+  }) {
     // IconData iconData = GenericMethods.fromJsonToIconData(filterPageElement.iconData);
     String title = filterPageElement.title!;
     String dataType = filterPageElement.dataType!;
     String pickerType = filterPageElement.pickerType!;
 
     return StringPicker(
-      pickerTitle: UtilityMethods.getLocalizedString(title),
-      pickerType: pickerType,
-      pickerIcon: Icon(
-        // iconData,
-        getStringPickerIconData(dataType),
-        size: AppThemePreferences.filterPageStringPickerIconSize,
-        color: AppThemePreferences().appTheme.primaryColor,
-      ),
-      pickerDataList: getStringPickerDataList(dataType),
-      selectedItemsList: getStringPickerSelectedItemsDataList(dataType),
-      stringPickerListener: (List<dynamic> _selectedItemsList){
-        updateStringPickerData(
-          dataType: dataType,
-          selectedItemsList: _selectedItemsList,
-        );
-      }
-    );
+        pickerTitle: UtilityMethods.getLocalizedString(title),
+        pickerType: pickerType,
+        pickerIcon: Icon(
+          // iconData,
+          getStringPickerIconData(dataType),
+          size: AppThemePreferences.filterPageStringPickerIconSize,
+          color: AppThemePreferences().appTheme.primaryColor,
+        ),
+        pickerDataList: getStringPickerDataList(dataType),
+        selectedItemsList: getStringPickerSelectedItemsDataList(dataType),
+        stringPickerListener: (List<dynamic> _selectedItemsList) {
+          updateStringPickerData(
+            dataType: dataType,
+            selectedItemsList: _selectedItemsList,
+          );
+        });
   }
 
   Widget genericRangePickerWidget({
     required FilterPageElement filterPageElement,
-  }){
+  }) {
     // IconData iconData = GenericMethods.fromJsonToIconData(filterPageElement.iconData);
     String title = filterPageElement.title!;
     String dataType = filterPageElement.dataType!;
@@ -810,7 +840,8 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
       pickerSelectedSymbol: getSelectedSymbol(dataType)!,
       // bottomSheetMenuTitle: getBottomSheetMenuTitle(dataType),
       // mapOfBottomSheetMenu: getBottomSheetMenu(dataType),
-      rangePickerListener: (String _selectedSymbol, String _minSelectedRange, String _maxSelectedRange){
+      rangePickerListener: (String _selectedSymbol, String _minSelectedRange,
+          String _maxSelectedRange) {
         updateRangePickerData(
           dataType: dataType,
           selectedSymbol: _selectedSymbol,
@@ -823,35 +854,34 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
 
   Widget genericKeywordWidget({
     required FilterPageElement filterPageElement,
-  }){
+  }) {
     // IconData iconData = GenericMethods.fromJsonToIconData(filterPageElement.iconData);
     String title = filterPageElement.title!;
     String pickerType = filterPageElement.pickerType!;
 
     return KeywordPickerWidget(
-      pickerTitle: UtilityMethods.getLocalizedString(title),
-      pickerType: pickerType,
-      pickerIcon: Icon(
-        // AppThemePreferences.keywordIcon,
-        AppThemePreferences.keywordCupertinoIcon,
-        size: AppThemePreferences.filterPageRangePickerIconSize,
-        color: AppThemePreferences().appTheme.primaryColor,
-      ),
-      textEditingController: keywordTextController,
-      filterObj: filterPageElement,
-      dataMap: _dataInitializationMap,
-      listener: (String keyword) {
-        _keywordString = keyword;
-        _dataInitializationMap[PROPERTY_KEYWORD] = _keywordString;
-        widget.filterPageWidgetsListener(_dataInitializationMap, "");
-        if (mounted) setState(() {});
-      }
-    );
+        pickerTitle: UtilityMethods.getLocalizedString(title),
+        pickerType: pickerType,
+        pickerIcon: Icon(
+          // AppThemePreferences.keywordIcon,
+          AppThemePreferences.keywordCupertinoIcon,
+          size: AppThemePreferences.filterPageRangePickerIconSize,
+          color: AppThemePreferences().appTheme.primaryColor,
+        ),
+        textEditingController: keywordTextController,
+        filterObj: filterPageElement,
+        dataMap: _dataInitializationMap,
+        listener: (String keyword) {
+          _keywordString = keyword;
+          _dataInitializationMap[PROPERTY_KEYWORD] = _keywordString;
+          widget.filterPageWidgetsListener(_dataInitializationMap, "");
+          if (mounted) setState(() {});
+        });
   }
 
   Widget genericCustomKeywordWidget({
     required FilterPageElement filterPageElement,
-  }){
+  }) {
     // IconData iconData = GenericMethods.fromJsonToIconData(filterPageElement.iconData);
     String title = filterPageElement.title!;
     String pickerType = filterPageElement.pickerType!;
@@ -884,15 +914,14 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
           _keywordString = keyword;
 
           if (uniqueKey != null && uniqueKey!.isNotEmpty) {
-
             if (!uniqueKey!.contains(KEYWORD_PREFIX)) {
               uniqueKey = KEYWORD_PREFIX + uniqueKey!;
             }
 
             _keywordFiltersDataMap[uniqueKey!] = {
-              keywordFiltersUniqueIdKey : uniqueKey!,
-              keywordFiltersValueKey : _keywordString,
-              keywordFiltersQueryTypeKey : queryType,
+              keywordFiltersUniqueIdKey: uniqueKey!,
+              keywordFiltersValueKey: _keywordString,
+              keywordFiltersQueryTypeKey: queryType,
             };
 
             if (_dataInitializationMap[keywordFiltersKey] != null) {
@@ -908,13 +937,12 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
 
           widget.filterPageWidgetsListener(_dataInitializationMap, "");
           if (mounted) setState(() {});
-        }
-    );
+        });
   }
 
   Widget genericKeywordCustomQueryWidget({
     required FilterPageElement filterPageElement,
-  }){
+  }) {
     // IconData iconData = GenericMethods.fromJsonToIconData(filterPageElement.iconData);
     String? uniqueKey = filterPageElement.uniqueKey;
     String? queryType = filterPageElement.queryType;
@@ -942,17 +970,16 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
           _keywordString = keyword;
 
           if (uniqueKey != null && uniqueKey!.isNotEmpty) {
-
             if (!uniqueKey!.contains(KEYWORD_PREFIX)) {
               uniqueKey = KEYWORD_PREFIX + uniqueKey!;
             }
 
             if (_keywordString.isNotEmpty) {
               _keywordFiltersDataMap[uniqueKey!] = {
-                keywordFiltersUniqueIdKey : uniqueKey!,
-                keywordFiltersValueKey : _keywordString,
-                keywordFiltersQueryTypeKey : queryType,
-                keywordFiltersCustomQueryTitleKey : filterPageElement.title,
+                keywordFiltersUniqueIdKey: uniqueKey!,
+                keywordFiltersValueKey: _keywordString,
+                keywordFiltersQueryTypeKey: queryType,
+                keywordFiltersCustomQueryTitleKey: filterPageElement.title,
               };
             } else {
               _keywordFiltersDataMap.remove(uniqueKey!);
@@ -965,7 +992,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
               _tempMapHolder = {};
             }
 
-            if (!_keywordFiltersDataMap.containsKey(uniqueKey!)){
+            if (!_keywordFiltersDataMap.containsKey(uniqueKey!)) {
               _tempMapHolder.remove(uniqueKey!);
             } else {
               _tempMapHolder.addAll(_keywordFiltersDataMap);
@@ -976,49 +1003,63 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
 
           widget.filterPageWidgetsListener(_dataInitializationMap, "");
           if (mounted) setState(() {});
-        }
-    );
+        });
   }
 
-  ResetFilterData(){
+  ResetFilterData() {
     if (mounted) {
       setState(() {
         _dataInitializationMap.clear();
-        if(isWidgetTypeTermPropertyStatus()){
-          _dataInitializationMap[PROPERTY_STATUS] = _selectedPropertyStatusList = [];
-          _dataInitializationMap[PROPERTY_STATUS_SLUG] = _selectedPropertyStatusSlugsList = [];
+        if (isWidgetTypeTermPropertyStatus()) {
+          _dataInitializationMap[PROPERTY_STATUS] =
+              _selectedPropertyStatusList = [];
+          _dataInitializationMap[PROPERTY_STATUS_SLUG] =
+              _selectedPropertyStatusSlugsList = [];
         }
-        if(isWidgetTypeTermPropertyType()){
-          _dataInitializationMap[PROPERTY_TYPE] = _selectedPropertyTypesList =  [];
-          _dataInitializationMap[PROPERTY_TYPE_SLUG] = _selectedPropertyTypesSlugsList =  [];
+        if (isWidgetTypeTermPropertyType()) {
+          _dataInitializationMap[PROPERTY_TYPE] =
+              _selectedPropertyTypesList = [];
+          _dataInitializationMap[PROPERTY_TYPE_SLUG] =
+              _selectedPropertyTypesSlugsList = [];
         }
-        if(isWidgetTypeTermPropertyLabel()){
-          _dataInitializationMap[PROPERTY_LABEL] = _selectedPropertyLabelsList = [];
-          _dataInitializationMap[PROPERTY_LABEL_SLUG] = _selectedPropertyLabelsSlugsList = [];
+        if (isWidgetTypeTermPropertyLabel()) {
+          _dataInitializationMap[PROPERTY_LABEL] =
+              _selectedPropertyLabelsList = [];
+          _dataInitializationMap[PROPERTY_LABEL_SLUG] =
+              _selectedPropertyLabelsSlugsList = [];
         }
-        if(isWidgetTypeTermPropertyArea()){
-          _dataInitializationMap[PROPERTY_AREA] = _selectedPropertyAreasList = [];
-          _dataInitializationMap[PROPERTY_AREA_SLUG] = _selectedPropertyAreasSlugsList = [];
+        if (isWidgetTypeTermPropertyArea()) {
+          _dataInitializationMap[PROPERTY_AREA] =
+              _selectedPropertyAreasList = [];
+          _dataInitializationMap[PROPERTY_AREA_SLUG] =
+              _selectedPropertyAreasSlugsList = [];
         }
-        if(isWidgetTypeTermPropertyState()){
-          _dataInitializationMap[PROPERTY_STATE] = _selectedPropertyStatesList = [];
-          _dataInitializationMap[PROPERTY_STATE_SLUG] = _selectedPropertyStatesSlugsList = [];
+        if (isWidgetTypeTermPropertyState()) {
+          _dataInitializationMap[PROPERTY_STATE] =
+              _selectedPropertyStatesList = [];
+          _dataInitializationMap[PROPERTY_STATE_SLUG] =
+              _selectedPropertyStatesSlugsList = [];
         }
-        if(isWidgetTypeTermPropertyCountry()){
-          _dataInitializationMap[PROPERTY_COUNTRY] = _selectedPropertyCountriesList = [];
-          _dataInitializationMap[PROPERTY_COUNTRY_SLUG] = _selectedPropertyCountriesSlugsList = [];
+        if (isWidgetTypeTermPropertyCountry()) {
+          _dataInitializationMap[PROPERTY_COUNTRY] =
+              _selectedPropertyCountriesList = [];
+          _dataInitializationMap[PROPERTY_COUNTRY_SLUG] =
+              _selectedPropertyCountriesSlugsList = [];
         }
-        if(isWidgetTypeTermPropertyFeature()){
-          _dataInitializationMap[PROPERTY_FEATURES] = _selectedPropertyFeaturesList = [];
-          _dataInitializationMap[PROPERTY_FEATURES_SLUG] = _selectedPropertyFeaturesSlugsList = [];
+        if (isWidgetTypeTermPropertyFeature()) {
+          _dataInitializationMap[PROPERTY_FEATURES] =
+              _selectedPropertyFeaturesList = [];
+          _dataInitializationMap[PROPERTY_FEATURES_SLUG] =
+              _selectedPropertyFeaturesSlugsList = [];
         }
-        if(isWidgetTypeTermPropertyCity()){
+        if (isWidgetTypeTermPropertyCity()) {
           _dataInitializationMap[CITY_ID] = null;
           _dataInitializationMap[CITY] = _selectedPropertyCitiesList = [];
-          _dataInitializationMap[CITY_SLUG] = _selectedPropertyCitySlugsList = [];
+          _dataInitializationMap[CITY_SLUG] =
+              _selectedPropertyCitySlugsList = [];
         }
 
-        if(isSectionTypePropertyLocation()){
+        if (isSectionTypePropertyLocation()) {
           _dataInitializationMap[CITY] = "";
           _dataInitializationMap[CITY_ID] = null;
           _dataInitializationMap[CITY_SLUG] = "";
@@ -1030,30 +1071,30 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
           _dataInitializationMap[SEARCH_LOCATION] = "false";
         }
 
-        if(isWidgetTypePriceRangePicker()){
+        if (isWidgetTypePriceRangePicker()) {
           _dataInitializationMap.remove(PRICE_MIN);
           _dataInitializationMap.remove(PRICE_MAX);
           _selectedMinPrice = MIN_PRICE;
           _selectedMaxPrice = MAX_PRICE;
         }
 
-        if(isWidgetTypeAreaRangePicker()){
+        if (isWidgetTypeAreaRangePicker()) {
           _dataInitializationMap.remove(AREA_MIN);
           _dataInitializationMap.remove(AREA_MAX);
           _selectedMaxArea = MAX_AREA;
           _selectedMinArea = MIN_AREA;
         }
 
-        if(isWidgetTypeBedroomsStringPicker()){
+        if (isWidgetTypeBedroomsStringPicker()) {
           _selectedBedroomsList = [];
           _dataInitializationMap.remove(BEDROOMS);
         }
-        if(isWidgetTypeBathroomsStringPicker()){
+        if (isWidgetTypeBathroomsStringPicker()) {
           _selectedBathroomsList = [];
           _dataInitializationMap.remove(BATHROOMS);
         }
 
-        if(isSectionTypeKeyword()){
+        if (isSectionTypeKeyword()) {
           _keywordString = "";
           keywordTextController.text = "";
           _dataInitializationMap.remove(PROPERTY_KEYWORD);
@@ -1063,12 +1104,11 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
           _dataInitializationMap.remove(keywordFiltersKey);
         }
 
-        if(isSectionTypeMetaKeyPicker()){
+        if (isSectionTypeMetaKeyPicker()) {
           _dataInitializationMap.remove(metaKeyFiltersKey);
         }
       });
     }
-
 
     HiveStorageManager.storeFilterDataInfo(map: _dataInitializationMap);
     HiveStorageManager.storeSelectedCityInfo(data: {});
@@ -1076,85 +1116,71 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   }
 
   IconData getTermPickerIconData(String dataType) {
-    if(dataType == propertyStatusDataType){
+    if (dataType == propertyStatusDataType) {
       return AppThemePreferences.checkCircleIcon;
     }
-    if(dataType == propertyCityDataType){
+    if (dataType == propertyCityDataType) {
       return AppThemePreferences.locationIcon;
     }
-    if(dataType == propertyLabelDataType){
+    if (dataType == propertyLabelDataType) {
       return AppThemePreferences.labelIcon;
     }
-    if(dataType == propertyTypeDataType){
+    if (dataType == propertyTypeDataType) {
       return AppThemePreferences.locationCityIcon;
     }
-    if(dataType == propertyFeatureDataType){
+    if (dataType == propertyFeatureDataType) {
       return AppThemePreferences.featureChipIcon;
     }
-    if(dataType == propertyCountryDataType){
+    if (dataType == propertyCountryDataType) {
       return AppThemePreferences.locationCountryIcon;
     }
-    if(dataType == propertyStateDataType){
+    if (dataType == propertyStateDataType) {
       return AppThemePreferences.locationStateIcon;
     }
-    if(dataType == propertyAreaDataType) {
+    if (dataType == propertyAreaDataType) {
       return AppThemePreferences.locationAreaIcon;
     }
 
     return AppThemePreferences.locationCityIcon;
   }
 
-  List<dynamic> getSelectedTermDataList(String termDataType){
-    if(termDataType == propertyStatusDataType){
+  List<dynamic> getSelectedTermDataList(String termDataType) {
+    if (termDataType == propertyStatusDataType) {
       return _selectedPropertyStatusList;
-    }
-    else if(termDataType == propertyTypeDataType){
+    } else if (termDataType == propertyTypeDataType) {
       return _selectedPropertyTypesList;
-    }
-    else if(termDataType == propertyLabelDataType){
+    } else if (termDataType == propertyLabelDataType) {
       return _selectedPropertyLabelsList;
-    }
-    else if(termDataType == propertyAreaDataType){
+    } else if (termDataType == propertyAreaDataType) {
       return _selectedPropertyAreasList;
-    }
-    else if(termDataType == propertyStateDataType){
+    } else if (termDataType == propertyStateDataType) {
       return _selectedPropertyStatesList;
-    }
-    else if(termDataType == propertyCountryDataType){
+    } else if (termDataType == propertyCountryDataType) {
       return _selectedPropertyCountriesList;
-    }
-    else if(termDataType == propertyFeatureDataType){
+    } else if (termDataType == propertyFeatureDataType) {
       return _selectedPropertyFeaturesList;
-    }
-    else if(termDataType == propertyCityDataType){
+    } else if (termDataType == propertyCityDataType) {
       return _selectedPropertyCitiesList;
     }
     return [];
   }
 
-  List<dynamic> getSelectedTermSlugsList(String termDataType){
-    if(termDataType == propertyStatusDataType){
+  List<dynamic> getSelectedTermSlugsList(String termDataType) {
+    if (termDataType == propertyStatusDataType) {
       return _selectedPropertyStatusSlugsList;
-    }
-    else if(termDataType == propertyTypeDataType){
+    } else if (termDataType == propertyTypeDataType) {
       return _selectedPropertyTypesSlugsList;
-    }
-    else if(termDataType == propertyLabelDataType){
+    } else if (termDataType == propertyLabelDataType) {
       return _selectedPropertyLabelsSlugsList;
-    }
-    else if(termDataType == propertyAreaDataType){
+    } else if (termDataType == propertyAreaDataType) {
       return _selectedPropertyAreasSlugsList;
-    }
-    else if(termDataType == propertyStateDataType){
+    } else if (termDataType == propertyStateDataType) {
       return _selectedPropertyStatesSlugsList;
-    }
-    else if(termDataType == propertyCountryDataType){
+    } else if (termDataType == propertyCountryDataType) {
       return _selectedPropertyCountriesSlugsList;
-    }
-    else if(termDataType == propertyFeatureDataType){
+    } else if (termDataType == propertyFeatureDataType) {
       return _selectedPropertyFeaturesSlugsList;
-    }
-    else if(termDataType == propertyCityDataType){
+    } else if (termDataType == propertyCityDataType) {
       return _selectedPropertyCitySlugsList;
     }
     return [];
@@ -1164,119 +1190,134 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     required String termDataType,
     required List<dynamic> selectedTermsList,
     required List<dynamic> selectedTermSlugsList,
-}){
-   if(termDataType == propertyStatusDataType){
-     _selectedPropertyStatusList = selectedTermsList;
-     _selectedPropertyStatusSlugsList = selectedTermSlugsList;
-     _dataInitializationMap[PROPERTY_STATUS] = _selectedPropertyStatusList.toSet().toList();
-     _dataInitializationMap[PROPERTY_STATUS_SLUG] = _selectedPropertyStatusSlugsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_STATUS_QUERY_TYPE] = widget.filterPageConfigData.queryType;
-   }
-   else if(termDataType == propertyTypeDataType){
-     _selectedPropertyTypesList = selectedTermsList;
-     _selectedPropertyTypesSlugsList = selectedTermSlugsList;
-     _dataInitializationMap[PROPERTY_TYPE] = _selectedPropertyTypesList.toSet().toList();
-     _dataInitializationMap[PROPERTY_TYPE_SLUG] = _selectedPropertyTypesSlugsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_TYPE_QUERY_TYPE] = widget.filterPageConfigData.queryType;
-     _dataInitializationMap[termPickerTypeKey] = widget.filterPageConfigData.pickerType;
-   }
-   else if(termDataType == propertyLabelDataType){
-     _selectedPropertyLabelsList = selectedTermsList;
-     _selectedPropertyLabelsSlugsList = selectedTermSlugsList;
-     _dataInitializationMap[PROPERTY_LABEL] = _selectedPropertyLabelsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_LABEL_SLUG] = _selectedPropertyLabelsSlugsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_LABEL_QUERY_TYPE] = widget.filterPageConfigData.queryType;
-   }
-   else if(termDataType == propertyAreaDataType){
-     _selectedPropertyAreasList = selectedTermsList;
-     _selectedPropertyAreasSlugsList = selectedTermSlugsList;
-     _dataInitializationMap[PROPERTY_AREA] = _selectedPropertyAreasList.toSet().toList();
-     _dataInitializationMap[PROPERTY_AREA_SLUG] = _selectedPropertyAreasSlugsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_AREA_QUERY_TYPE] = widget.filterPageConfigData.queryType;
-   }
-   else if(termDataType == propertyStateDataType){
-     _selectedPropertyStatesList = selectedTermsList;
-     _selectedPropertyStatesSlugsList = selectedTermSlugsList;
-     _dataInitializationMap[PROPERTY_STATE] = _selectedPropertyStatesList.toSet().toList();
-     _dataInitializationMap[PROPERTY_STATE_SLUG] = _selectedPropertyStatesSlugsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_STATE_QUERY_TYPE] = widget.filterPageConfigData.queryType;
-     GeneralNotifier().publishChange(GeneralNotifier.STATE_DATA_UPDATE);
-   }
-   else if(termDataType == propertyCountryDataType){
-     _selectedPropertyCountriesList = selectedTermsList;
-     _selectedPropertyCountriesSlugsList = selectedTermSlugsList;
-     _dataInitializationMap[PROPERTY_COUNTRY] = _selectedPropertyCountriesList.toSet().toList();
-     _dataInitializationMap[PROPERTY_COUNTRY_SLUG] = _selectedPropertyCountriesSlugsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_COUNTRY_QUERY_TYPE] = widget.filterPageConfigData.queryType;
-     GeneralNotifier().publishChange(GeneralNotifier.COUNTRY_DATA_UPDATE);
-   }
-   else if(termDataType == propertyFeatureDataType){
-     _selectedPropertyFeaturesList = selectedTermsList;
-     _selectedPropertyFeaturesSlugsList = selectedTermSlugsList;
-     _dataInitializationMap[PROPERTY_FEATURES] = _selectedPropertyFeaturesList.toSet().toList();
-     _dataInitializationMap[PROPERTY_FEATURES_SLUG] = _selectedPropertyFeaturesSlugsList.toSet().toList();
-     _dataInitializationMap[PROPERTY_FEATURES_QUERY_TYPE] = widget.filterPageConfigData.queryType;
-   }
-   else if(termDataType == propertyCityDataType){
-     _selectedPropertyCitiesList = selectedTermsList;
-     _selectedPropertyCitySlugsList = selectedTermSlugsList;
+  }) {
+    if (termDataType == propertyStatusDataType) {
+      _selectedPropertyStatusList = selectedTermsList;
+      _selectedPropertyStatusSlugsList = selectedTermSlugsList;
+      _dataInitializationMap[PROPERTY_STATUS] =
+          _selectedPropertyStatusList.toSet().toList();
+      _dataInitializationMap[PROPERTY_STATUS_SLUG] =
+          _selectedPropertyStatusSlugsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_STATUS_QUERY_TYPE] =
+          widget.filterPageConfigData.queryType;
+    } else if (termDataType == propertyTypeDataType) {
+      _selectedPropertyTypesList = selectedTermsList;
+      _selectedPropertyTypesSlugsList = selectedTermSlugsList;
+      _dataInitializationMap[PROPERTY_TYPE] =
+          _selectedPropertyTypesList.toSet().toList();
+      _dataInitializationMap[PROPERTY_TYPE_SLUG] =
+          _selectedPropertyTypesSlugsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_TYPE_QUERY_TYPE] =
+          widget.filterPageConfigData.queryType;
+      _dataInitializationMap[termPickerTypeKey] =
+          widget.filterPageConfigData.pickerType;
+    } else if (termDataType == propertyLabelDataType) {
+      _selectedPropertyLabelsList = selectedTermsList;
+      _selectedPropertyLabelsSlugsList = selectedTermSlugsList;
+      _dataInitializationMap[PROPERTY_LABEL] =
+          _selectedPropertyLabelsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_LABEL_SLUG] =
+          _selectedPropertyLabelsSlugsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_LABEL_QUERY_TYPE] =
+          widget.filterPageConfigData.queryType;
+    } else if (termDataType == propertyAreaDataType) {
+      _selectedPropertyAreasList = selectedTermsList;
+      _selectedPropertyAreasSlugsList = selectedTermSlugsList;
+      _dataInitializationMap[PROPERTY_AREA] =
+          _selectedPropertyAreasList.toSet().toList();
+      _dataInitializationMap[PROPERTY_AREA_SLUG] =
+          _selectedPropertyAreasSlugsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_AREA_QUERY_TYPE] =
+          widget.filterPageConfigData.queryType;
+    } else if (termDataType == propertyStateDataType) {
+      _selectedPropertyStatesList = selectedTermsList;
+      _selectedPropertyStatesSlugsList = selectedTermSlugsList;
+      _dataInitializationMap[PROPERTY_STATE] =
+          _selectedPropertyStatesList.toSet().toList();
+      _dataInitializationMap[PROPERTY_STATE_SLUG] =
+          _selectedPropertyStatesSlugsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_STATE_QUERY_TYPE] =
+          widget.filterPageConfigData.queryType;
+      GeneralNotifier().publishChange(GeneralNotifier.STATE_DATA_UPDATE);
+    } else if (termDataType == propertyCountryDataType) {
+      _selectedPropertyCountriesList = selectedTermsList;
+      _selectedPropertyCountriesSlugsList = selectedTermSlugsList;
+      _dataInitializationMap[PROPERTY_COUNTRY] =
+          _selectedPropertyCountriesList.toSet().toList();
+      _dataInitializationMap[PROPERTY_COUNTRY_SLUG] =
+          _selectedPropertyCountriesSlugsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_COUNTRY_QUERY_TYPE] =
+          widget.filterPageConfigData.queryType;
+      GeneralNotifier().publishChange(GeneralNotifier.COUNTRY_DATA_UPDATE);
+    } else if (termDataType == propertyFeatureDataType) {
+      _selectedPropertyFeaturesList = selectedTermsList;
+      _selectedPropertyFeaturesSlugsList = selectedTermSlugsList;
+      _dataInitializationMap[PROPERTY_FEATURES] =
+          _selectedPropertyFeaturesList.toSet().toList();
+      _dataInitializationMap[PROPERTY_FEATURES_SLUG] =
+          _selectedPropertyFeaturesSlugsList.toSet().toList();
+      _dataInitializationMap[PROPERTY_FEATURES_QUERY_TYPE] =
+          widget.filterPageConfigData.queryType;
+    } else if (termDataType == propertyCityDataType) {
+      _selectedPropertyCitiesList = selectedTermsList;
+      _selectedPropertyCitySlugsList = selectedTermSlugsList;
 
-     if(_selectedPropertyCitiesList.isNotEmpty){
-       _dataInitializationMap[CITY] = _selectedPropertyCitiesList.toSet().toList();
-     }
+      if (_selectedPropertyCitiesList.isNotEmpty) {
+        _dataInitializationMap[CITY] =
+            _selectedPropertyCitiesList.toSet().toList();
+      }
 
-     if(_selectedPropertyCitySlugsList.isNotEmpty){
-       _dataInitializationMap[CITY_SLUG] = _selectedPropertyCitySlugsList.toSet().toList();
-     }
+      if (_selectedPropertyCitySlugsList.isNotEmpty) {
+        _dataInitializationMap[CITY_SLUG] =
+            _selectedPropertyCitySlugsList.toSet().toList();
+      }
 
-     // For the multiple cities selection, get the data of 1st city and set it
-     // as selected city across app.
-     if(_selectedPropertyCitySlugsList.isNotEmpty){
-       var tempObj = UtilityMethods.getPropertyMetaDataObjectWithSlug(dataType: termDataType, slug: _selectedPropertyCitySlugsList[0]);
-       if(tempObj != null && tempObj.id != null){
-         _dataInitializationMap[CITY_ID] = tempObj.id;
-         saveSelectedCityInfo(
-           _dataInitializationMap[CITY_ID],
-           _dataInitializationMap[CITY][0],
-           _dataInitializationMap[CITY_SLUG][0],
-         );
-       } else {
-         saveSelectedCityInfo(null, "", "");
-       }
-     }else {
-       saveSelectedCityInfo(null, "", "");
-     }
-   }
+      // For the multiple cities selection, get the data of 1st city and set it
+      // as selected city across app.
+      if (_selectedPropertyCitySlugsList.isNotEmpty) {
+        var tempObj = UtilityMethods.getPropertyMetaDataObjectWithSlug(
+            dataType: termDataType, slug: _selectedPropertyCitySlugsList[0]);
+        if (tempObj != null && tempObj.id != null) {
+          _dataInitializationMap[CITY_ID] = tempObj.id;
+          saveSelectedCityInfo(
+            _dataInitializationMap[CITY_ID],
+            _dataInitializationMap[CITY][0],
+            _dataInitializationMap[CITY_SLUG][0],
+          );
+        } else {
+          saveSelectedCityInfo(null, "", "");
+        }
+      } else {
+        saveSelectedCityInfo(null, "", "");
+      }
+    }
 
-   widget.filterPageWidgetsListener(_dataInitializationMap, "");
-   if(mounted) setState(() {});
+    widget.filterPageWidgetsListener(_dataInitializationMap, "");
+    if (mounted) setState(() {});
   }
 
   IconData getStringPickerIconData(String dataType) {
-    if(dataType == stringPickerBedroomsKey){
+    if (dataType == stringPickerBedroomsKey) {
       return AppThemePreferences.bedIcon;
-    }
-    else if(dataType == stringPickerBathroomsKey){
+    } else if (dataType == stringPickerBathroomsKey) {
       return AppThemePreferences.bathtubIcon;
     }
     return AppThemePreferences.errorIcon;
   }
 
   List<String> getStringPickerDataList(String dataType) {
-    if(dataType == stringPickerBedroomsKey){
+    if (dataType == stringPickerBedroomsKey) {
       return _bedroomsDataList;
-    }
-    else if(dataType == stringPickerBathroomsKey){
+    } else if (dataType == stringPickerBathroomsKey) {
       return _bathroomsDataList;
     }
     return [];
   }
 
   List<dynamic> getStringPickerSelectedItemsDataList(String dataType) {
-    if(dataType == stringPickerBedroomsKey){
+    if (dataType == stringPickerBedroomsKey) {
       return _selectedBedroomsList;
-    }
-    else if(dataType == stringPickerBathroomsKey){
+    } else if (dataType == stringPickerBathroomsKey) {
       return _selectedBathroomsList;
     }
     return [];
@@ -1285,12 +1326,11 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   updateStringPickerData({
     required String dataType,
     required List<dynamic> selectedItemsList,
-  }){
-    if(dataType == stringPickerBedroomsKey){
+  }) {
+    if (dataType == stringPickerBedroomsKey) {
       _selectedBedroomsList = selectedItemsList;
       _dataInitializationMap[BEDROOMS] = _selectedBedroomsList;
-    }
-    else if(dataType == stringPickerBathroomsKey){
+    } else if (dataType == stringPickerBathroomsKey) {
       _selectedBathroomsList = selectedItemsList;
       _dataInitializationMap[BATHROOMS] = _selectedBathroomsList;
     }
@@ -1300,17 +1340,16 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   }
 
   IconData getRangePickerIconData(String dataType) {
-    if(dataType == rangePickerPriceKey){
+    if (dataType == rangePickerPriceKey) {
       return AppThemePreferences.priceTagIcon;
-    }
-    else if(dataType == rangePickerAreaKey){
+    } else if (dataType == rangePickerAreaKey) {
       return AppThemePreferences.areaSizeIcon;
     }
     return AppThemePreferences.errorIcon;
   }
 
   double getSelectedMinRange(String dataType, String rangeMinValue) {
-    if(dataType == rangePickerPriceKey){
+    if (dataType == rangePickerPriceKey) {
       return double.parse(_selectedMinPrice);
     }
     // else if(dataType == rangePickerAreaKey){
@@ -1339,7 +1378,7 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     //   return double.parse(_selectedMaxArea);
     // }
     else {
-      if(double.parse(_selectedMaxArea) > double.parse(rangeMaxValue)){
+      if (double.parse(_selectedMaxArea) > double.parse(rangeMaxValue)) {
         _selectedMaxArea = rangeMaxValue;
         return double.parse(rangeMaxValue);
       }
@@ -1349,10 +1388,9 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   }
 
   String? getSelectedSymbol(String dataType) {
-    if(dataType == rangePickerPriceKey){
+    if (dataType == rangePickerPriceKey) {
       return _selectedCurrencySymbol;
-    }
-    else if(dataType == rangePickerAreaKey){
+    } else if (dataType == rangePickerAreaKey) {
       return _selectedAreaSymbol;
     }
     return null;
@@ -1363,38 +1401,37 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
     required String selectedSymbol,
     required String selectedMinRange,
     required String selectedMaxRange,
-  }){
-    if(dataType == rangePickerPriceKey){
+  }) {
+    if (dataType == rangePickerPriceKey) {
       _currency = selectedSymbol;
 
-      if(selectedMinRange.contains(",")){
+      if (selectedMinRange.contains(",")) {
         _selectedMinPrice = selectedMinRange.replaceAll(",", "");
-      }else{
+      } else {
         _selectedMinPrice = selectedMinRange;
       }
 
-      if(selectedMaxRange.contains(",")){
+      if (selectedMaxRange.contains(",")) {
         _selectedMaxPrice = selectedMaxRange.replaceAll(",", "");
-      }else{
+      } else {
         _selectedMaxPrice = selectedMaxRange;
       }
 
       _dataInitializationMap[CURRENCY_SYMBOL] = _currency;
       _dataInitializationMap[PRICE_MIN] = _selectedMinPrice;
       _dataInitializationMap[PRICE_MAX] = _selectedMaxPrice;
-    }
-    else if(dataType == rangePickerAreaKey){
+    } else if (dataType == rangePickerAreaKey) {
       _areaType = selectedSymbol;
 
-      if(selectedMinRange.contains(",")){
+      if (selectedMinRange.contains(",")) {
         _selectedMinArea = selectedMinRange.replaceAll(",", "");
-      }else{
+      } else {
         _selectedMinArea = selectedMinRange;
       }
 
-      if(selectedMaxRange.contains(",")){
+      if (selectedMaxRange.contains(",")) {
         _selectedMaxArea = selectedMaxRange.replaceAll(",", "");
-      }else{
+      } else {
         _selectedMaxArea = selectedMaxRange;
       }
 
@@ -1423,16 +1460,16 @@ class _FilterPageWidgetsState extends State<FilterPageWidgets> {
   //   return null;
   // }
 
-  void saveSelectedCityInfo(int? cityId, String cityName, String citySlug){
+  void saveSelectedCityInfo(int? cityId, String cityName, String citySlug) {
     Map dataMap = {};
 
-    if(cityId == null && cityName.isEmpty && citySlug.isEmpty){
+    if (cityId == null && cityName.isEmpty && citySlug.isEmpty) {
       dataMap = {};
     } else {
       dataMap = {
-        CITY : cityName,
-        CITY_ID : cityId,
-        CITY_SLUG : citySlug,
+        CITY: cityName,
+        CITY_ID: cityId,
+        CITY_SLUG: citySlug,
       };
     }
 

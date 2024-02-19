@@ -9,8 +9,7 @@ import 'package:houzi_package/models/address_search.dart';
 import 'package:houzi_package/widgets/button_widget.dart';
 import 'package:uuid/uuid.dart';
 
-class HomeLocationSearchBarWidget extends StatefulWidget{
-
+class HomeLocationSearchBarWidget extends StatefulWidget {
   const HomeLocationSearchBarWidget({
     Key? key,
   }) : super(key: key);
@@ -19,10 +18,10 @@ class HomeLocationSearchBarWidget extends StatefulWidget{
   State<StatefulWidget> createState() => HomeLocationSearchBarWidgetState();
 }
 
-class HomeLocationSearchBarWidgetState extends State<HomeLocationSearchBarWidget> {
-
+class HomeLocationSearchBarWidgetState
+    extends State<HomeLocationSearchBarWidget> {
   Map<String, dynamic> _filterDataMap = {};
-  Map<String, dynamic> _searchDataMap = {};
+  final Map<String, dynamic> _searchDataMap = {};
   String _selectedLocation = '';
   String _latitude = '';
   String _longitude = '';
@@ -31,25 +30,23 @@ class HomeLocationSearchBarWidgetState extends State<HomeLocationSearchBarWidget
   void initState() {
     super.initState();
     _filterDataMap = HiveStorageManager.readFilterDataInfo() ?? {};
-    if(_filterDataMap.isNotEmpty){
-      if(_filterDataMap.containsKey(SELECTED_LOCATION)){
+    if (_filterDataMap.isNotEmpty) {
+      if (_filterDataMap.containsKey(SELECTED_LOCATION)) {
         _selectedLocation = _filterDataMap[SELECTED_LOCATION] ?? "";
         _searchDataMap[SELECTED_LOCATION] = _selectedLocation;
       }
-      if(_filterDataMap.containsKey(LATITUDE)){
+      if (_filterDataMap.containsKey(LATITUDE)) {
         _latitude = _filterDataMap[LATITUDE] ?? "";
         _searchDataMap[LATITUDE] = _latitude;
       }
-      if(_filterDataMap.containsKey(LONGITUDE)){
+      if (_filterDataMap.containsKey(LONGITUDE)) {
         _longitude = _filterDataMap[LONGITUDE] ?? "";
         _searchDataMap[LONGITUDE] = _longitude;
       }
 
-
-
-      // print("_selectedLocation: $_selectedLocation");
-      // print("_latitude: $_latitude");
-      // print("_longitude: $_longitude");
+      print("_selectedLocation: $_selectedLocation");
+      print("_latitude: $_latitude");
+      print("_longitude: $_longitude");
     }
   }
 
@@ -63,22 +60,23 @@ class HomeLocationSearchBarWidgetState extends State<HomeLocationSearchBarWidget
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: locationBarWidget(),
-          ),),
-
+          ),
+        ),
         Expanded(
           flex: 2,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             child: searchIconButtonWidget(),
             // child: searchButtonWidget(),
-          ),),
+          ),
+        ),
       ],
     );
   }
 
-  Widget locationBarWidget(){
+  Widget locationBarWidget() {
     return GestureDetector(
-      onTap: () async{
+      onTap: () async {
         final sessionToken = const Uuid().v4();
         final Suggestion? result = await showSearch(
           context: context,
@@ -86,18 +84,20 @@ class HomeLocationSearchBarWidgetState extends State<HomeLocationSearchBarWidget
           query: _selectedLocation,
         );
         if (result != null) {
-          var response = await PlaceApiProvider.getPlaceDetailFromPlaceId(result.placeId!);
+          var response =
+              await PlaceApiProvider.getPlaceDetailFromPlaceId(result.placeId!);
           Map addressMap = response.data ?? {};
           try {
-            if(addressMap.isNotEmpty){
+            if (addressMap.isNotEmpty) {
               var lat = addressMap["result"]["geometry"]["location"]["lat"];
               var lng = addressMap["result"]["geometry"]["location"]["lng"];
               setState(() {
-                _selectedLocation = addressMap["result"]["formatted_address"] ?? "";
-                if(lat != null) {
+                _selectedLocation =
+                    addressMap["result"]["formatted_address"] ?? "";
+                if (lat != null) {
                   _latitude = lat.toString();
                 }
-                if(lng != null) {
+                if (lng != null) {
                   _longitude = lng.toString();
                 }
               });
@@ -121,66 +121,72 @@ class HomeLocationSearchBarWidgetState extends State<HomeLocationSearchBarWidget
           readOnly: true,
           strutStyle: const StrutStyle(forceStrutHeight: true),
           decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            enabled: false,
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: AppThemePreferences().appTheme.searchBarBackgroundColor!),
-            ),
-              // disabledBorder: InputBorder.none,
-            // enabledBorder: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(12.0),
-            //   borderSide: BorderSide(color: AppThemePreferences().appTheme.searchBarBackgroundColor),
-            // ),
-            // border: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(12.0),
-            //   borderSide: BorderSide(color: AppThemePreferences().appTheme.searchBarBackgroundColor),
-            // ),
-            contentPadding: const EdgeInsets.only(top: 5, left: 0, right: 0),
-            // contentPadding: const EdgeInsets.only(top: 5, left: 15, right: 15),
-            fillColor: AppThemePreferences().appTheme.searchBarBackgroundColor,
-            filled: true,
-            hintText: (_selectedLocation.isEmpty) ?
-                    UtilityMethods.getLocalizedString("location") : _selectedLocation,
-            hintStyle: AppThemePreferences().appTheme.searchBarTextStyle,
-            prefixIcon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),//10
-              child: Icon(
-                AppThemePreferences.gpsLocationIcon,
-                size: AppThemePreferences.homeScreenSearchBarIconSize,
-                color: AppThemePreferences().appTheme.homeScreenSearchBarIconColor,
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              enabled: false,
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                    color: AppThemePreferences()
+                        .appTheme
+                        .searchBarBackgroundColor!),
               ),
-            ),
-            prefixIconConstraints: BoxConstraints(
-              maxWidth: 50,
-            )
-          ),
+              // disabledBorder: InputBorder.none,
+              // enabledBorder: OutlineInputBorder(
+              //   borderRadius: BorderRadius.circular(12.0),
+              //   borderSide: BorderSide(color: AppThemePreferences().appTheme.searchBarBackgroundColor),
+              // ),
+              // border: OutlineInputBorder(
+              //   borderRadius: BorderRadius.circular(12.0),
+              //   borderSide: BorderSide(color: AppThemePreferences().appTheme.searchBarBackgroundColor),
+              // ),
+              contentPadding: const EdgeInsets.only(top: 5, left: 0, right: 0),
+              // contentPadding: const EdgeInsets.only(top: 5, left: 15, right: 15),
+              fillColor:
+                  AppThemePreferences().appTheme.searchBarBackgroundColor,
+              filled: true,
+              hintText: (_selectedLocation.isEmpty)
+                  ? UtilityMethods.getLocalizedString("location")
+                  : _selectedLocation,
+              hintStyle: AppThemePreferences().appTheme.searchBarTextStyle,
+              prefixIcon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8), //10
+                child: Icon(
+                  AppThemePreferences.gpsLocationIcon,
+                  size: AppThemePreferences.homeScreenSearchBarIconSize,
+                  color: AppThemePreferences()
+                      .appTheme
+                      .homeScreenSearchBarIconColor,
+                ),
+              ),
+              prefixIconConstraints: const BoxConstraints(
+                maxWidth: 50,
+              )),
         ),
       ),
     );
   }
 
-  Widget searchButtonWidget(){
+  Widget searchButtonWidget() {
     return ButtonWidget(
       text: UtilityMethods.getLocalizedString("search"),
       fontSize: 10,
       buttonHeight: 36,
       buttonStyle: ElevatedButton.styleFrom(
         elevation: 0.0,
-        primary: AppThemePreferences.actionButtonBackgroundColor,
+        backgroundColor: AppThemePreferences.actionButtonBackgroundColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
-            side: BorderSide(color: AppThemePreferences.actionButtonBackgroundColor)
-        ),
+            side: BorderSide(
+                color: AppThemePreferences.actionButtonBackgroundColor)),
       ),
-      onPressed: ()=> onSearchPressed(),
+      onPressed: () => onSearchPressed(),
     );
   }
 
-  Widget searchIconButtonWidget(){
+  Widget searchIconButtonWidget() {
     return Container(
       height: 36,
       decoration: BoxDecoration(
@@ -189,24 +195,27 @@ class HomeLocationSearchBarWidgetState extends State<HomeLocationSearchBarWidget
       ),
       child: IconButton(
         padding: EdgeInsets.zero,
-        onPressed: ()=> onSearchPressed(),
+        onPressed: () => onSearchPressed(),
         icon: Icon(
-          UtilityMethods.isRTL(context) ?
-          AppThemePreferences.homeScreenSearchArrowIconRTL :
-          AppThemePreferences.homeScreenSearchArrowIconLTR,
-          color: AppThemePreferences().appTheme.homeScreenSearchArrowIconBackgroundColor,
+          UtilityMethods.isRTL(context)
+              ? AppThemePreferences.homeScreenSearchArrowIconRTL
+              : AppThemePreferences.homeScreenSearchArrowIconLTR,
+          color: AppThemePreferences()
+              .appTheme
+              .homeScreenSearchArrowIconBackgroundColor,
         ),
       ),
     );
   }
 
-  onSearchPressed(){
-    if(_searchDataMap.isNotEmpty){
+  onSearchPressed() {
+    if (_searchDataMap.isNotEmpty) {
       _searchDataMap[USE_RADIUS] = "on";
       _searchDataMap[SEARCH_LOCATION] = "true";
       _searchDataMap[RADIUS] = "50";
       HiveStorageManager.storeFilterDataInfo(map: _searchDataMap);
-      GeneralNotifier().publishChange(GeneralNotifier.FILTER_DATA_LOADING_COMPLETE);
+      GeneralNotifier()
+          .publishChange(GeneralNotifier.FILTER_DATA_LOADING_COMPLETE);
     }
 
     UtilityMethods.storeOrUpdateRecentSearches(_searchDataMap);
@@ -217,10 +226,7 @@ class HomeLocationSearchBarWidgetState extends State<HomeLocationSearchBarWidget
         context: context,
         dataInitializationMap: _searchDataMap,
         // dataInitializationMap: HiveStorageManager.readFilterDataInfo() ?? {},
-        navigateToSearchResultScreenListener: ({filterDataMap}){
-
-        }
-    );
+        navigateToSearchResultScreenListener: ({filterDataMap}) {});
 
     // Reset the Fields for next Search
     // setState(() {

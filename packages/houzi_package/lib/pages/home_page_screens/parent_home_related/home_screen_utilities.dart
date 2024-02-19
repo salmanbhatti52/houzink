@@ -41,7 +41,8 @@ class HomeScreenUtilities {
     }
 
     if (design == DESIGN_03) { // home_2
-      print("Building Home Location...");
+    
+      print("Building Home Location from HomeScreenUtilities..."); 
       return HomeLocation(scaffoldKey: scaffoldKey);
     }
 

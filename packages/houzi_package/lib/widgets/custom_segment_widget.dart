@@ -36,27 +36,28 @@ class TabBarTitleWidget extends StatelessWidget {
                 children: itemList
                     .map(
                       (item) {
-                    var index = itemList.indexOf(item);
-                    return Container(
-                      // padding:  EdgeInsets.all(10),
-                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: GenericTextWidget(
-                        item,
-                        style: TextStyle(
-                          fontSize: AppThemePreferences.tabBarTitleFontSize,
-                          fontWeight:
-                          AppThemePreferences.tabBarTitleFontWeight,
-                          color: initialSelection == index
-                              ? AppThemePreferences()
-                              .appTheme
-                              .selectedItemTextColor
-                              : AppThemePreferences
-                              .unSelectedItemTextColorLight,
-                        ),
-                      ),
-                    );
-                  },
-                )
+                        var index = itemList.indexOf(item);
+                        return Container(
+                          color: Colors.blue,
+                          // padding:  EdgeInsets.all(10),
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          child: GenericTextWidget(
+                            item,
+                            style: TextStyle(
+                              fontSize: AppThemePreferences.tabBarTitleFontSize,
+                              fontWeight:
+                                  AppThemePreferences.tabBarTitleFontWeight,
+                              color: initialSelection == index
+                                  ? AppThemePreferences()
+                                      .appTheme
+                                      .selectedItemTextColor
+                                  : AppThemePreferences
+                                      .unSelectedItemTextColorLight,
+                            ),
+                          ),
+                        );
+                      },
+                    )
                     .toList()
                     .asMap(),
                 selectionIndex: initialSelection,
@@ -64,7 +65,7 @@ class TabBarTitleWidget extends StatelessWidget {
                     .appTheme
                     .unSelectedItemBackgroundColor,
                 selectedColor:
-                AppThemePreferences().appTheme.selectedItemBackgroundColor!,
+                    AppThemePreferences().appTheme.selectedItemBackgroundColor!,
                 borderColor: Colors.transparent,
                 borderRadius: 8.0, //5.0
                 verticalOffset: 8.0, // 8.0
@@ -108,93 +109,60 @@ class SegmentedControlWidget extends StatefulWidget {
 }
 
 class _SegmentedControlWidgetState extends State<SegmentedControlWidget> {
-  CustomSegmentedControlHook customSegmentedControlHook = HooksConfigurations.customSegmentedControlHook;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      // padding: const EdgeInsets.all(15),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: customSegmentedControlHook(
-              context,
-              widget.itemList,
-              widget.selectionIndex,
-              widget.onSegmentChosen,
-            ) ??
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: buildSegment(),
-            ),
+        child: Row(
+          children: _buildSegments(),
+        ),
       ),
     );
   }
 
-  Widget buildSegment() {
-    return USE_CUPERTINO_SEGMENT_CONTROL
-        ? CupertinoSlidingSegmentedControl(
-            groupValue: widget.selectionIndex,
-            thumbColor: AppThemePreferences().appTheme.cupertinoSegmentThumbColor!,
-            backgroundColor: AppThemePreferences().appTheme.containerBackgroundColor!,
-            onValueChanged: (newValue) {
-              if (newValue != null) {
-                widget.onSegmentChosen(newValue);
-              }
-            },
-            children: Map.fromEntries(
-              widget.itemList.asMap().entries
-                .map((entry) {
-                  var index = entry.key;
-                  var item = entry.value;
-                  return MapEntry(
-                    index,
-                    Container(
-                      padding: widget.padding,
-                      child: GenericTextWidget(
-                        item.runtimeType == Term
-                            ? UtilityMethods.getLocalizedString(
-                                (item as Term).name!)
-                            : UtilityMethods.getLocalizedString(item),
-                        style: TextStyle(
-                          fontSize: widget.fontSize ?? AppThemePreferences.tabBarTitleFontSize,
-                          fontWeight: widget.fontWeight ?? AppThemePreferences.tabBarTitleFontWeight,
-                          color: AppThemePreferences().appTheme.selectedItemTextColor,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+  List<Widget> _buildSegments() {
+    return widget.itemList.asMap().entries.map((entry) {
+      var index = entry.key;
+      var item = entry.value;
+      return GestureDetector(
+        onTap: () {
+          widget.onSegmentChosen(index);
+        },
+        child: Container(
+          width: 119,
+          height: 36,
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: widget.selectionIndex == index
+                    ? Colors.blue // Selected text color
+                    : Colors.grey),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            color: widget.selectionIndex == index
+                ? AppThemePreferences().appTheme.primaryColor!
+                : AppThemePreferences().appTheme.unSelectedItemBackgroundColor,
+          ),
+          margin: const EdgeInsets.symmetric(
+              horizontal: 8), // Adjust margin as needed
+          child: Center(
+            child: Text(
+              item.runtimeType == Term
+                  ? UtilityMethods.getLocalizedString(item.name)
+                  : UtilityMethods.getLocalizedString(item),
+              style: TextStyle(
+                fontSize:
+                    widget.fontSize ?? AppThemePreferences.tabBarTitleFontSize,
+                fontWeight: widget.fontWeight ??
+                    AppThemePreferences.tabBarTitleFontWeight,
+                color: widget.selectionIndex == index
+                    ? Colors.white // Selected text color
+                    : Colors.grey, // Unselected text color with opacity
               ),
             ),
-          )
-        : MaterialSegmentedControl(
-            horizontalPadding: widget.horizontalPadding,
-            selectionIndex: widget.selectionIndex,
-            unselectedColor: AppThemePreferences().appTheme.unSelectedItemBackgroundColor,
-            selectedColor: AppThemePreferences().appTheme.selectedItemBackgroundColor!,
-            borderRadius: widget.borderRadius,
-            verticalOffset: widget.verticalOffset,
-            onSegmentTapped: widget.onSegmentChosen,
-            // onSegmentChosen: widget.onSegmentChosen,
-            children: widget.itemList.map((item) {
-                var index = widget.itemList.indexOf(item);
-                return Container(
-                  padding: widget.padding,
-                  child: GenericTextWidget(
-                    item.runtimeType == Term
-                        ? UtilityMethods.getLocalizedString(item.name)
-                        : UtilityMethods.getLocalizedString(item),
-                    style: TextStyle(
-                      fontSize: widget.fontSize ?? AppThemePreferences.tabBarTitleFontSize,
-                      fontWeight: widget.fontWeight ?? AppThemePreferences.tabBarTitleFontWeight,
-                      color: widget.selectionIndex == index
-                          ? AppThemePreferences().appTheme.selectedItemTextColor
-                          : AppThemePreferences.unSelectedItemTextColorLight,
-                    ),
-                  ),
-                );
-              },
-            ).toList().asMap(),
-          );
+          ),
+        ),
+      );
+    }).toList();
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
+
 library constants;
 
 import 'dart:core';
@@ -15,15 +17,15 @@ String APP_NAME = 'Houzi';
 ///
 /// if your website URL does not contain path then leave WORDPRESS_URL_PATH empty.
 
- String WORDPRESS_URL_SCHEME = "https";
- String WORDPRESS_URL_DOMAIN = "subdomain.domain.com";
- String WORDPRESS_URL_PATH = "";
-
+String WORDPRESS_URL_SCHEME = "https";
+String WORDPRESS_URL_DOMAIN = "subdomain.domain.com";
+String WORDPRESS_URL_PATH = "";
 
 String APP_TERMS_URL = "https://houzi.booleanbites.com/terms.html";
 String APP_PRIVACY_URL = "https://houzi.booleanbites.com/privacy.html";
 String APP_TERMS_OF_USE_URL = "https://houzi.booleanbites.com/terms.html";
-String WORDPRESS_URL_GDPR_AGREEMENT = "https://houzi.booleanbites.com/terms.html";
+String WORDPRESS_URL_GDPR_AGREEMENT =
+    "https://houzi.booleanbites.com/terms.html";
 
 /// Your Company Related
 String COMPANY_URL = "https://booleanbites.com";
@@ -31,12 +33,12 @@ String COMPANY_URL = "https://booleanbites.com";
 ///Some website use 'wp/v2/properties' and some 'wp/v2/property' and some 'wp/v2/translated_property_name'
 // const String REST_API_PROPERTIES_ROUTE = 'property';
 String REST_API_PROPERTIES_ROUTE = 'properties';
+
 ///Some website use 'wp/v2/agents' and some 'wp/v2/houzez_agent' and some 'wp/v2/translated_agent_name'
 String REST_API_AGENT_ROUTE = 'agents';
+
 ///Some website use 'wp/v2/agencies' and some 'wp/v2/houzez_agency' and some 'wp/v2/translated_agency_name'
 String REST_API_AGENCY_ROUTE = 'agencies';
-
-
 
 /// Provide google map api here
 String GOOGLE_MAP_API_KEY = "AIzaSyB97Doab8QwQI07LoPR-0ypU-DLYzhrnvw";
@@ -47,20 +49,21 @@ String GOOGLE_MAP_API_KEY = "AIzaSyB97Doab8QwQI07LoPR-0ypU-DLYzhrnvw";
 
 /// Provide google android banner ad id here
 String ANDROID_BANNER_AD_ID = "ca-app-pub-3940256099942544/6300978111";
+
 /// Provide google ios banner ad id here
 String IOS_BANNER_AD_ID = "ca-app-pub-3940256099942544/6300978111";
+
 /// Provide google android banner ad id here
 String ANDROID_NATIVE_AD_ID = "ca-app-pub-3940256099942544/2247696110";
+
 /// Provide google ios banner ad id here
 String IOS_NATIVE_AD_ID = "ca-app-pub-3940256099942544/2247696110";
 
 /// Provide Service Id here
 const String APPLE_SIGN_ON_CLIENT_ID = "com.houzi.app.signin";
 
-
 /// Provide Redirect Uri here
 String APPLE_SIGN_ON_REDIRECT_URI = "https://example-app.com/redirect";
-
 
 /// Provide Tabbed Home Quote here
 String TABBED_HOME_QUOTE = "What are you looking for Today?";
@@ -72,11 +75,9 @@ const String HOUZI_VERSION = "1.3.8";
 
 const String COMPANY_NAME = "BooleanBites Ltd.";
 
-
 /// Communication Protocol Related
 const String HTTP = 'http';
 const String HTTPS = 'https';
-
 
 const String APP_BASE_URL = 'app_base_url';
 const String APP_INFO = 'AppInfo';
@@ -259,8 +260,10 @@ const String LEAD_PREFIX_STORE_KEY = 'leadPrefixKey';
 const String LEAD_SOURCE_STORE_KEY = 'leadSourceKey';
 const String DEAL_STATUS_STORE_KEY = 'dealStatusKey';
 const String DEAL_NEXT_ACTION_STORE_KEY = 'dealNextActionKey';
-const String ADD_PROPERTY_CONFIGURATIONS_STORE_KEY = 'aaddPropertyConfigurationsStoreKey';
-const String QUICK_ADD_PROPERTY_CONFIGURATIONS_STORE_KEY = 'quickAddPropertyConfigurationsStoreKey';
+const String ADD_PROPERTY_CONFIGURATIONS_STORE_KEY =
+    'aaddPropertyConfigurationsStoreKey';
+const String QUICK_ADD_PROPERTY_CONFIGURATIONS_STORE_KEY =
+    'quickAddPropertyConfigurationsStoreKey';
 const String USER_PAYMENT_STATUS_KEY = 'userPaymentStatus';
 
 const String HEADER_SECURITY_KEY = 'security_key';
@@ -273,7 +276,6 @@ const String LIGHT_THEME_MODE = 'light';
 const String DARK_THEME_MODE = 'dark';
 const String SYSTEM_THEME_MODE = 'system';
 
-
 const String AGENCIES_DATA = 'AgenciesData';
 const String AGENTS_DATA = 'AgentsData';
 
@@ -284,7 +286,6 @@ const String LANGUAGE = 'Language';
 const String TERMS_AND_CONDITIONS = 'Terms and Conditions';
 const String PRIVACY_POLICY = 'Privacy Policy';
 const String ABOUT = 'About';
-
 
 /// Update related
 const String UPDATE_PROPERTY_ID = 'prop_id';
@@ -332,11 +333,13 @@ const String ADD_PROPERTY_MULTI_UNITS = 'multiUnits';
 const String ADD_PROPERTY_FAVE_MULTI_UNITS = 'fave_multi_units';
 const String ADD_PROPERTY_FAVE_PROPERTY_MAP = 'fave_property_map';
 const String ADD_PROPERTY_PROPERTY_ID = 'property_id';
-const String ADD_PROPERTY_USER_HAS_NO_MEMBERSHIP = 'user_submit_has_no_membership';
+const String ADD_PROPERTY_USER_HAS_NO_MEMBERSHIP =
+    'user_submit_has_no_membership';
 const String ADD_PROPERTY_IMAGE_IDS = 'propperty_image_ids[]';
 const String ADD_PROPERTY_FEATURED_IMAGE_ID = 'featured_image_id';
 const String ADD_PROPERTY_FEATURED_IMAGE_LOCAL_INDEX = 'featured_image_index';
-const String ADD_PROPERTY_FAVE_AGENT_DISPLAY_OPTION = 'fave_agent_display_option';
+const String ADD_PROPERTY_FAVE_AGENT_DISPLAY_OPTION =
+    'fave_agent_display_option';
 const String ADD_PROPERTY_FAVE_AGENT = 'fave_agents[]';
 const String ADD_PROPERTY_FAVE_AGENCY = 'fave_property_agency[]';
 const String ADD_PROPERTY_UPLOAD_STATUS = 'add_property_upload_status';
@@ -366,7 +369,8 @@ const String ADD_PROPERTY_NONCE = 'addPropertyNonce';
 const String ADD_PROPERTY_IMAGE_NONCE = 'addPropertyImageNonce';
 
 const String ADD_PROPERTIES_DATA_MAPS_LIST_KEY = 'AddPropertiesDataMapsListKey';
-const String DRAFT_PROPERTIES_DATA_MAPS_LIST_KEY = 'DraftPropertiesDataMapsListKey';
+const String DRAFT_PROPERTIES_DATA_MAPS_LIST_KEY =
+    'DraftPropertiesDataMapsListKey';
 
 const String ROLE_ADMINISTRATOR = 'administrator';
 const String ROLE_ADMINISTRATOR_CAPITAL = 'Administrator';
@@ -390,7 +394,6 @@ const String USER_ROLE_HOUZEZ_BUYER_OPTION = 'Buyer';
 const String USER_ROLE_HOUZEZ_SELLER_OPTION = 'Seller';
 const String USER_ROLE_HOUZEZ_MANAGER_OPTION = 'Manager';
 
-
 const String ACTIVE_OPTION = 'active';
 const String WON_OPTION = 'won';
 const String LOST_OPTION = 'lost';
@@ -410,14 +413,14 @@ bool SHOW_ADD_PROPERTY = false;
 
 const String DEMO_URL = 'https://demodomain.com/';
 
-
 ///When we send a demo version to a client, we need to set this as true,
 ///setting this to true will make the app request to a webservices,
 ///that'll check if this app is allowed to execute or not, so
 ///we can control the lifetime of a demo version.
 const bool APP_IS_IN_CLIENT_DEMO_MODE = false;
+
 ///demo version id to match with our online list.
-const int APP_DEMO_ID = 0;    //Houzi
+const int APP_DEMO_ID = 0; //Houzi
 
 /// Need to fix agent profile 1=> yes, 0=> no
 const int NEED_TO_FIX_PROFILE_PIC = 0;
@@ -427,7 +430,6 @@ bool SHOW_SEARCH_BY_CITY = true;
 
 /// Show location on filter page
 bool SHOW_SEARCH_BY_LOCATION = true;
-
 
 /// Social SignOn Related
 const bool SHOW_SOCIAL_LOGIN = true;
@@ -468,10 +470,10 @@ String PLACES_API_COUNTRIES = '';
 /// Keys from touch-base
 String MEASUREMENT_UNIT_TEXT = "sqft";
 String MEASUREMENT_UNIT_GLOBAL = "sqft";
-String ADD_PROP_GDPR_ENABLED= "1";
-String DECIMAL_POINT_SEPARATOR= ".";
-String THOUSAND_SEPARATOR= ",";
-String CURRENCY_POSITION= "before";
+String ADD_PROP_GDPR_ENABLED = "1";
+String DECIMAL_POINT_SEPARATOR = ".";
+String THOUSAND_SEPARATOR = ",";
+String CURRENCY_POSITION = "before";
 
 /// Add Property / Update Property, Address Fields Related
 bool SHOW_COUNTRY_NAME_FIELD = true;
@@ -522,7 +524,6 @@ bool USE_CUPERTINO_SEGMENT_CONTROL = false;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-
 const String ARTICLE_STATUS = 'Property Status';
 
 /// Keys related to floor plans
@@ -543,7 +544,6 @@ const String kReview = "review";
 const String kLead = "lead";
 const String kLeadContact = "lead_contact";
 const String kScheduleTour = "schedule_tour";
-
 
 /// Keys related to Property Details Map of Parser
 const String PROPERTY_DETAILS_PROPERTY_ID = 'Property ID';
@@ -607,7 +607,6 @@ const String PROPERTY_STATUS_BUY = 'Buy';
 const String PROPERTY_STATUS_SALE = 'SALE';
 const String PROPERTY_STATUS_RENT = 'Rent';
 
-
 /// Review Related
 const String REVIEW_TITLE = 'review_title';
 const String REVIEW_STARS = 'review_stars';
@@ -626,7 +625,8 @@ const String PROPERTY_MEDIA_IMAGE_ID = 'ImageId';
 const String PROPERTY_MEDIA_IMAGE_NAME = 'ImageName';
 const String PROPERTY_MEDIA_IMAGE_PATH = 'ImagePath';
 const String PROPERTY_MEDIA_IMAGE_STATUS = 'ImageStatus';
-const String PROPERTY_MEDIA_EXAMPLE_URL = 'https://www.youtube.com/watch?v=40KtYliO_Dg';
+const String PROPERTY_MEDIA_EXAMPLE_URL =
+    'https://www.youtube.com/watch?v=40KtYliO_Dg';
 
 const String ATTACHMENT_ID = 'attachment_id';
 const String IMAGE_TASK_ID = 'ImageTaskId';
@@ -706,7 +706,6 @@ const String INQUIRY_MOBILE = "mobile";
 const String UPDATE_INQUIRY_ID = "enquiry_id";
 const String INQUIRY_ACTION = "action";
 const String INQUIRY_ACTION_ADD_NEW = "crm_add_new_enquiry";
-
 
 /// Deal detail
 const String DEAL_DETAIL_TITLE = "title";
@@ -840,7 +839,8 @@ const String wordpressUrlPathConfiguration = "wordpress_url_path";
 const String appTermsUrlConfiguration = "app_terms_url";
 const String appPrivacyUrlConfiguration = "app_privacy_url";
 const String appTermsOfUseUrlConfiguration = "app_terms_of_use_url";
-const String wordpressUrlGDPRAgreementConfiguration = "wordpress_url_gdpr_agreement";
+const String wordpressUrlGDPRAgreementConfiguration =
+    "wordpress_url_gdpr_agreement";
 const String companyUrlConfiguration = "company_url";
 const String localeInUrl = "locale_in_url";
 const String restAPIPropertiesRouteConfiguration = "rest_api_properties_route";
@@ -855,48 +855,78 @@ const String secondaryColorConfiguration = "secondary_color";
 const String iconTintColorConfiguration = "icon_tint_color";
 const String iconTintColorDarkModeConfiguration = "icon_tint_color_dark_mode";
 const String bottomTabBarTintColorConfiguration = "bottom_tab_bar_tint_color";
-const String unSelectedBottomTabBarTintColorConfiguration = "un_selected_bottom_tab_bar_tint_color";
-const String bottomTabBarBackgroundColorLightModeConfiguration = "bottom_tab_bar_background_color_light";
-const String bottomTabBarBackgroundColorDarkModeConfiguration = "bottom_tab_bar_background_color_dark";
+const String unSelectedBottomTabBarTintColorConfiguration =
+    "un_selected_bottom_tab_bar_tint_color";
+const String bottomTabBarBackgroundColorLightModeConfiguration =
+    "bottom_tab_bar_background_color_light";
+const String bottomTabBarBackgroundColorDarkModeConfiguration =
+    "bottom_tab_bar_background_color_dark";
 const String sliderTintColorConfiguration = "slider_tint_color";
-const String selectedItemBackgroundColorConfiguration = "selected_item_background_color";
+const String selectedItemBackgroundColorConfiguration =
+    "selected_item_background_color";
 const String selectedItemTextColorConfiguration = "selected_item_text_color";
-const String unSelectedItemTextColorConfiguration = "un_selected_item_text_color";
-const String unSelectedItemBackgroundColorConfiguration = "un_selected_item_background_color";
-const String actionButtonBackgroundColorConfiguration = "action_button_background_color";
+const String unSelectedItemTextColorConfiguration =
+    "un_selected_item_text_color";
+const String unSelectedItemBackgroundColorConfiguration =
+    "un_selected_item_background_color";
+const String actionButtonBackgroundColorConfiguration =
+    "action_button_background_color";
 const String dividerColorLightConfiguration = "divider_color_light";
 const String dividerColorDarkConfiguration = "divider_color_dark";
-const String cupertinoSegmentThumbColorLightConfiguration = "segment_thumb_color_light";
-const String cupertinoSegmentThumbColorDarkConfiguration = "segment_thumb_color_dark";
+const String cupertinoSegmentThumbColorLightConfiguration =
+    "segment_thumb_color_light";
+const String cupertinoSegmentThumbColorDarkConfiguration =
+    "segment_thumb_color_dark";
 
-const String appBackgroundColorLightModeConfiguration = "app_background_color_light_mode";
-const String appBackgroundColorDarkModeConfiguration = "app_background_color_dark_mode";
+const String appBackgroundColorLightModeConfiguration =
+    "app_background_color_light_mode";
+const String appBackgroundColorDarkModeConfiguration =
+    "app_background_color_dark_mode";
 const String headingsColorLightModeConfiguration = "headings_color_light_mode";
 const String headingsColorDarkModeConfiguration = "headings_color_dark_mode";
 const String favouriteIconTintColorConfiguration = "favourite_icon_tint_color";
-const String propertyDetailsEmailButtonBgColorConfiguration = "property_details_email_button_bg_color";
-const String propertyDetailsCallButtonBgColorConfiguration = "property_details_call_button_bg_color";
-const String propertyDetailsWhatsAppButtonBgColorConfiguration = "property_details_whatsapp_button_bg_color";
-const String propertyItemDesignContainerBgColorLightModeConfiguration = "property_item_design_container_bg_color_light_mode";
-const String propertyItemDesignContainerBgColorDarkModeConfiguration = "property_item_design_container_bg_color_dark_mode";
+const String propertyDetailsEmailButtonBgColorConfiguration =
+    "property_details_email_button_bg_color";
+const String propertyDetailsCallButtonBgColorConfiguration =
+    "property_details_call_button_bg_color";
+const String propertyDetailsWhatsAppButtonBgColorConfiguration =
+    "property_details_whatsapp_button_bg_color";
+const String propertyItemDesignContainerBgColorLightModeConfiguration =
+    "property_item_design_container_bg_color_light_mode";
+const String propertyItemDesignContainerBgColorDarkModeConfiguration =
+    "property_item_design_container_bg_color_dark_mode";
 
-const String filterPageHeadingsColorLightModeConfiguration = "filter_page_headings_color_light_mode";
-const String filterPageHeadingsColorDarkModeConfiguration = "filter_page_headings_color_dark_mode";
-const String filterPagePlaceHolderTextColorLightModeConfiguration = "filter_page_place_holder_text_color_light_mode";
-const String filterPagePlaceHolderTextColorDarkModeConfiguration = "filter_page_place_holder_text_color_dark_mode";
-const String filterPageIconTintColorLightModeConfiguration = "filter_page_icon_tint_color_light_mode";
-const String filterPageIconTintColorDarkModeConfiguration = "filter_page_icon_tint_color_dark_mode";
+const String filterPageHeadingsColorLightModeConfiguration =
+    "filter_page_headings_color_light_mode";
+const String filterPageHeadingsColorDarkModeConfiguration =
+    "filter_page_headings_color_dark_mode";
+const String filterPagePlaceHolderTextColorLightModeConfiguration =
+    "filter_page_place_holder_text_color_light_mode";
+const String filterPagePlaceHolderTextColorDarkModeConfiguration =
+    "filter_page_place_holder_text_color_dark_mode";
+const String filterPageIconTintColorLightModeConfiguration =
+    "filter_page_icon_tint_color_light_mode";
+const String filterPageIconTintColorDarkModeConfiguration =
+    "filter_page_icon_tint_color_dark_mode";
 
-const String featuredTagBackgroundColorLightModeConfiguration = "featured_label_background_color";
-const String featuredTagBackgroundColorDarkModeConfiguration = "featured_tag_background_color_dark_mode";
-const String featuredTagBorderColorLightModeConfiguration = "featured_tag_border_color_light_mode";
-const String featuredTagBorderColorDarkModeConfiguration = "featured_tag_border_color_dark_mode";
-const String featuredTagFontColorLightModeConfiguration = "featured_tag_font_color_light_mode";
-const String featuredTagFontColorDarkModeConfiguration = "featured_tag_font_color_dark_mode";
+const String featuredTagBackgroundColorLightModeConfiguration =
+    "featured_label_background_color";
+const String featuredTagBackgroundColorDarkModeConfiguration =
+    "featured_tag_background_color_dark_mode";
+const String featuredTagBorderColorLightModeConfiguration =
+    "featured_tag_border_color_light_mode";
+const String featuredTagBorderColorDarkModeConfiguration =
+    "featured_tag_border_color_dark_mode";
+const String featuredTagFontColorLightModeConfiguration =
+    "featured_tag_font_color_light_mode";
+const String featuredTagFontColorDarkModeConfiguration =
+    "featured_tag_font_color_dark_mode";
 
 const String tagBackgroundColorLightModeConfiguration = "tag_background_color";
-const String tagBackgroundColorDarkModeConfiguration = "tag_background_color_dark_mode";
-const String tagBorderColorLightModeConfiguration = "tag_border_color_light_mode";
+const String tagBackgroundColorDarkModeConfiguration =
+    "tag_background_color_dark_mode";
+const String tagBorderColorLightModeConfiguration =
+    "tag_border_color_light_mode";
 const String tagBorderColorDarkModeConfiguration = "tag_border_color_dark_mode";
 const String tagFontColorLightModeConfiguration = "tag_font_color_light_mode";
 const String tagFontColorDarkModeConfiguration = "tag_font_color_dark_mode";
@@ -910,7 +940,8 @@ const String showLoginWithPhoneConfiguration = "show_login_with_phone";
 const String showAdsConfiguration = "show_ads";
 const String showAndroidAdsConfiguration = "show_android_ads";
 const String showIOSAdsConfiguration = "show_ios_ads";
-const String showAddPropertyInProfileConfiguration = "show_add_property_in_profile";
+const String showAddPropertyInProfileConfiguration =
+    "show_add_property_in_profile";
 const String showMapInsteadFilterConfiguration = "show_map_instead_filter";
 const String showEmailButtonDetailPageConfiguration = "show_email_button";
 const String showCallButtonDetailPageConfiguration = "show_call_button";
@@ -923,15 +954,18 @@ const String useCupertinoSegmentControlConfig = "use_cupertino_segment_control";
 const String homePageLayoutConfiguration = "home_layout";
 const String bottomNavBarLayoutConfiguration = "bottom_navigation_bar_layout";
 const String searchPageLayoutConfiguration = "filter_page_layout";
-const String propertyDetailsPageLayoutConfiguration = "property_detail_page_layout";
+const String propertyDetailsPageLayoutConfiguration =
+    "property_detail_page_layout";
 const String drawerMenuLayoutConfiguration = "drawer_layout";
 const String lockPlacesApiConfiguration = "lock_places_api";
 const String lockPlacesCountriesApiConfiguration = "lock_places_api_countries";
 const String addPropertyLayoutApiConfiguration = "add_property_layout";
-const String quickAddPropertyLayoutApiConfiguration = "quick_add_property_layout";
+const String quickAddPropertyLayoutApiConfiguration =
+    "quick_add_property_layout";
 
 const String versionApiConfiguration = "api_config_version";
-const String totalSearchTypeOptionsApiConfiguration = "show_total_search_type_options";
+const String totalSearchTypeOptionsApiConfiguration =
+    "show_total_search_type_options";
 const String defaultHomeApiConfiguration = "default_home";
 const String quoteApiConfiguration = "quote";
 
@@ -950,7 +984,8 @@ const String SHOW_THEME_RELTAED_SETTINGS_KEY = "show_theme_related_settings";
 const String SHOW_ADD_PROPERTY_KEY = "show_add_property";
 
 const String DEFAULT_BOTTOM_NAVBAR_DESIGN = "default_bottom_navbar_design";
-const String SHOW_BOTTOM_NAVBAR_ADD_BUTTON_CONFIG = "show_bottom_navbar_add_button";
+const String SHOW_BOTTOM_NAVBAR_ADD_BUTTON_CONFIG =
+    "show_bottom_navbar_add_button";
 
 /// Floor Plans Related
 const String favePlanTitle = 'fave_plan_title';
@@ -1071,16 +1106,17 @@ const String measurementUnitGlobalKey = "measurement_unit_global";
 const String measurementUnitTextKey = "measurement_unit_text";
 const String radiusUnitKey = "radius_unit";
 const String paymentEnabledStatusKey = "payment_enabled";
-const String googlePlayStoreFeaturedProductIdKey = "android_featured_product_id";
+const String googlePlayStoreFeaturedProductIdKey =
+    "android_featured_product_id";
 const String appleAppStoreFeaturedProductIdKey = "ios_featured_product_id";
-const String googlePlayStorePerListingProductIdKey = "android_per_listing_product_id";
+const String googlePlayStorePerListingProductIdKey =
+    "android_per_listing_product_id";
 const String appleAppStorePerListingProductIdKey = "ios_per_listing_product_id";
 const String enquiryTypeKey = "enquiry_type";
 const String leadPrefixKey = "lead_prefix";
 const String leadSourceKey = "lead_source";
 const String dealStatusKey = "deal_status";
 const String dealNextActionKey = "deal_next_action";
-
 
 /// Term Picker Types
 const String dropDownPicker = "dropdown";
@@ -1240,9 +1276,9 @@ const String aboutScreenSectionType = "About_App_Screen";
 const String themeSettingScreenSectionType = "App_Theme_Setting_Screen";
 const String languageSettingScreenSectionType = "App_Language_Setting_Screen";
 const String privacyPolicyScreenSectionType = "App_Privacy_Policy_Screen";
-const String termsAndConditionsScreenSectionType = "App_Terms_and_Conditions_Screen";
+const String termsAndConditionsScreenSectionType =
+    "App_Terms_and_Conditions_Screen";
 const String webUrlSectionType = "web_url";
-
 
 // const String FILTER_SCREEN_ROUTE_TAG = "Filter_Screen";
 // const String SEARCH_SCREEN_ROUTE_TAG = "Search_Screen";
@@ -1270,7 +1306,8 @@ const String ADDRESS_INFO_PROPERTY_PROFILE = "article_address_info";
 const String MAP_PROPERTY_PROFILE = "article_map";
 const String FLOOR_PLANS_PROPERTY_PROFILE = "article_floor_plans";
 const String MULTI_UNITS_PROPERTY_PROFILE = "article_multi_units";
-const String CONTACT_INFORMATION_PROPERTY_PROFILE = "article_contact_information";
+const String CONTACT_INFORMATION_PROPERTY_PROFILE =
+    "article_contact_information";
 const String BUTTON_GRID_PROPERTY_PROFILE = "button_grid";
 const String ENQUIRE_INFO_PROPERTY_PROFILE = "enquire_info";
 const String SETUP_TOUR_PROPERTY_PROFILE = "setup_tour";
@@ -1350,7 +1387,6 @@ const List<String> locationRelatedList = [
   propertyCountryDataType,
 ];
 
-
 /// Generic Page Router Related
 const String FILTER_SCREEN_ROUTE_TAG = "Filter_Screen";
 const String SEARCH_SCREEN_ROUTE_TAG = "Search_Screen";
@@ -1358,7 +1394,8 @@ const String ABOUT_SCREEN_ROUTE_TAG = "About_Screen";
 const String THEME_SETTING_SCREEN_ROUTE_TAG = "Theme_Setting_Screen";
 const String LANGUAGE_SETTING_SCREEN_ROUTE_TAG = "Language_Setting_Screen";
 const String PRIVACY_POLICY_SCREEN_ROUTE_TAG = "Privacy_Policy_Screen";
-const String TERMS_AND_CONDITIONS_SCREEN_ROUTE_TAG = "Terms_and_Conditions_Screen";
+const String TERMS_AND_CONDITIONS_SCREEN_ROUTE_TAG =
+    "Terms_and_Conditions_Screen";
 const String FILTER_PAGE_SCREEN_DATA_MAP_KEY = "FilterPageDataMap";
 
 /// Dynamic Drawer Related
@@ -1377,8 +1414,8 @@ const String FETCH_INQUIRY = "inquiry";
 const String FETCH_LEAD = "leads";
 
 /// CRM email related
-const String IDS= "ids";
-const String EMAIL_TO= "email_to";
+const String IDS = "ids";
+const String EMAIL_TO = "email_to";
 
 /// Item / Explore Terms Theme related
 const String ITEM_THEME_DESIGN = "itemThemeDesign";
@@ -1391,7 +1428,6 @@ const String FETCH_LEAD_VIEWED = "leadViewed";
 const String FETCH_LEAD_DETAIL = "leadDetail";
 const String FETCH_REVIEWS = "reviews";
 
-
 /// Update deal data related
 const String DEAL_SET_NEXT_ACTION = "crm_set_deal_next_action";
 const String DEAL_SET_STATUS = "crm_set_deal_status";
@@ -1403,10 +1439,10 @@ const String DEAL_UPDATE_DATA = "deal_data";
 const String ACTION_DUE_TYPE = "actionDue";
 const String LAST_CONTACT_TYPE = "lastContact";
 
-
 /// Nonce related
 ///
 const String kCreateNonceKey = "nonce_name";
+
 ///
 ///
 const String kContactRealtorNonceName = "contact_realtor_nonce";
@@ -1425,7 +1461,8 @@ const String kScheduleTourNonceName = "schedule-contact-form-nonce";
 const String kScheduleTourNonceVariable = "schedule_contact_form_ajax";
 
 const String kContactPropertyAgentNonceName = "property_agent_contact_nonce";
-const String kContactPropertyAgentNonceVariable = "property_agent_contact_security";
+const String kContactPropertyAgentNonceVariable =
+    "property_agent_contact_security";
 
 const String kDealDeleteNonceName = "delete_deal_nonce"; // need
 const String kDealDeleteNonceVariable = "security";
@@ -1474,7 +1511,6 @@ const String kUpdateProfileImageNonceVariable = "verify_nonce";
 
 const String kSignInNonceName = "login_nonce";
 const String kSignInNonceVariable = "login_security";
-
 
 /// Filter Page related
 const double kFilterPageBottomActionBarHeight = 60.0;
@@ -1548,7 +1584,6 @@ const String rangeSliderMinValue = "0";
 const String rangeSliderMaxValue = "1000000";
 const String rangeSliderDivisions = "1000";
 
-
 /// Save Search related Keys
 const String SAVE_SEARCH_BEDROOMS = "bedrooms";
 const String SAVE_SEARCH_BATHROOMS = "bathrooms";
@@ -1595,4 +1630,5 @@ String MAKE_FEATURED_IOS_PRODUCT_ID = "make_property_featured";
 String PER_LISTING_ANDROID_PRODUCT_ID = "per_listing";
 String PER_LISTING_IOS_PRODUCT_ID = "per_listing";
 
-const String DUMMY_ICON_JSON = "{\"name\":\"blur_on\",\"fontFamily\":\"MaterialIcons\",\"codePoint\":57581}";
+const String DUMMY_ICON_JSON =
+    "{\"name\":\"blur_on\",\"fontFamily\":\"MaterialIcons\",\"codePoint\":57581}";

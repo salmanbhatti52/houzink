@@ -5,109 +5,151 @@ import 'package:houzi_package/files/hive_storage_files/hive_storage_manager.dart
 import 'package:houzi_package/interfaces/api_parser_interface.dart';
 import 'package:houzi_package/interfaces/api_provider_interface.dart';
 import 'package:houzi_package/models/api_request.dart';
+import 'package:houzi_package/models/api_request.dart' as api1;
 import 'dart:io' show Platform;
 
 import 'package:houzi_package/parsers/houzez_parser.dart';
 
-
-
-
 // const String HOUZEZ_ALL_PROPERTIES_PATH = "/wp-json/wp/v2/$REST_API_PROPERTIES_ROUTE";
 String HOUZEZ_ALL_PROPERTIES_PATH = "/wp-json/wp/v2/$REST_API_PROPERTIES_ROUTE";
-const String HOUZEZ_SIMILAR_PROPERTIES_PATH = "/wp-json/houzez-mobile-api/v1/similar-properties";
+const String HOUZEZ_SIMILAR_PROPERTIES_PATH =
+    "/wp-json/houzez-mobile-api/v1/similar-properties";
 const String HOUZEZ_MULTIPLE_PROPERTIES_PATH = "/wp-json/wp/v2/properties";
-const String HOUZEZ_PROPERTY_TYPES_META_DATA_PATH = "/wp-json/wp/v2/property_type";
-const String HOUZEZ_PROPERTY_CITIES_META_DATA_PATH = "/wp-json/wp/v2/property_city";
-const String HOUZEZ_SEARCH_PROPERTIES_PATH = "/wp-json/houzez-mobile-api/v1/search-properties";
+const String HOUZEZ_PROPERTY_TYPES_META_DATA_PATH =
+    "/wp-json/wp/v2/property_type";
+const String HOUZEZ_PROPERTY_CITIES_META_DATA_PATH =
+    "/wp-json/wp/v2/property_city";
+const String HOUZEZ_SEARCH_PROPERTIES_PATH =
+    "/wp-json/houzez-mobile-api/v1/search-properties";
 const String HOUZEZ_META_DATA_PATH = "/wp-json/houzez-mobile-api/v1/touch-base";
 // const String HOUZEZ_SEARCH_AGENCIES_PATH = "/wp-json/wp/v2/$REST_API_AGENCY_ROUTE";
 String HOUZEZ_SEARCH_AGENCIES_PATH = "/wp-json/wp/v2/$REST_API_AGENCY_ROUTE";
 // const String HOUZEZ_SEARCH_AGENTS_PATH = "/wp-json/wp/v2/$REST_API_AGENT_ROUTE";
 String HOUZEZ_SEARCH_AGENTS_PATH = "/wp-json/wp/v2/$REST_API_AGENT_ROUTE";
-const String HOUZEZ_CONTACT_REALTOR_PATH = "/wp-json/houzez-mobile-api/v1/contact-property-agent";
+const String HOUZEZ_CONTACT_REALTOR_PATH =
+    "/wp-json/houzez-mobile-api/v1/contact-property-agent";
 // const String HOUZEZ_CONTACT_REALTOR_PATH = "/wp-json/houzez-mobile-api/v1/contact-realtor";
-const String HOUZEZ_CONTACT_DEVELOPER_PATH = "/wp-json/contact-us/v1/send-message";
-const String HOUZEZ_SCHEDULE_A_TOUR_PATH = "/wp-json/houzez-mobile-api/v1/schedule-tour";
-const String HOUZEZ_SAVE_PROPERTY_PATH = "/wp-json/houzez-mobile-api/v1/save-property";
+const String HOUZEZ_CONTACT_DEVELOPER_PATH =
+    "/wp-json/contact-us/v1/send-message";
+const String HOUZEZ_SCHEDULE_A_TOUR_PATH =
+    "/wp-json/houzez-mobile-api/v1/schedule-tour";
+const String HOUZEZ_SAVE_PROPERTY_PATH =
+    "/wp-json/houzez-mobile-api/v1/save-property";
 // const String HOUZEZ_ADD_PROPERTY_PATH = "/wp-json/houzez-mobile-api/v1/add-property";
-const String HOUZEZ_SAVE_PROPERTY_IMAGES_PATH = "/wp-json/houzez-mobile-api/v1/save-property-image";
+const String HOUZEZ_SAVE_PROPERTY_IMAGES_PATH =
+    "/wp-json/houzez-mobile-api/v1/save-property-image";
 const String SIGNIN_USER_PATH = "/wp-json/houzez-mobile-api/v1/signin";
-const String HOUZEZ_SOCIAL_LOGIN_PATH = "/wp-json/houzez-mobile-api/v1/social-sign-on";
+const String HOUZEZ_SOCIAL_LOGIN_PATH =
+    "/wp-json/houzez-mobile-api/v1/social-sign-on";
 // const String JWT_Authentication_PATH = "/wp-json/jwt-auth/v1/token";
 const String SIGNUP_API_LINK_PATH = "/wp-json/houzez-mobile-api/v1/signup";
-const String FORGET_PASSWORD_API_LINK_PATH = "/wp-json/houzez-mobile-api/v1/reset-password";
-const String HOUZEZ_SINGLE_PROPERTY_PATH = "/wp-json/houzez-mobile-api/v1/property";
-const String HOUZEZ_MY_PROPERTIES_PATH = "/wp-json/houzez-mobile-api/v1/my-properties";
+const String FORGET_PASSWORD_API_LINK_PATH =
+    "/wp-json/houzez-mobile-api/v1/reset-password";
+const String HOUZEZ_SINGLE_PROPERTY_PATH =
+    "/wp-json/houzez-mobile-api/v1/property";
+const String HOUZEZ_MY_PROPERTIES_PATH =
+    "/wp-json/houzez-mobile-api/v1/my-properties";
 // const String HOUZEZ_USERS_PROPERTIES_PATH = "/wp-json/wp/v2/properties";
-const String HOUZEZ_USERS_DELETE_PROPERTY_PATH = "/wp-json/houzez-mobile-api/v1/delete-property";
+const String HOUZEZ_USERS_DELETE_PROPERTY_PATH =
+    "/wp-json/houzez-mobile-api/v1/delete-property";
 const String HOUZEZ_TERM_DATA_PATH = "/wp-json/houzez-mobile-api/v1/get-terms";
-const String HOUZEZ_ADD_REMOVE_FROM_FAV_PATH = "/wp-json/houzez-mobile-api/v1/like-property";
-const String HOUZEZ_FAV_PROPERTIES_PATH = "/wp-json/houzez-mobile-api/v1/favorite-properties";
-const String HOUZEZ_UPDATE_PROPERTY_PATH = "/wp-json/houzez-mobile-api/v1/update-property";
-const String HOUZEZ_UPDATE_IMAGE_PROPERTY_PATH = "/wp-json/houzez-mobile-api/v1/upload-property-image";
-const String HOUZEZ_DELETE_PROPERTY_IMAGE_PATH = "/wp-json/houzez-mobile-api/v1/delete-property-image";
-const String HOUZEZ_ADD_SAVED_SEARCH_PATH = "/wp-json/houzez-mobile-api/v1/save-search";
-const String HOUZEZ_SAVED_SEARCHES_PATH = "/wp-json/houzez-mobile-api/v1/saved-searches";
-const String HOUZEZ_LEAD_SAVED_SEARCHES_PATH = "/wp-json/houzez-mobile-api/v1/lead-saved-searches";
-const String HOUZEZ_DELETE_SAVED_SEARCH_PATH = "/wp-json/houzez-mobile-api/v1/delete-saved-search";
-const String HOUZEZ_SAVED_SEARCH_ARTICLE_PATH = "/wp-json/houzez-mobile-api/v1/view-saved-search";
-const String HOUZEZ_ADD_REVIEW_ARTICLE_PATH = "/wp-json/houzez-mobile-api/v1/add-review";
-const String HOUZEZ_REPORT_CONTENT_PATH = "/wp-json/houzez-mobile-api/v1/report-content";
+const String HOUZEZ_ADD_REMOVE_FROM_FAV_PATH =
+    "/wp-json/houzez-mobile-api/v1/like-property";
+const String HOUZEZ_FAV_PROPERTIES_PATH =
+    "/wp-json/houzez-mobile-api/v1/favorite-properties";
+const String HOUZEZ_UPDATE_PROPERTY_PATH =
+    "/wp-json/houzez-mobile-api/v1/update-property";
+const String HOUZEZ_UPDATE_IMAGE_PROPERTY_PATH =
+    "/wp-json/houzez-mobile-api/v1/upload-property-image";
+const String HOUZEZ_DELETE_PROPERTY_IMAGE_PATH =
+    "/wp-json/houzez-mobile-api/v1/delete-property-image";
+const String HOUZEZ_ADD_SAVED_SEARCH_PATH =
+    "/wp-json/houzez-mobile-api/v1/save-search";
+const String HOUZEZ_SAVED_SEARCHES_PATH =
+    "/wp-json/houzez-mobile-api/v1/saved-searches";
+const String HOUZEZ_LEAD_SAVED_SEARCHES_PATH =
+    "/wp-json/houzez-mobile-api/v1/lead-saved-searches";
+const String HOUZEZ_DELETE_SAVED_SEARCH_PATH =
+    "/wp-json/houzez-mobile-api/v1/delete-saved-search";
+const String HOUZEZ_SAVED_SEARCH_ARTICLE_PATH =
+    "/wp-json/houzez-mobile-api/v1/view-saved-search";
+const String HOUZEZ_ADD_REVIEW_ARTICLE_PATH =
+    "/wp-json/houzez-mobile-api/v1/add-review";
+const String HOUZEZ_REPORT_CONTENT_PATH =
+    "/wp-json/houzez-mobile-api/v1/report-content";
 const String HOUZEZ_ARTICLE_REVIEWS_PATH = "/wp-json/wp/v2/houzez_reviews";
 const String HOUZEZ_USER_INFO_PATH = "/wp-json/houzez-mobile-api/v1/profile";
-const String HOUZEZ_UPDATE_USER_PROFILE_PATH = "/wp-json/houzez-mobile-api/v1/update-profile";
-const String HOUZEZ_UPDATE_USER_PROFILE_IMAGE_PATH = "/wp-json/houzez-mobile-api/v1/update-profile-photo";
-const String HOUZEZ_FIX_PROFILE_IMAGE_PATH = "/wp-json/houzez-mobile-api/v1/fix-profile-pic";
-const String HOUZEZ_SEARCH_AGENTS_PROFILE_IMAGE_PATH = "/wp-json/houzez-mobile-api/v1/update-profile-photo";
-const String HOUZEZ_IS_FAV_PROPERTY = "/wp-json/houzez-mobile-api/v1/is-fav-property";
-const String HOUZEZ_UPDATE_USER_PASSWORD_PROPERTY = "/wp-json/houzez-mobile-api/v1/update-password";
-const String HOUZEZ_DELETE_USER_ACCOUNT_PROPERTY = "/wp-json/houzez-mobile-api/v1/delete-user-account";
-const String HOUZEZ_SINGLE_ARTICLE_PERMA_LINK_PATH = "/wp-json/houzez-mobile-api/v1/property-by-permalink";
-const String HOUZEZ_ADD_REQUEST_PROPERTY_PATH = "/wp-json/houzez-mobile-api/v1/add-property-request";
-const String HOUZEZ_AGENCY_ALL_AGENTS_PATH = "/wp-json/houzez-mobile-api/v1/agency-all-agents";
-const String HOUZEZ_AGENCY_ADD_AGENT_PATH = "/wp-json/houzez-mobile-api/v1/add-new-agent";
-const String HOUZEZ_AGENCY_EDIT_AGENT_PATH = "/wp-json/houzez-mobile-api/v1/edit-an-agent";
-const String HOUZEZ_AGENCY_DELETE_AGENT_PATH = "/wp-json/houzez-mobile-api/v1/delete-an-agent";
+const String HOUZEZ_UPDATE_USER_PROFILE_PATH =
+    "/wp-json/houzez-mobile-api/v1/update-profile";
+const String HOUZEZ_UPDATE_USER_PROFILE_IMAGE_PATH =
+    "/wp-json/houzez-mobile-api/v1/update-profile-photo";
+const String HOUZEZ_FIX_PROFILE_IMAGE_PATH =
+    "/wp-json/houzez-mobile-api/v1/fix-profile-pic";
+const String HOUZEZ_SEARCH_AGENTS_PROFILE_IMAGE_PATH =
+    "/wp-json/houzez-mobile-api/v1/update-profile-photo";
+const String HOUZEZ_IS_FAV_PROPERTY =
+    "/wp-json/houzez-mobile-api/v1/is-fav-property";
+const String HOUZEZ_UPDATE_USER_PASSWORD_PROPERTY =
+    "/wp-json/houzez-mobile-api/v1/update-password";
+const String HOUZEZ_DELETE_USER_ACCOUNT_PROPERTY =
+    "/wp-json/houzez-mobile-api/v1/delete-user-account";
+const String HOUZEZ_SINGLE_ARTICLE_PERMA_LINK_PATH =
+    "/wp-json/houzez-mobile-api/v1/property-by-permalink";
+const String HOUZEZ_ADD_REQUEST_PROPERTY_PATH =
+    "/wp-json/houzez-mobile-api/v1/add-property-request";
+const String HOUZEZ_AGENCY_ALL_AGENTS_PATH =
+    "/wp-json/houzez-mobile-api/v1/agency-all-agents";
+const String HOUZEZ_AGENCY_ADD_AGENT_PATH =
+    "/wp-json/houzez-mobile-api/v1/add-new-agent";
+const String HOUZEZ_AGENCY_EDIT_AGENT_PATH =
+    "/wp-json/houzez-mobile-api/v1/edit-an-agent";
+const String HOUZEZ_AGENCY_DELETE_AGENT_PATH =
+    "/wp-json/houzez-mobile-api/v1/delete-an-agent";
 const String HOUZEZ_ADS_PATH = "/wp-json/wp/v2/ads";
 const String HOUZEZ_ALL_USERS_PATH = "/wp-json/wp/v2/users";
-const String HOUZEZ_USER_PAYMENT_STATUS_PATH = "/wp-json/houzez-mobile-api/v1/user-payment-status";
-const String HOUZEZ_CREATE_NONCE_PATH = "/wp-json/houzez-mobile-api/v1/create-nonce";
+const String HOUZEZ_USER_PAYMENT_STATUS_PATH =
+    "/wp-json/houzez-mobile-api/v1/user-payment-status";
+const String HOUZEZ_CREATE_NONCE_PATH =
+    "/wp-json/houzez-mobile-api/v1/create-nonce";
 
 class HOUZEZApiProvider implements ApiProviderInterface {
-
   @override
   ApiParserInterface getParser() {
     return HouzezParser();
   }
 
-  Uri getUri({required String unEncodedPath, Map<String, dynamic>? params}){
+  Uri getUri({required String unEncodedPath, Map<String, dynamic>? params}) {
     Uri? uri;
 
     // String authority = WORDPRESS_URL_DOMAIN;
     // String communicationProtocol = WORDPRESS_URL_SCHEME;
 
     /// For Houzi Only (due to demo configurations)
-    String authority = HiveStorageManager.readUrlAuthority() ?? WORDPRESS_URL_DOMAIN;
-    String communicationProtocol = HiveStorageManager.readCommunicationProtocol() ?? WORDPRESS_URL_SCHEME;
+    String authority =
+        HiveStorageManager.readUrlAuthority() ?? WORDPRESS_URL_DOMAIN;
+    String communicationProtocol =
+        HiveStorageManager.readCommunicationProtocol() ?? WORDPRESS_URL_SCHEME;
     String urlScheme = WORDPRESS_URL_PATH;
 
     // String option = HiveStorageManager.readLocaleInUrl();
-    DefaultLanguageCodeHook defaultLanguageCodeHook = UtilityMethods.defaultLanguageCode;
+    DefaultLanguageCodeHook defaultLanguageCodeHook =
+        UtilityMethods.defaultLanguageCode;
     String defaultLanguage = defaultLanguageCodeHook();
-    String tempSelectedLanguage = HiveStorageManager.readLanguageSelection() ?? defaultLanguage;
+    String tempSelectedLanguage =
+        HiveStorageManager.readLanguageSelection() ?? defaultLanguage;
     if (currentSelectedLocaleUrlPosition == changeUrlPath) {
-      urlScheme = urlScheme+"/$tempSelectedLanguage";
+      urlScheme = urlScheme + "/$tempSelectedLanguage";
     } else if (currentSelectedLocaleUrlPosition == changeUrlQueryParameter) {
       params ??= {};
       params["lang"] = tempSelectedLanguage;
     }
 
-    if(urlScheme != null && urlScheme.isNotEmpty){
+    if (urlScheme.isNotEmpty) {
       unEncodedPath = urlScheme + unEncodedPath;
     }
 
     Map<String, dynamic> queryParams = {};
-    if(params != null && params.isNotEmpty){
+    if (params != null && params.isNotEmpty) {
       queryParams.addAll(params);
     }
 
@@ -116,16 +158,16 @@ class HOUZEZApiProvider implements ApiProviderInterface {
     queryParams['app_build_number'] = getAppBuildNumber();
     queryParams['app_platform'] = getDevicePlatform();
 
-    if(communicationProtocol == HTTP){
+    if (communicationProtocol == HTTP) {
       uri = Uri.http(authority, unEncodedPath, queryParams);
-    }else if(communicationProtocol == HTTPS){
+    } else if (communicationProtocol == HTTPS) {
       uri = Uri.https(authority, unEncodedPath, queryParams);
     }
 
     return uri!;
   }
 
-  String getDevicePlatform(){
+  String getDevicePlatform() {
     String platform = "";
     if (Platform.isAndroid) {
       platform = "android";
@@ -136,20 +178,20 @@ class HOUZEZApiProvider implements ApiProviderInterface {
     return platform;
   }
 
-  String getAppBuildNumber(){
+  String getAppBuildNumber() {
     String appBuildNumber = "";
     Map appInfoMap = HiveStorageManager.readAppInfo() ?? {};
-    if(appInfoMap.isNotEmpty){
+    if (appInfoMap.isNotEmpty) {
       appBuildNumber = appInfoMap[APP_INFO_APP_BUILD_NUMBER];
     }
 
     return appBuildNumber;
   }
 
-  String getAppVersion(){
+  String getAppVersion() {
     String appVersion = "";
     Map appInfoMap = HiveStorageManager.readAppInfo() ?? {};
-    if(appInfoMap.isNotEmpty){
+    if (appInfoMap.isNotEmpty) {
       appVersion = appInfoMap[APP_INFO_APP_VERSION];
     }
 
@@ -179,7 +221,6 @@ class HOUZEZApiProvider implements ApiProviderInterface {
     return uri;
   }
 
-
   @override
   Uri provideFilteredPropertiesApi() {
     var uri = getUri(
@@ -190,9 +231,7 @@ class HOUZEZApiProvider implements ApiProviderInterface {
 
   @override
   Uri provideSimilarPropertiesApi(int propertyId) {
-    var queryParameters = {
-      'property_id': '$propertyId'
-    };
+    var queryParameters = {'property_id': '$propertyId'};
     var uri = getUri(
       unEncodedPath: HOUZEZ_SIMILAR_PROPERTIES_PATH,
       params: queryParameters,
@@ -202,13 +241,10 @@ class HOUZEZApiProvider implements ApiProviderInterface {
 
   @override
   Uri provideMultiplePropertiesApi(String propertiesId) {
-    var queryParameters = {
-      'include': '$propertiesId'
-    };
+    var queryParameters = {'include': propertiesId};
     var uri = getUri(
-        unEncodedPath: "$HOUZEZ_MULTIPLE_PROPERTIES_PATH",
-        params: queryParameters
-    );
+        unEncodedPath: HOUZEZ_MULTIPLE_PROPERTIES_PATH,
+        params: queryParameters);
     return uri;
   }
 
@@ -220,16 +256,14 @@ class HOUZEZApiProvider implements ApiProviderInterface {
         'id': '$id',
       };
       var uri = getUri(
-          unEncodedPath: HOUZEZ_SINGLE_PROPERTY_PATH,
-          params: queryParameters);
+          unEncodedPath: HOUZEZ_SINGLE_PROPERTY_PATH, params: queryParameters);
       return uri;
     } else {
       var queryParameters = {
         'id': '$id',
       };
       var uri = getUri(
-          unEncodedPath: HOUZEZ_SINGLE_PROPERTY_PATH,
-          params: queryParameters);
+          unEncodedPath: HOUZEZ_SINGLE_PROPERTY_PATH, params: queryParameters);
       return uri;
     }
   }
@@ -359,16 +393,17 @@ class HOUZEZApiProvider implements ApiProviderInterface {
   }
 
   @override
-  ApiRequest provideLoginApiRequest(Map<String, dynamic> params) {
+  ApiRequest provideLoginApiRequest(Map<String, dynamic> postData) {
     var uri = getUri(
       unEncodedPath: SIGNIN_USER_PATH,
     );
-    params[kSignInNonceVariable] = params[API_NONCE];
-    return ApiRequest(uri, params);
+    postData[kSignInNonceVariable] = postData[API_NONCE];
+    return ApiRequest(uri, postData);
   }
 
   @override
-  Uri providePropertiesInCityByTypeApi(int cityId, int typeId, int page, int perPage) {
+  Uri providePropertiesInCityByTypeApi(
+      int cityId, int typeId, int page, int perPage) {
     var queryParameters = {
       "property_city": "$cityId",
       "property_type": "$typeId",
@@ -441,7 +476,6 @@ class HOUZEZApiProvider implements ApiProviderInterface {
       'page': "$page",
       'per_page': "$perPage",
       'status': status,
-
     };
     //'author': "$userId",
     var uri = getUri(
@@ -452,7 +486,8 @@ class HOUZEZApiProvider implements ApiProviderInterface {
   }
 
   @override
-  Uri provideAllPropertiesApi(String status, int page, int perPage, int userId) {
+  Uri provideAllPropertiesApi(
+      String status, int page, int perPage, int? userId) {
     var queryParameters = {
       'page': "$page",
       'per_page': "$perPage",
@@ -487,11 +522,11 @@ class HOUZEZApiProvider implements ApiProviderInterface {
   @override
   Uri provideTermDataApi(dynamic termData) {
     Map<String, dynamic> queryParameters = {};
-    if(termData is String){
+    if (termData is String) {
       queryParameters = {
         'term': termData,
       };
-    }else if (termData is List){
+    } else if (termData is List) {
       queryParameters = {
         'term[]': termData,
       };
@@ -515,7 +550,7 @@ class HOUZEZApiProvider implements ApiProviderInterface {
   }
 
   @override
-  Uri provideFavPropertiesApi(int page, int perPage,userIdStr) {
+  Uri provideFavPropertiesApi(int page, int perPage, userIdStr) {
     var queryParameters = {
       'post_author': userIdStr,
       'cpage': "$page",
@@ -570,11 +605,11 @@ class HOUZEZApiProvider implements ApiProviderInterface {
 
   @override
   Uri provideSavedSearches(
-      int page,
-      int perPage, {
-        String? leadId,
-        bool fetchLeadSavedSearches = false,
-      }) {
+    int page,
+    int perPage, {
+    String? leadId,
+    bool fetchLeadSavedSearches = false,
+  }) {
     Map<String, dynamic> queryParameters = {};
     if (fetchLeadSavedSearches && leadId != null && leadId.isNotEmpty) {
       queryParameters["lead-id"] = leadId;
@@ -616,6 +651,7 @@ class HOUZEZApiProvider implements ApiProviderInterface {
     );
     return uri;
   }
+
   @override
   Uri provideReportContentApi() {
     var uri = getUri(
@@ -623,7 +659,6 @@ class HOUZEZApiProvider implements ApiProviderInterface {
     );
     return uri;
   }
-
 
   @override
   Uri provideArticlesReviewsApi(int id, String page, String perPage) {
@@ -689,7 +724,11 @@ class HOUZEZApiProvider implements ApiProviderInterface {
   }
 
   @override
-  Uri provideSearchAgenciesApi(int page, int perPage, String search,) {
+  Uri provideSearchAgenciesApi(
+    int page,
+    int perPage,
+    String search,
+  ) {
     var queryParameters = {
       'search': search,
       'per_page': "$perPage",
@@ -704,16 +743,17 @@ class HOUZEZApiProvider implements ApiProviderInterface {
   }
 
   @override
-  Uri provideSearchAgentsApi(int page, int perPage, String search, String agentCity, String agentCategory) {
+  Uri provideSearchAgentsApi(int page, int perPage, String search,
+      String agentCity, String agentCategory) {
     var queryParameters = {
       'search': search,
       'per_page': "$perPage",
       'page': "$page",
     };
-    if(agentCity !=null && agentCity.isNotEmpty){
+    if (agentCity.isNotEmpty) {
       queryParameters["agent_city"] = agentCity;
     }
-    if(agentCategory !=null && agentCategory.isNotEmpty){
+    if (agentCategory.isNotEmpty) {
       queryParameters["agent_category"] = agentCategory;
     }
     var uri = getUri(
@@ -775,7 +815,9 @@ class HOUZEZApiProvider implements ApiProviderInterface {
       'per_page': '${16}',
     };
     var uri = getUri(
-      unEncodedPath: type == REST_API_AGENT_ROUTE ? HOUZEZ_SEARCH_AGENTS_PATH : HOUZEZ_SEARCH_AGENCIES_PATH,
+      unEncodedPath: type == REST_API_AGENT_ROUTE
+          ? HOUZEZ_SEARCH_AGENTS_PATH
+          : HOUZEZ_SEARCH_AGENCIES_PATH,
       params: queryParameters,
     );
     return uri;
@@ -799,9 +841,7 @@ class HOUZEZApiProvider implements ApiProviderInterface {
 
   @override
   Uri provideSingleArticleViaPermaLinkApi(String permaLink) {
-    var queryParameters = {
-      "perm": permaLink
-    };
+    var queryParameters = {"perm": permaLink};
 
     var uri = getUri(
       unEncodedPath: HOUZEZ_SINGLE_ARTICLE_PERMA_LINK_PATH,
@@ -891,5 +931,53 @@ class HOUZEZApiProvider implements ApiProviderInterface {
       unEncodedPath: HOUZEZ_CREATE_NONCE_PATH,
     );
     return uri;
+  }
+
+  @override
+  Uri provideDirectionsApi(String platform, String latitude, String longitude) {
+    // TODO: implement provideDirectionsApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri provideMakePropertyFeaturedResponseApi() {
+    // TODO: implement provideMakePropertyFeaturedResponseApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri provideMembershipPackagesApi() {
+    // TODO: implement provideMembershipPackagesApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri providePartnersListApi() {
+    // TODO: implement providePartnersListApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri providePrintPdfPropertyApi(Map<String, dynamic> dataMap) {
+    // TODO: implement providePrintPdfPropertyApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri provideProceedWithPaymentsResponseApi() {
+    // TODO: implement provideProceedWithPaymentsResponseApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri provideRemoveFromFeaturedResponseApi() {
+    // TODO: implement provideRemoveFromFeaturedResponseApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Uri provideUserMembershipPackageResponseApi() {
+    // TODO: implement provideUserMembershipPackageResponseApi
+    throw UnimplementedError();
   }
 }

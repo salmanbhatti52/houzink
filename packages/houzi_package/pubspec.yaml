@@ -92,6 +92,7 @@ dependencies:
 
   fluster: 1.2.0
   flutter_svg: ^2.0.9
+  flutter_localization: ^0.2.0
 
 dev_dependencies:
   flutter_test:

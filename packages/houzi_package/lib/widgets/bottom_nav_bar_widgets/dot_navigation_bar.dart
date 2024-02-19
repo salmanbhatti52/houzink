@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 
-class DotNavigationBar extends StatelessWidget {
-  DotNavigationBar(
+class DotNavigationBar extends StatefulWidget {
+  const DotNavigationBar(
       {Key? key,
-        required this.items,
-        this.currentIndex = 0,
-        this.onTap,
-        this.selectedItemColor,
-        this.unselectedItemColor,
-        this.margin = const EdgeInsets.all(8),
-        this.itemPadding = const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-        this.duration = const Duration(milliseconds: 500),
-        this.curve = Curves.easeOutQuint,
-        this.dotIndicatorColor,
-        this.marginR = const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-        this.paddingR = const EdgeInsets.only(bottom: 5, top: 10),
-        this.borderRadius = 30,
-        this.backgroundColor = Colors.white,
-        this.boxShadow = const [
-          BoxShadow(
-            color: Colors.transparent,
-            spreadRadius: 0,
-            blurRadius: 0,
-            offset: Offset(0, 0), // changes position of shadow
-          ),
-        ],
-        this.enableFloatingNavBar = true,
-        this.enablePaddingAnimation = true})
+      required this.items,
+      this.currentIndex = 0,
+      this.onTap,
+      this.selectedItemColor,
+      this.unselectedItemColor,
+      this.margin = const EdgeInsets.all(8),
+      this.itemPadding =
+          const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      this.duration = const Duration(milliseconds: 500),
+      this.curve = Curves.easeOutQuint,
+      this.dotIndicatorColor,
+      this.marginR = const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+      this.paddingR = const EdgeInsets.only(bottom: 5, top: 10),
+      this.borderRadius = 30,
+      this.backgroundColor = Colors.white,
+      this.boxShadow = const [
+        BoxShadow(
+          color: Colors.transparent,
+          spreadRadius: 0,
+          blurRadius: 0,
+          offset: Offset(0, 0), // changes position of shadow
+        ),
+      ],
+      this.enableFloatingNavBar = true,
+      this.enablePaddingAnimation = true})
       : super(key: key);
 
   /// A list of tabs to display, ie `Home`, `Profile`,`Cart`, etc
@@ -77,65 +78,79 @@ class DotNavigationBar extends StatelessWidget {
   final bool enablePaddingAnimation;
 
   @override
+  State<DotNavigationBar> createState() => _DotNavigationBarState();
+}
+
+class _DotNavigationBarState extends State<DotNavigationBar> {
+  
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    debugPrint("Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm here in DotNavigationBar ");
+
+  }
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return enableFloatingNavBar
+    return widget.enableFloatingNavBar
         ? BottomAppBar(
-      color: Colors.transparent,
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: marginR!,
-            child: Container(
-              padding: paddingR,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius!),
-                color: backgroundColor,
-                boxShadow: boxShadow,
-              ),
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Body(
-                    items: items,
-                    currentIndex: currentIndex,
-                    curve: curve,
-                    duration: duration,
-                    selectedItemColor: selectedItemColor,
-                    theme: theme,
-                    unselectedItemColor: unselectedItemColor,
-                    onTap: onTap!,
-                    itemPadding: itemPadding,
-                    dotIndicatorColor: dotIndicatorColor,
-                    enablePaddingAnimation: enablePaddingAnimation),
-              ),
+            color: Colors.transparent,
+            elevation: 0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: widget.marginR!,
+                  child: Container(
+                    padding: widget.paddingR,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(widget.borderRadius!),
+                      color: widget.backgroundColor,
+                      boxShadow: widget.boxShadow,
+                    ),
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Body(
+                          items: widget.items,
+                          currentIndex: widget.currentIndex,
+                          curve: widget.curve,
+                          duration: widget.duration,
+                          selectedItemColor: widget.selectedItemColor,
+                          theme: theme,
+                          unselectedItemColor: widget.unselectedItemColor,
+                          onTap: widget.onTap!,
+                          itemPadding: widget.itemPadding,
+                          dotIndicatorColor: widget.dotIndicatorColor,
+                          enablePaddingAnimation: widget.enablePaddingAnimation),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    )
+          )
         : Container(
-      padding: EdgeInsets.symmetric(vertical: 12),
-      color: backgroundColor,
-      child: Padding(
-        padding: margin,
-        child: Body(
-            items: items,
-            currentIndex: currentIndex,
-            curve: curve,
-            duration: duration,
-            selectedItemColor: selectedItemColor,
-            theme: theme,
-            unselectedItemColor: unselectedItemColor,
-            onTap: onTap!,
-            itemPadding: itemPadding,
-            dotIndicatorColor: dotIndicatorColor,
-            enablePaddingAnimation: enablePaddingAnimation),
-      ),
-    );
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            color: widget.backgroundColor,
+            child: Padding(
+              padding: widget.margin,
+              child: Body(
+                  items: widget.items,
+                  currentIndex: widget.currentIndex,
+                  curve: widget.curve,
+                  duration: widget.duration,
+                  selectedItemColor: widget.selectedItemColor,
+                  theme: theme,
+                  unselectedItemColor: widget.unselectedItemColor,
+                  onTap: widget.onTap!,
+                  itemPadding: widget.itemPadding,
+                  dotIndicatorColor: widget.dotIndicatorColor,
+                  enablePaddingAnimation: widget.enablePaddingAnimation),
+            ),
+          );
   }
 }
 
@@ -157,7 +172,7 @@ class DotNavigationBarItem {
   });
 }
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({
     Key? key,
     required this.items,
@@ -186,38 +201,54 @@ class Body extends StatelessWidget {
   final bool enablePaddingAnimation;
 
   @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    debugPrint("Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm here in DotNavigationBarItem Body");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        for (final item in items)
+        for (final item in widget.items)
           TweenAnimationBuilder<double>(
             tween: Tween(
-              end: items.indexOf(item) == currentIndex ? 1.0 : 0.0,
+              end:
+                  widget.items.indexOf(item) == widget.currentIndex ? 1.0 : 0.0,
             ),
-            curve: curve,
-            duration: duration,
+            curve: widget.curve,
+            duration: widget.duration,
             builder: (context, t, _) {
-              final _selectedColor =
-                  item.selectedColor ?? selectedItemColor ?? theme.primaryColor;
+              final _selectedColor = item.selectedColor ??
+                  widget.selectedItemColor ??
+                  widget.theme.primaryColor;
 
               final _unselectedColor = item.unselectedColor ??
-                  unselectedItemColor ??
-                  theme.iconTheme.color;
+                  widget.unselectedItemColor ??
+                  widget.theme.iconTheme.color;
 
               return Material(
                 color: Color.lerp(Colors.transparent, Colors.transparent, t),
                 child: InkWell(
-                  onTap: () => onTap.call(items.indexOf(item)),
+                  onTap: () => widget.onTap.call(widget.items.indexOf(item)),
                   focusColor: _selectedColor.withOpacity(0.1),
                   highlightColor: _selectedColor.withOpacity(0.1),
                   splashColor: _selectedColor.withOpacity(0.1),
                   hoverColor: _selectedColor.withOpacity(0.1),
                   child: Stack(children: <Widget>[
                     Padding(
-                      padding: itemPadding - (enablePaddingAnimation
-                          ? EdgeInsets.only(right: itemPadding.right * t)
-                          : EdgeInsets.zero),
+                      padding: widget.itemPadding -
+                          (widget.enablePaddingAnimation
+                              ? EdgeInsets.only(
+                                  right: widget.itemPadding.right * t)
+                              : EdgeInsets.zero),
                       child: Row(
                         children: [
                           IconTheme(
@@ -239,8 +270,8 @@ class Body extends StatelessWidget {
                           widthFactor: t,
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: itemPadding.right / 0.63,
-                                right: itemPadding.right),
+                                left: widget.itemPadding.right / 0.63,
+                                right: widget.itemPadding.right),
                             child: DefaultTextStyle(
                               style: TextStyle(
                                 color: Color.lerp(
@@ -251,9 +282,8 @@ class Body extends StatelessWidget {
                               ),
                               child: CircleAvatar(
                                   radius: 2.5,
-                                  backgroundColor: dotIndicatorColor != null
-                                      ? dotIndicatorColor
-                                      : _selectedColor),
+                                  backgroundColor: widget.dotIndicatorColor ??
+                                      _selectedColor),
                             ),
                           ),
                         ),

@@ -84,8 +84,7 @@ class _HomeScreenSliverAppBarWidgetState
               AppThemePreferences().appTheme.statusBarIconBrightness,
           statusBarBrightness:
               AppThemePreferences().appTheme.statusBarBrightness),
-      backgroundColor:
-          AppThemePreferences().appTheme.sliverAppBarBackgroundColor,
+      backgroundColor: AppThemePreferences().appTheme.primaryColor!,
       pinned: true,
       leadingWidth: 150,
       expandedHeight: extendedHeight,
@@ -99,7 +98,6 @@ class _HomeScreenSliverAppBarWidgetState
         Row(
           children: [
             defaultAddButton() ?? Container(),
-            const SizedBox(width: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(

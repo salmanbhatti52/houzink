@@ -47,10 +47,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int homePageIndex = 0;
   int searchPageIndex = 1;
-  int savedOrFavSearchesPageIndex = 2;
+
+  int profilePageIndex = 2;
   int _selectedIndex = 0;
   int page = 1;
   int perPage = 16;
@@ -79,13 +79,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  AddPlusButtonInBottomBarHook addPlusButtonHook = HooksConfigurations.addPlusButtonInBottomBarHook;
+  AddPlusButtonInBottomBarHook addPlusButtonHook =
+      HooksConfigurations.addPlusButtonInBottomBarHook;
   NavbarWidgetsHook navbarWidgetsHook = HooksConfigurations.navbarWidgetsHook;
 
   @override
   void initState() {
-
     navbarItemsList = UtilityMethods.readBottomNavigationBarConfigFile();
+    for (int i = 0; i < navbarItemsList.length; i++) {
+      debugPrint("navbarItemsList $i: ${navbarItemsList[i].iconDataJson}");
+    }
 
     if (Provider.of<UserLoggedProvider>(context, listen: false).isLoggedIn!) {
       isUserLoggedIn = true;
@@ -93,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
       PropertyBloc().fetchUserPaymentStatus().then((value) {
         if (value.isNotEmpty) {
           HiveStorageManager.storeUserPaymentStatus(value);
-          GeneralNotifier().publishChange(GeneralNotifier.USER_PAYMENT_STATUS_UPDATED);
+          GeneralNotifier()
+              .publishChange(GeneralNotifier.USER_PAYMENT_STATUS_UPDATED);
         }
         return null;
       });
@@ -119,12 +123,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
     /// General Notifier Listener
     generalNotifierListener = () {
-      if (GeneralNotifier().change == GeneralNotifier.FILTER_DATA_LOADING_COMPLETE) {
+      if (GeneralNotifier().change ==
+          GeneralNotifier.FILTER_DATA_LOADING_COMPLETE) {
         debugPrint("Filter Page Data Loaded/Modified...");
         Map tempFilterDataMap = HiveStorageManager.readFilterDataInfo() ?? {};
-        if(mounted){
+        if (mounted) {
           setState(() {
-            if(tempFilterDataMap.containsKey(SEARCH_COUNT) && tempFilterDataMap[SEARCH_COUNT] is int){
+            if (tempFilterDataMap.containsKey(SEARCH_COUNT) &&
+                tempFilterDataMap[SEARCH_COUNT] is int) {
               totalResults = tempFilterDataMap[SEARCH_COUNT];
             }
             filterDataLoaded = true;
@@ -134,28 +140,28 @@ class _MyHomePageState extends State<MyHomePage> {
         tempFilterDataMap.clear();
       }
 
-      if (GeneralNotifier().change == GeneralNotifier.USER_LOGGED_IN){
+      if (GeneralNotifier().change == GeneralNotifier.USER_LOGGED_IN) {
         debugPrint("User Logged In...");
-        if(mounted){
+        if (mounted) {
           setState(() {
             isUserLoggedIn = true;
-            setSavedSearchesOrFavouritesPage();
+            // setSavedSearchesOrFavouritesPage();
           });
         }
       }
 
-      if (GeneralNotifier().change == GeneralNotifier.USER_LOGGED_OUT){
+      if (GeneralNotifier().change == GeneralNotifier.USER_LOGGED_OUT) {
         debugPrint("User Logged Out...");
-        if(mounted){
+        if (mounted) {
           setState(() {
             isUserLoggedIn = false;
-            setSavedSearchesOrFavouritesPage();
+            // setSavedSearchesOrFavouritesPage();
           });
         }
       }
 
-      if (GeneralNotifier().change == GeneralNotifier.DEEP_LINK_RECEIVED){
-        if(mounted){
+      if (GeneralNotifier().change == GeneralNotifier.DEEP_LINK_RECEIVED) {
+        if (mounted) {
           setState(() {
             navigateToPropertyDetailPage(DEEP_LINK);
             DEEP_LINK = "";
@@ -164,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
 
       if (GeneralNotifier().change == GeneralNotifier.CHANGE_LOCALIZATION) {
-        if(mounted){
+        if (mounted) {
           setState(() {
             pageList.removeLast();
             pageList.add(UserProfile(fromBottomNavigator: true));
@@ -175,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (GeneralNotifier().change == GeneralNotifier.HOME_DESIGN_MODIFIED) {
         debugPrint("Home Design Modified...");
         getHomeScreenDesign();
-        if(mounted){
+        if (mounted) {
           setState(() {
             setHomePage();
           });
@@ -184,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (GeneralNotifier().change == GeneralNotifier.NAVBAR_DESIGN_MODIFIED) {
         debugPrint("Navbar Design Modified...");
-        if(mounted){
+        if (mounted) {
           setState(() {
             setUpBottomNavbar();
           });
@@ -195,16 +201,18 @@ class _MyHomePageState extends State<MyHomePage> {
     GeneralNotifier().addListener(generalNotifierListener!);
 
     List<dynamic> _draftPropertiesList = [];
-    _draftPropertiesList = HiveStorageManager.readDraftPropertiesDataMapsList() ?? [];
+    _draftPropertiesList =
+        HiveStorageManager.readDraftPropertiesDataMapsList() ?? [];
     // print("_draftPropertiesList: $_draftPropertiesList");
-    if(_draftPropertiesList.isNotEmpty){
+    if (_draftPropertiesList.isNotEmpty) {
       // print("Found Some draft properties...");
       int index = -1;
       Map mapItem = {};
-      for(Map item in _draftPropertiesList){
-        if(item.containsKey(ADD_PROPERTY_DRAFT_PROGRESS_KEY)){
+      for (Map item in _draftPropertiesList) {
+        if (item.containsKey(ADD_PROPERTY_DRAFT_PROGRESS_KEY)) {
           // print("ItemMap contains Key: $ADD_PROPERTY_DRAFT_PROGRESS_KEY...");
-          if(item[ADD_PROPERTY_DRAFT_PROGRESS_KEY] == ADD_PROPERTY_DRAFT_IN_PROGRESS){
+          if (item[ADD_PROPERTY_DRAFT_PROGRESS_KEY] ==
+              ADD_PROPERTY_DRAFT_IN_PROGRESS) {
             // print("Key: $ADD_PROPERTY_DRAFT_PROGRESS_KEY Matched...");
             mapItem = item;
             index = _draftPropertiesList.indexOf(item);
@@ -216,20 +224,22 @@ class _MyHomePageState extends State<MyHomePage> {
       // print("index: $index");
       // print("mapItem: $mapItem");
 
-      if(mapItem.isNotEmpty){
+      if (mapItem.isNotEmpty) {
         // print("mapItem Not-Null and Not-Empty...................");
         // print("Map Contains key [$ADD_PROPERTY_DRAFT_PROGRESS_KEY]: ${mapItem.containsKey(ADD_PROPERTY_DRAFT_PROGRESS_KEY)}");
         mapItem.remove(ADD_PROPERTY_DRAFT_PROGRESS_KEY);
         // print("Key: $ADD_PROPERTY_DRAFT_PROGRESS_KEY Removed...");
         // print("Map Contains key [$ADD_PROPERTY_DRAFT_PROGRESS_KEY]: ${mapItem.containsKey(ADD_PROPERTY_DRAFT_PROGRESS_KEY)}");
-        if(index != -1){
+        if (index != -1) {
           // print("Found Some Editable draft properties...");
           // Update Storage
           // print("Updating Storage at index: $index");
           _draftPropertiesList[index] = mapItem;
-          HiveStorageManager.storeDraftPropertiesDataMapsList(_draftPropertiesList);
+          HiveStorageManager.storeDraftPropertiesDataMapsList(
+              _draftPropertiesList);
           // print("Opening Add Property Page...");
-          navigateToAddPropertyPage(map: UtilityMethods.convertMap(mapItem), index: index);
+          navigateToAddPropertyPage(
+              map: UtilityMethods.convertMap(mapItem), index: index);
         }
       }
     }
@@ -237,11 +247,13 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  navigateToPropertyDetailPage(deepLink){
+  navigateToPropertyDetailPage(deepLink) {
     if (deepLink == null || deepLink.isEmpty) return;
     Future.delayed(Duration.zero, () {
       UtilityMethods.navigateToPropertyDetailPage(
-        context: context, permaLink: deepLink, heroId: "1",
+        context: context,
+        permaLink: deepLink,
+        heroId: "1",
       );
     });
   }
@@ -263,25 +275,28 @@ class _MyHomePageState extends State<MyHomePage> {
           currentIndex: _selectedIndex,
           itemsMap: bottomNavBarItemsMap,
           onTap: _onItemTapped,
-          backgroundColor: AppThemePreferences().appTheme.bottomNavBarBackgroundColor,
+          backgroundColor:
+              AppThemePreferences().appTheme.bottomNavBarBackgroundColor,
           selectedItemColor: AppThemePreferences().appTheme.primaryColor,
-          unselectedItemColor: AppThemePreferences.unSelectedBottomNavBarTintColor.withOpacity(0.5),
+          unselectedItemColor: AppThemePreferences
+              .unSelectedBottomNavBarTintColor
+              .withOpacity(0.5),
         ),
       ),
     );
   }
 
   Future<bool> onWillPop() {
-    if(_selectedIndex != homePageIndex){
-    // if(_selectedIndex != 0){
+    if (_selectedIndex != homePageIndex) {
+      // if(_selectedIndex != 0){
       setState(() {
         _selectedIndex = homePageIndex;
         // _selectedIndex = 0;
       });
       return Future.value(false);
     }
-    if(_selectedIndex == homePageIndex) {
-    // if(_selectedIndex == 0) {
+    if (_selectedIndex == homePageIndex) {
+      // if(_selectedIndex == 0) {
       if (_scaffoldKey.currentState!.isDrawerOpen) {
         Navigator.of(context).pop();
         return Future.value(false);
@@ -321,14 +336,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   checkDemoAndVerify() async {
-    if(!APP_IS_IN_CLIENT_DEMO_MODE) {
+    if (!APP_IS_IN_CLIENT_DEMO_MODE) {
       return;
     }
     var dio = Dio();
-    Response<String> response = await dio.get('https://raw.githubusercontent.com/AdilSoomro/houzi-app-for-houzez/master/orbit.json');
+    Response<String> response = await dio.get(
+        'https://raw.githubusercontent.com/AdilSoomro/houzi-app-for-houzez/master/orbit.json');
     Map<String, dynamic>? dataMap = json.decode(response.data!);
     List<dynamic> planets = [];
-    if(dataMap != null && dataMap.isNotEmpty){
+    if (dataMap != null && dataMap.isNotEmpty) {
       planets = dataMap["planet"] ?? [];
     }
 
@@ -338,59 +354,80 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       navigateToDemoExpired();
     }
-
   }
-  navigateToDemoExpired(){
+
+  navigateToDemoExpired() {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => DemoExpired()),
-            (Route<dynamic> route) => false);
+        (Route<dynamic> route) => false);
   }
 
-  void getHomeScreenDesign(){
-    String tempHomeDesign = HiveStorageManager.readSelectedHomeOption() ?? home0SectionType;
-    if(mounted) setState(() {
-      if(tempHomeDesign == homeSectionType || tempHomeDesign == home0SectionType){
-        HOME_SCREEN_DESIGN = DESIGN_01;
-      }else if(tempHomeDesign == home01SectionType){
-        HOME_SCREEN_DESIGN = DESIGN_02;
-      }else if(tempHomeDesign == home02SectionType){
-        HOME_SCREEN_DESIGN = DESIGN_03;
-      }else if(tempHomeDesign == home03SectionType){
-        HOME_SCREEN_DESIGN = DESIGN_04;
-      }
-    });
+  void getHomeScreenDesign() {
+    String tempHomeDesign =
+        HiveStorageManager.readSelectedHomeOption() ?? home0SectionType;
+    print("tempHomeDesign $tempHomeDesign");
+    if (mounted) {
+      setState(() {
+        if (tempHomeDesign == homeSectionType ||
+            tempHomeDesign == home0SectionType) {
+          HOME_SCREEN_DESIGN = DESIGN_01;
+        } else if (tempHomeDesign == home01SectionType) {
+          HOME_SCREEN_DESIGN = DESIGN_02;
+        } else if (tempHomeDesign == home02SectionType) {
+          HOME_SCREEN_DESIGN = DESIGN_03;
+        } else if (tempHomeDesign == home03SectionType) {
+          HOME_SCREEN_DESIGN = DESIGN_04;
+        }
+      });
+    }
   }
 
   void setUpBottomNavbar() {
+    debugPrint("setUpBottomNavbar Called ");
     pageList = [];
     bottomNavBarItemsMap = {};
 
     navbarItemsList = UtilityMethods.readBottomNavigationBarConfigFile();
 
-    if (navbarItemsList.isNotEmpty) {
+    // Remove the item at index 2
+    if (navbarItemsList.length > 2) {
+      navbarItemsList.removeAt(2);
+    }
 
+    // Modify the item at index 1 to "Explore"
+    if (navbarItemsList.length > 1) {
+      navbarItemsList[1].title = "Explore";
+    }
+
+    // Adjust the index if the item is removed
+    if (navbarItemsList.isNotEmpty) {
       if (BOTTOM_NAVIGATION_BAR_DESIGN == DESIGN_02 &&
           navbarItemsList.length > 5) {
         navbarItemsList = navbarItemsList.sublist(0, 5);
       }
 
+      // Initialize index variable outside the loop
+      int index = 0;
       for (NavbarItem item in navbarItemsList) {
-        int index = navbarItemsList.indexOf(item);
+        // Update index inside the loop
+        index = navbarItemsList.indexOf(item);
 
         if (item.sectionType == PLACE_HOLDER_SECTION_TYPE) {
           if (item.title != null &&
               navbarWidgetsHook(context, item.title!) != null) {
-            bottomNavBarItemsMap[item.title!] = UtilityMethods.fromJsonToIconData(
-                item.iconDataJson ?? DUMMY_ICON_JSON);
+            bottomNavBarItemsMap[item.title!] =
+                UtilityMethods.fromJsonToIconData(
+                    item.iconDataJson ?? DUMMY_ICON_JSON);
           }
         } else {
           bottomNavBarItemsMap[item.title!] = UtilityMethods.fromJsonToIconData(
               item.iconDataJson ?? DUMMY_ICON_JSON);
         }
 
-        if ((item.checkLogin ?? false) && (!HiveStorageManager.isUserLoggedIn())) {
-          pageList.add( UserSignIn(
-                (String closeOption) {
+        if ((item.checkLogin ?? false) &&
+            (!HiveStorageManager.isUserLoggedIn())) {
+          pageList.add(UserSignIn(
+            (String closeOption) {
               if (closeOption == CLOSE) {
                 onWillPop();
               }
@@ -398,22 +435,29 @@ class _MyHomePageState extends State<MyHomePage> {
           ));
         } else {
           if (item.sectionType == menuHomeSectionType) {
+            debugPrint("Running menuHomeSectionType condition");
             homePageIndex = index;
             pageList.add(HomeScreenUtilities().getHomeScreen(
               scaffoldKey: _scaffoldKey,
               design: HOME_SCREEN_DESIGN,
             ));
           } else if (item.sectionType == searchSectionType) {
+            debugPrint("Running searchSectionType condition");
             searchPageIndex = index;
             pageList.add(LoadingPage());
           } else if (item.sectionType == savedSearchesAndFavouritesType) {
-            savedOrFavSearchesPageIndex = index;
+            debugPrint("Running savedSearchesAndFavouritesType condition");
+
             pageList.add(LoadingPage());
           } else if (item.sectionType == profileSectionType) {
+            debugPrint("Running profileSectionType condition");
+            profilePageIndex = index; // Set the profile page index
             pageList.add(UserProfile(fromBottomNavigator: true));
           } else if (item.sectionType == savedSectionType) {
-            pageList.add(SavedSearches(showAppBar: true));
+            debugPrint("Running savedSectionType condition");
+            pageList.add(const SavedSearches(showAppBar: true));
           } else if (item.sectionType == favouritesSectionType) {
+            debugPrint("Running favouritesSectionType condition");
             pageList.add(Favorites(
               showAppBar: true,
               favoritesPageListener: (String closeOption) {
@@ -423,81 +467,163 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
             ));
-          } else if (item.sectionType == menuTermSectionType) {
-            pageList.add(SearchResult(
-              dataInitializationMap: item.searchApiMap,
-              searchPageListener: (Map<String, dynamic> map, String closeOption){
-                if(closeOption == CLOSE){
-                  onWillPop();
-                  // Navigator.of(context).pop();
-                }
-              },
-            ));
-          } else if (item.sectionType == aboutScreenSectionType) {
-            if (SHOW_DEMO_CONFIGURATIONS) {
-              pageList.add(About());
-            } else {
-              pageList.add(WebPage(COMPANY_URL, UtilityMethods.getLocalizedString("about"),
-                  automaticallyImplyLeading: false));
-            }
-          } else if (item.sectionType == themeSettingScreenSectionType) {
-            pageList.add(DarkModeSettings());
-          } else if (item.sectionType == languageSettingScreenSectionType) {
-            pageList.add(LanguageSettings());
-          } else if (item.sectionType == privacyPolicyScreenSectionType) {
-            pageList.add(WebPage(APP_PRIVACY_URL,
-                UtilityMethods.getLocalizedString("privacy_policy"),
-                automaticallyImplyLeading: false));
-          } else if (item.sectionType == termsAndConditionsScreenSectionType) {
-            pageList.add(WebPage(APP_TERMS_URL, UtilityMethods.getLocalizedString("terms_and_conditions"),
-                automaticallyImplyLeading: false));
-          } else if (item.sectionType == webUrlSectionType) {
-            pageList.add(WebPage(item.url!, UtilityMethods.getLocalizedString(item.title!),
-                automaticallyImplyLeading: false));
-          } else if (item.sectionType == PLACE_HOLDER_SECTION_TYPE &&
-              item.title != null &&
-              navbarWidgetsHook(context, item.title!) != null) {
-            pageList.add(navbarWidgetsHook(context,item.title!)!);
           }
         }
       }
     }
-    else {
-      bottomNavBarItemsMap = {
-        "home" : AppThemePreferences.homeIcon,
-        "search" : AppThemePreferences.searchIcon,
-        // "" : addPlusButtonHook(context) == null
-        //     ? null : Icons.fiber_manual_record_outlined,
-        // "saved" : AppThemePreferences.savedSearchesIcon,
-        "profile" : AppThemePreferences.personIcon,
-      };
-      bottomNavBarItemsMap.removeWhere((key, value) => value == null);
-
-      pageList.add(HomeScreenUtilities().getHomeScreen(
-        scaffoldKey: _scaffoldKey,
-        design: HOME_SCREEN_DESIGN,
-      ));
-
-      pageList.add(LoadingPage());
-
-      pageList.add(LoadingPage());
-
-      if (addPlusButtonHook(context) != null) {
-        pageList.add(LoadingPage());
-        savedOrFavSearchesPageIndex = 3;
-      }
-
-      pageList.add(UserProfile(fromBottomNavigator: true));
-    }
 
     if (mounted) {
       setState(() {
-        setSavedSearchesOrFavouritesPage();
+        // setSavedSearchesOrFavouritesPage();
       });
     }
   }
 
-  void setHomePage(){
+  // void setUpBottomNavbar() {
+  //   debugPrint("setUpBottomNavbar Called ");
+  //   pageList = [];
+  //   bottomNavBarItemsMap = {};
+
+  //   navbarItemsList = UtilityMethods.readBottomNavigationBarConfigFile();
+
+  //   if (navbarItemsList.isNotEmpty) {
+  //     if (BOTTOM_NAVIGATION_BAR_DESIGN == DESIGN_02 &&
+  //         navbarItemsList.length > 5) {
+  //       navbarItemsList = navbarItemsList.sublist(0, 5);
+  //     }
+
+  //     for (NavbarItem item in navbarItemsList) {
+  //       int index = navbarItemsList.indexOf(item);
+
+  //       if (item.sectionType == PLACE_HOLDER_SECTION_TYPE) {
+  //         if (item.title != null &&
+  //             navbarWidgetsHook(context, item.title!) != null) {
+  //           bottomNavBarItemsMap[item.title!] =
+  //               UtilityMethods.fromJsonToIconData(
+  //                   item.iconDataJson ?? DUMMY_ICON_JSON);
+  //         }
+  //       } else {
+  //         bottomNavBarItemsMap[item.title!] = UtilityMethods.fromJsonToIconData(
+  //             item.iconDataJson ?? DUMMY_ICON_JSON);
+  //       }
+
+  //       if ((item.checkLogin ?? false) &&
+  //           (!HiveStorageManager.isUserLoggedIn())) {
+  //         pageList.add(UserSignIn(
+  //           (String closeOption) {
+  //             if (closeOption == CLOSE) {
+  //               onWillPop();
+  //             }
+  //           },
+  //         ));
+  //       } else {
+  //         if (item.sectionType == menuHomeSectionType) {
+  //           homePageIndex = index;
+  //           pageList.add(HomeScreenUtilities().getHomeScreen(
+  //             scaffoldKey: _scaffoldKey,
+  //             design: HOME_SCREEN_DESIGN,
+  //           ));
+  //         } else if (item.sectionType == searchSectionType) {
+  //           searchPageIndex = index;
+  //           pageList.add(LoadingPage());
+  //         } else if (item.sectionType == savedSearchesAndFavouritesType) {
+  //           savedOrFavSearchesPageIndex = index;
+  //           pageList.add(LoadingPage());
+  //         } else if (item.sectionType == profileSectionType) {
+  //           pageList.add(UserProfile(fromBottomNavigator: true));
+  //         } else if (item.sectionType == savedSectionType) {
+  //           pageList.add(const SavedSearches(showAppBar: true));
+  //         } else if (item.sectionType == favouritesSectionType) {
+  //           pageList.add(Favorites(
+  //             showAppBar: true,
+  //             favoritesPageListener: (String closeOption) {
+  //               if (closeOption == CLOSE) {
+  //                 onWillPop();
+  //                 // Navigator.pop(context);
+  //               }
+  //             },
+  //           ));
+  //         } else if (item.sectionType == menuTermSectionType) {
+  //           pageList.add(SearchResult(
+  //             dataInitializationMap: item.searchApiMap,
+  //             searchPageListener:
+  //                 (Map<String, dynamic> map, String closeOption) {
+  //               if (closeOption == CLOSE) {
+  //                 onWillPop();
+  //                 // Navigator.of(context).pop();
+  //               }
+  //             },
+  //           ));
+  //         } else if (item.sectionType == aboutScreenSectionType) {
+  //           if (SHOW_DEMO_CONFIGURATIONS) {
+  //             pageList.add(About());
+  //           } else {
+  //             pageList.add(WebPage(
+  //                 COMPANY_URL, UtilityMethods.getLocalizedString("about"),
+  //                 automaticallyImplyLeading: false));
+  //           }
+  //         } else if (item.sectionType == themeSettingScreenSectionType) {
+  //           pageList.add(DarkModeSettings());
+  //         } else if (item.sectionType == languageSettingScreenSectionType) {
+  //           pageList.add(LanguageSettings());
+  //         } else if (item.sectionType == privacyPolicyScreenSectionType) {
+  //           pageList.add(WebPage(APP_PRIVACY_URL,
+  //               UtilityMethods.getLocalizedString("privacy_policy"),
+  //               automaticallyImplyLeading: false));
+  //         } else if (item.sectionType == termsAndConditionsScreenSectionType) {
+  //           pageList.add(WebPage(APP_TERMS_URL,
+  //               UtilityMethods.getLocalizedString("terms_and_conditions"),
+  //               automaticallyImplyLeading: false));
+  //         } else if (item.sectionType == webUrlSectionType) {
+  //           pageList.add(WebPage(
+  //               item.url!, UtilityMethods.getLocalizedString(item.title!),
+  //               automaticallyImplyLeading: false));
+  //         } else if (item.sectionType == PLACE_HOLDER_SECTION_TYPE &&
+  //             item.title != null &&
+  //             navbarWidgetsHook(context, item.title!) != null) {
+  //           pageList.add(navbarWidgetsHook(context, item.title!)!);
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     print("Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn im in the bottomNavBarItemsMap ");
+  //     bottomNavBarItemsMap = {
+  //       "home": AppThemePreferences.homeIcon,
+  //       "explore":
+  //           AppThemePreferences.searchIcon, // Changed the key to "explore"
+  //       "": addPlusButtonHook(context) == null
+  //           ? null
+  //           : Icons.fiber_manual_record_outlined,
+  //       "profile": AppThemePreferences.personIcon,
+  //     };
+
+  //     bottomNavBarItemsMap.removeWhere((key, value) => value == null);
+
+  //     pageList.add(HomeScreenUtilities().getHomeScreen(
+  //       scaffoldKey: _scaffoldKey,
+  //       design: HOME_SCREEN_DESIGN,
+  //     ));
+
+  //     pageList.add(LoadingPage());
+
+  //     pageList.add(LoadingPage());
+
+  //     if (addPlusButtonHook(context) != null) {
+  //       pageList.add(LoadingPage());
+  //       savedOrFavSearchesPageIndex = 3;
+  //     }
+
+  //     pageList.add(UserProfile(fromBottomNavigator: true));
+  //   }
+
+  //   if (mounted) {
+  //     setState(() {
+  //       setSavedSearchesOrFavouritesPage();
+  //     });
+  //   }
+  // }
+
+  void setHomePage() {
     loadLoadingPage(homePageIndex);
     pageList[homePageIndex] = HomeScreenUtilities().getHomeScreen(
       scaffoldKey: _scaffoldKey,
@@ -505,22 +631,25 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void setSearchPage(){
-    Map<String, dynamic> filterDataMap = HiveStorageManager.readFilterDataInfo() ?? {};
-    if(filterDataLoaded && filterDataMap.isNotEmpty &&
-        totalResults != null && totalResults! > 0){
+  void setSearchPage() {
+    Map<String, dynamic> filterDataMap =
+        HiveStorageManager.readFilterDataInfo() ?? {};
+    if (filterDataLoaded &&
+        filterDataMap.isNotEmpty &&
+        totalResults != null &&
+        totalResults! > 0) {
       // if(recentSearchesInfoList.isNotEmpty &&
       //     recentSearchesInfoList.first.isNotEmpty && totalResults != null &&
       //     totalResults! > 0){
       //   print("Navigating to Search Page................................................");
-        loadLoadingPage(searchPageIndex);
-        doSearch(filterDataMap);
-      }else{
-        // print("Replace Filter Page................................................");
-        loadLoadingPage(searchPageIndex);
-        loadFilterPage();
-      }
-      filterDataLoaded = false;
+      loadLoadingPage(searchPageIndex);
+      doSearch(filterDataMap);
+    } else {
+      // print("Replace Filter Page................................................");
+      loadLoadingPage(searchPageIndex);
+      loadFilterPage();
+    }
+    filterDataLoaded = false;
   }
   // void setSearchPage(){
   //   recentSearchesInfoList = HiveStorageManager.readRecentSearchesInfo() ?? [];
@@ -540,8 +669,8 @@ class _MyHomePageState extends State<MyHomePage> {
   //   }
   // }
 
-  void loadLoadingPage(int pageIndex){
-    if(mounted){
+  void loadLoadingPage(int pageIndex) {
+    if (mounted) {
       setState(() {
         pageList[pageIndex] = LoadingPage(
           key: ObjectKey(random.nextInt(100)),
@@ -555,7 +684,7 @@ class _MyHomePageState extends State<MyHomePage> {
     pageList[searchPageIndex] = SHOW_MAP_INSTEAD_FILTER
         ? SearchResult(
             key: ObjectKey(random.nextInt(100)),
-            dataInitializationMap: {},
+            dataInitializationMap: const {},
             searchPageListener: (Map<String, dynamic> map, String closeOption) {
               if (closeOption == CLOSE) {
                 //Navigator.of(context).pop();
@@ -566,12 +695,15 @@ class _MyHomePageState extends State<MyHomePage> {
             key: ObjectKey(random.nextInt(100)),
             mapInitializeData: HiveStorageManager.readFilterDataInfo() ?? {},
             hasBottomNavigationBar: true,
-            filterPageListener: (Map<String, dynamic> dataMap, String closeOption) {
+            filterPageListener:
+                (Map<String, dynamic> dataMap, String closeOption) {
               if (closeOption == DONE) {
                 var searchResult = SearchResult(
                   hasBottomNavigationBar: true,
-                  dataInitializationMap: HiveStorageManager.readFilterDataInfo() ?? {},
-                  searchPageListener: (Map<String, dynamic> map, String closeOption) {
+                  dataInitializationMap:
+                      HiveStorageManager.readFilterDataInfo() ?? {},
+                  searchPageListener:
+                      (Map<String, dynamic> map, String closeOption) {
                     if (closeOption == CLOSE) {
                       setState(() {
                         _selectedIndex = 0;
@@ -626,14 +758,14 @@ class _MyHomePageState extends State<MyHomePage> {
       hasBottomNavigationBar: true,
       dataInitializationMap: mapFromFilterScreen,
       searchPageListener: (Map<String, dynamic> map, String closeOption) {
-        if(closeOption == CLOSE){
+        if (closeOption == CLOSE) {
           setState(() {
             _selectedIndex = 0;
           });
         }
 
-        if(map.isNotEmpty && map.containsKey(SEARCH_COUNT)){
-          if(mounted) {
+        if (map.isNotEmpty && map.containsKey(SEARCH_COUNT)) {
+          if (mounted) {
             setState(() {
               totalResults = map[SEARCH_COUNT];
             });
@@ -641,106 +773,107 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
     );
-    if(mounted){
+    if (mounted) {
       setState(() {
         pageList[searchPageIndex] = filteredSearchResult;
       });
     }
   }
 
-  void setSavedSearchesOrFavouritesPage(){
-    if (isUserLoggedIn) {
-      pageList[savedOrFavSearchesPageIndex] = Saved((String closeOption) {
-            if (closeOption == CLOSE) {
-              if (mounted) {
-                setState(() {
-                  _selectedIndex = 0;
-                });
-              }
-            }
-          }
-      );
-    } else {
-      pageList[savedOrFavSearchesPageIndex] = UserSignIn(
-            (String closeOption) {
-          if (closeOption == CLOSE) {
-            if (mounted) {
-              setState(() {
-                _selectedIndex = 0;
-              });
-            }
-          }
-        },fromBottomNavigator: true,
-      );
-    }
-  }
+  // void setSavedSearchesOrFavouritesPage() {
+  //   if (isUserLoggedIn) {
+  //     pageList[savedOrFavSearchesPageIndex] = Saved((String closeOption) {
+  //       if (closeOption == CLOSE) {
+  //         if (mounted) {
+  //           setState(() {
+  //             _selectedIndex = 0;
+  //           });
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     pageList[savedOrFavSearchesPageIndex] = UserSignIn(
+  //       (String closeOption) {
+  //         if (closeOption == CLOSE) {
+  //           if (mounted) {
+  //             setState(() {
+  //               _selectedIndex = 0;
+  //             });
+  //           }
+  //         }
+  //       },
+  //       fromBottomNavigator: true,
+  //     );
+  //   }
+  // }
 
-  navigateToAddPropertyPage({required Map map, required int index}){
+  navigateToAddPropertyPage({required Map map, required int index}) {
     if (map.isEmpty) return;
     Future.delayed(Duration.zero, () {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AddPropertyV2(
-          // builder: (context) => AddProperty(
+            // builder: (context) => AddProperty(
             draftPropertyIndex: index,
             isDraftProperty: true,
             propertyDataMap: map,
           ),
         ),
       );
-
     });
   }
 
   Widget? defaultAddButton() {
     //First we'll check if showing add button is allowed, then we'll check if the bottom tab bar design
     //is not design 2. then we'll check if hook is returning some widget.
-    if (SHOW_BOTTOM_NAV_BAR_ADD_BTN && BOTTOM_NAVIGATION_BAR_DESIGN != DESIGN_02 ) {
+    if (SHOW_BOTTOM_NAV_BAR_ADD_BTN &&
+        BOTTOM_NAVIGATION_BAR_DESIGN != DESIGN_02) {
       Widget? widgetFromHook = addPlusButtonHook(context);
-      return widgetFromHook ?? Container(
-        width: 105,
-        height: 35,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          // color: AppThemePreferences().appTheme.backgroundColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: GestureDetector(
-          onTap: () {
-            UtilityMethods.navigateToRoute(
-              context: context,
-              builder: (context) =>
-              HiveStorageManager.isUserLoggedIn()
-                  ? UtilityMethods.navigateToAddPropertyPage(
-                  navigateToQuickAdd: true)
-                  : UserSignIn(
-                    (String closeOption) {
-                  if (closeOption == CLOSE) {
-                    Navigator.pop(context);
-                  }
-                },
+      return widgetFromHook ??
+          Container(
+            width: 105,
+            height: 35,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              // color: AppThemePreferences().appTheme.backgroundColor,
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                UtilityMethods.navigateToRoute(
+                  context: context,
+                  builder: (context) => HiveStorageManager.isUserLoggedIn()
+                      ? UtilityMethods.navigateToAddPropertyPage(
+                          navigateToQuickAdd: true)
+                      : UserSignIn(
+                          (String closeOption) {
+                            if (closeOption == CLOSE) {
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                      AppThemePreferences.addPropertyButtonImagePath),
+                  GenericTextWidget(
+                    UtilityMethods.getLocalizedString('Add Property'),
+                    strutStyle: const StrutStyle(forceStrutHeight: true),
+                    style: TextStyle(
+                      fontSize: AppThemePreferences.tagFontSize,
+                      color: AppThemePreferences().appTheme.primaryColor,
+                      fontWeight: AppThemePreferences.tagFontWeight,
+                    ),
+                    // style: AppThemePreferences().appTheme.tagTextStyle,
+                  ),
+                ],
               ),
-            );
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(AppThemePreferences.addPropertyButtonImagePath),
-              GenericTextWidget(
-                UtilityMethods.getLocalizedString('Add Property'),
-                strutStyle: const StrutStyle(forceStrutHeight: true),
-                style: TextStyle(
-                  fontSize: AppThemePreferences.tagFontSize,
-                  color: AppThemePreferences().appTheme.primaryColor,
-                  fontWeight: AppThemePreferences.tagFontWeight,
-                ),
-                // style: AppThemePreferences().appTheme.tagTextStyle,
-              ),
-            ],
-          ),
-        ),
-      );
+            ),
+          );
     }
     return null;
   }
@@ -780,5 +913,4 @@ class _MyHomePageState extends State<MyHomePage> {
   //   }
   //   return null;
   // }
-
 }

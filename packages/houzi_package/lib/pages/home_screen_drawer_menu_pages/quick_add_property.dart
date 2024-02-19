@@ -23,7 +23,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-
+import 'package:houzi_package/models/api/api_response.dart' as api1;
+import 'package:houzi_package/models/api_response.dart' as api2;
 import 'package:houzi_package/files/generic_methods/utility_methods.dart';
 
 import '../../blocs/property_bloc.dart';
@@ -130,7 +131,7 @@ class _QuickAddPropertyState extends State<QuickAddProperty> {
   }
 
   fetchNonce() async {
-    ApiResponse response = await _propertyBloc.fetchAddPropertyNonceResponse();
+    api1.ApiResponse response = await _propertyBloc.fetchAddPropertyNonceResponse();
     if (response.success) {
       nonce = response.result;
     }
@@ -139,7 +140,19 @@ class _QuickAddPropertyState extends State<QuickAddProperty> {
     if (response.success) {
       imageNonce = response.result;
     }
-  }
+}
+
+  // fetchNonce() async {
+  //   ApiResponse response = await _propertyBloc.fetchAddPropertyNonceResponse();
+  //   if (response.success) {
+  //     nonce = response.result;
+  //   }
+
+  //   response = await _propertyBloc.fetchAddImageNonceResponse();
+  //   if (response.success) {
+  //     imageNonce = response.result;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -24,7 +24,8 @@ class KeywordCustomQueryWidget extends StatefulWidget {
   });
 
   @override
-  State<KeywordCustomQueryWidget> createState() => _KeywordCustomQueryWidgetState();
+  State<KeywordCustomQueryWidget> createState() =>
+      _KeywordCustomQueryWidgetState();
 }
 
 class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
@@ -36,7 +37,7 @@ class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
   String? _uniqueKey;
 
   Map<String, dynamic> _filterDataMap = {};
-  Map<String,dynamic> _keywordFiltersDataMap = {};
+  Map<String, dynamic> _keywordFiltersDataMap = {};
 
   VoidCallback? generalNotifierLister;
 
@@ -56,7 +57,8 @@ class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
         _filterDataMap[keywordFiltersKey] != null &&
         _filterDataMap[keywordFiltersKey] is Map &&
         _filterDataMap[keywordFiltersKey].isNotEmpty) {
-      _keywordFiltersDataMap = Map<String, dynamic>.from(_filterDataMap[keywordFiltersKey]);
+      _keywordFiltersDataMap =
+          Map<String, dynamic>.from(_filterDataMap[keywordFiltersKey]);
     }
 
     // initialize Data
@@ -66,12 +68,16 @@ class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
         _uniqueKey = KEYWORD_PREFIX + _uniqueKey!;
       }
 
-      if (_uniqueKey != null && _keywordFiltersDataMap.isNotEmpty &&
+      if (_uniqueKey != null &&
+          _keywordFiltersDataMap.isNotEmpty &&
           _keywordFiltersDataMap.containsKey(_uniqueKey!) &&
           _keywordFiltersDataMap[_uniqueKey!] is Map &&
-          _keywordFiltersDataMap[_uniqueKey!].containsKey(keywordFiltersValueKey) &&
-          _keywordFiltersDataMap[_uniqueKey!][keywordFiltersValueKey] is String &&
-          _keywordFiltersDataMap[_uniqueKey!][keywordFiltersValueKey].isNotEmpty) {
+          _keywordFiltersDataMap[_uniqueKey!]
+              .containsKey(keywordFiltersValueKey) &&
+          _keywordFiltersDataMap[_uniqueKey!][keywordFiltersValueKey]
+              is String &&
+          _keywordFiltersDataMap[_uniqueKey!][keywordFiltersValueKey]
+              .isNotEmpty) {
         _selectedValue = true;
       }
     }
@@ -94,28 +100,27 @@ class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
       // padding: const EdgeInsets.symmetric(vertical: 20.0),
-      padding: EdgeInsets.fromLTRB(
-          UtilityMethods.isRTL(context) ? 15 : 8, 20,
+      padding: EdgeInsets.fromLTRB(UtilityMethods.isRTL(context) ? 15 : 8, 20,
           UtilityMethods.isRTL(context) ? 8 : 15, 20),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(width: 1.0, color: AppThemePreferences().appTheme.dividerColor!),
+          top: BorderSide(
+              width: 1.0, color: AppThemePreferences().appTheme.dividerColor!),
         ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0.0),
         child: Wrap(
-          children:[
+          children: [
             Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:[
+              children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -127,35 +132,41 @@ class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
                       flex: 8,
                       child: Padding(
                         padding: EdgeInsets.only(
-                            left: UtilityMethods.isRTL(context) ? 0 : 8,
-                            right: UtilityMethods.isRTL(context) ? 8 : 0,
+                          left: UtilityMethods.isRTL(context) ? 0 : 8,
+                          right: UtilityMethods.isRTL(context) ? 8 : 0,
                         ),
                         child: GenericTextWidget(
                           UtilityMethods.getLocalizedString(_pickerTitle),
-                          style: AppThemePreferences().appTheme.filterPageHeadingTitleTextStyle,
+                          style: AppThemePreferences()
+                              .appTheme
+                              .filterPageHeadingTitleTextStyle,
                         ),
                       ),
                     ),
-                    if (widget.filterObj.pickerType == switchKey) Expanded(
-                      flex: 0,
-                      child: CupertinoSwitch(
-                        value: _selectedValue,
-                        activeColor: AppThemePreferences().appTheme.primaryColor,
-                        onChanged: (bool value) => onUpdateValue(value),
+                    if (widget.filterObj.pickerType == switchKey)
+                      Expanded(
+                        flex: 0,
+                        child: CupertinoSwitch(
+                          value: _selectedValue,
+                          activeColor:
+                              AppThemePreferences().appTheme.primaryColor,
+                          onChanged: (bool value) => onUpdateValue(value),
+                        ),
                       ),
-                    ),
-                    if (widget.filterObj.pickerType == checkboxKey) Expanded(
-                      flex: 0,
-                      child: Checkbox(
-                        activeColor: AppThemePreferences().appTheme.primaryColor,
-                        value: _selectedValue,
-                        onChanged: (value) {
-                          if (value != null) {
-                            onUpdateValue(value);
-                          }
-                        },
+                    if (widget.filterObj.pickerType == checkboxKey)
+                      Expanded(
+                        flex: 0,
+                        child: Checkbox(
+                          activeColor:
+                              AppThemePreferences().appTheme.primaryColor,
+                          value: _selectedValue,
+                          onChanged: (value) {
+                            if (value != null) {
+                              onUpdateValue(value);
+                            }
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -167,7 +178,7 @@ class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
   }
 
   onUpdateValue(bool val) {
-    if(mounted) {
+    if (mounted) {
       setState(() {
         _selectedValue = val;
         if (val) {
@@ -181,8 +192,8 @@ class _KeywordCustomQueryWidgetState extends State<KeywordCustomQueryWidget> {
     }
   }
 
-  resetData(){
-    if(mounted) {
+  resetData() {
+    if (mounted) {
       setState(() {
         _selectedValue = false;
       });

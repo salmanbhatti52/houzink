@@ -22,7 +22,7 @@ class HomeLocationSearchBarWidget extends StatefulWidget {
 class HomeLocationSearchBarWidgetState
     extends State<HomeLocationSearchBarWidget> {
   Map<String, dynamic> _filterDataMap = {};
-  Map<String, dynamic> _searchDataMap = {};
+  final Map<String, dynamic> _searchDataMap = {};
   String _selectedLocation = '';
   String _latitude = '';
   String _longitude = '';
@@ -70,14 +70,14 @@ class HomeLocationSearchBarWidgetState
             child: newLocationBarWidget(),
           ),
         ),
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: newSearchIconButtonWidget(),
-            // child: searchButtonWidget(),
-          ),
-        ),
+        // Expanded(
+        //   flex: 2,
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 2),
+        //     child: newSearchIconButtonWidget(),
+        //     // child: searchButtonWidget(),
+        //   ),
+        // ),
       ],
     );
   }
@@ -233,7 +233,8 @@ class HomeLocationSearchBarWidgetState
               borderRadius: BorderRadius.circular(5.0),
               borderSide: BorderSide(
                   width: 1,
-                  color: AppThemePreferences.switchUnselectedTextDark!.withOpacity(0.2)),
+                  color: AppThemePreferences.switchUnselectedTextDark!
+                      .withOpacity(0.2)),
             ),
             // disabledBorder: InputBorder.none,
             // enabledBorder: OutlineInputBorder(
@@ -252,6 +253,10 @@ class HomeLocationSearchBarWidgetState
                 ? UtilityMethods.getLocalizedString("search")
                 : _selectedLocation,
             hintStyle: AppThemePreferences().appTheme.searchBarTextStyle,
+            suffixIcon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: newSearchIconButtonWidget(),
+            ),
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8), //10
               child: Icon(
@@ -277,7 +282,7 @@ class HomeLocationSearchBarWidgetState
       buttonHeight: 36,
       buttonStyle: ElevatedButton.styleFrom(
         elevation: 0.0,
-        primary: AppThemePreferences.actionButtonBackgroundColor,
+        backgroundColor: AppThemePreferences.actionButtonBackgroundColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
             side: BorderSide(
@@ -310,12 +315,12 @@ class HomeLocationSearchBarWidgetState
   }
 
   Widget newSearchIconButtonWidget() {
-    return Container(
+    return SizedBox(
       height: 45,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5.0),
-        color: const Color(0xFFC5EEFD),
-      ),
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(5.0),
+      //   color: const Color(0xFFC5EEFD),
+      // ),
       child: GestureDetector(
         onTap: () => onSearchPressed(),
         child: SvgPicture.asset(

@@ -5,38 +5,37 @@ import 'package:houzi_package/pages/home_page_screens/parent_home_related/parent
 class HomeLocation extends ParentSliverHome {
   final GlobalKey<ScaffoldState>? scaffoldKey;
 
-  const HomeLocation({
-    Key? key,
-    this.scaffoldKey
-  }) : super(key: key);
+  const HomeLocation({Key? key, this.scaffoldKey}) : super(key: key);
 
   @override
   _HomeLocationState createState() => _HomeLocationState();
 }
 
 class _HomeLocationState extends ParentSliverHomeState<HomeLocation> {
-
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
+    print("Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm here in HomeLocation");
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget getSliverAppBarWidget(){
+  Widget getSliverAppBarWidget() {
+    print(
+        "Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm being called in getSliverAppBarWidget in HomeLocation extended with ParentSliverHome ");
     return HomeLocationSliverAppBarWidget(
-      onLeadingIconPressed: () => widget.scaffoldKey!.currentState!.openEndDrawer(),
+      onLeadingIconPressed: () {
+        print(
+            "Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm being called in onLeadingIconPressed ");
+        widget.scaffoldKey!.currentState!.openEndDrawer();
+      },
       selectedStatusIndex: super.getSelectedStatusIndex(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.scaffoldKey != null){
+    if (widget.scaffoldKey != null) {
       super.scaffoldKey = widget.scaffoldKey!;
     }
 

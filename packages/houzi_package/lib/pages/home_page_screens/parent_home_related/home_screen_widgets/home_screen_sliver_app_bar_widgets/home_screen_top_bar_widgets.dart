@@ -8,7 +8,8 @@ import 'package:houzi_package/pages/city_picker.dart';
 import 'package:houzi_package/widgets/generic_text_widget.dart';
 import 'package:houzi_package/widgets/toast_widget.dart';
 
-typedef HomeScreenTopBarWidgetListener = void Function({Map<String, dynamic>? filterDataMap});
+typedef HomeScreenTopBarWidgetListener = void Function(
+    {Map<String, dynamic>? filterDataMap});
 
 class HomeScreenTopBarWidget extends StatefulWidget {
   final String selectedCity;
@@ -25,8 +26,8 @@ class HomeScreenTopBarWidget extends StatefulWidget {
 }
 
 class _HomeScreenTopBarWidgetState extends State<HomeScreenTopBarWidget> {
-
-  HomeRightBarButtonWidgetHook? rightBarButtonIdWidgetHook = HooksConfigurations.homeRightBarButtonWidget;
+  HomeRightBarButtonWidgetHook? rightBarButtonIdWidgetHook =
+      HooksConfigurations.homeRightBarButtonWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +38,10 @@ class _HomeScreenTopBarWidgetState extends State<HomeScreenTopBarWidget> {
         children: [
           HomeScreenLocationWidget(
             selectedCity: widget.selectedCity,
-            homeScreenLocationWidgetListener: ({filterDataMap, loadProperties}){
-              widget.homeScreenTopBarWidgetListener!(filterDataMap: filterDataMap);
+            homeScreenLocationWidgetListener: (
+                {filterDataMap, loadProperties}) {
+              widget.homeScreenTopBarWidgetListener!(
+                  filterDataMap: filterDataMap);
             },
           ),
           rightBarButtonIdWidgetHook!(context) ?? Container(),
@@ -58,19 +61,18 @@ class HomeScreenLocationWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<HomeScreenLocationWidget> createState() => _HomeScreenLocationWidgetState();
+  State<HomeScreenLocationWidget> createState() =>
+      _HomeScreenLocationWidgetState();
 }
 
 class _HomeScreenLocationWidgetState extends State<HomeScreenLocationWidget> {
   List<dynamic> citiesMetaDataList = [];
-
 
   @override
   void initState() {
     super.initState();
     citiesMetaDataList = HiveStorageManager.readCitiesMetaData() ?? [];
   }
-
 
   @override
   void dispose() {
@@ -80,28 +82,33 @@ class _HomeScreenLocationWidgetState extends State<HomeScreenLocationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if(citiesMetaDataList.isEmpty){
+    if (citiesMetaDataList.isEmpty) {
       citiesMetaDataList = HiveStorageManager.readCitiesMetaData() ?? [];
     }
 
     return GestureDetector(
       onTap: () {
-        if(citiesMetaDataList.isEmpty){
-          ShowToastWidget(buildContext: context, text: UtilityMethods.getLocalizedString("data_loading"));
-        }else{
+        if (citiesMetaDataList.isEmpty) {
+          ShowToastWidget(
+              buildContext: context,
+              text: UtilityMethods.getLocalizedString("data_loading"));
+        } else {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CityPicker(
                   citiesMetaDataList: citiesMetaDataList,
-                  cityPickerListener: (String pickedCity, int? pickedCityId, String pickedCitySlug) {
-                    Map<String, dynamic> filterDataMap = HiveStorageManager.readFilterDataInfo() ?? {};
+                  cityPickerListener: (String pickedCity, int? pickedCityId,
+                      String pickedCitySlug) {
+                    Map<String, dynamic> filterDataMap =
+                        HiveStorageManager.readFilterDataInfo() ?? {};
                     filterDataMap[CITY_ID] = [pickedCityId];
                     filterDataMap[CITY] = [pickedCity];
                     filterDataMap[CITY_SLUG] = [pickedCitySlug];
                     HiveStorageManager.storeFilterDataInfo(map: filterDataMap);
 
-                    widget.homeScreenLocationWidgetListener!(filterDataMap: filterDataMap);
+                    widget.homeScreenLocationWidgetListener!(
+                        filterDataMap: filterDataMap);
                   }),
             ),
           );
@@ -130,7 +137,8 @@ class _HomeScreenLocationWidgetState extends State<HomeScreenLocationWidget> {
                   child: GenericTextWidget(
                     widget.selectedCity,
                     strutStyle: const StrutStyle(forceStrutHeight: true),
-                    style:  AppThemePreferences().appTheme.locationWidgetTextStyle,
+                    style:
+                        AppThemePreferences().appTheme.locationWidgetTextStyle,
                   ),
                 ),
               ],
@@ -140,8 +148,12 @@ class _HomeScreenLocationWidgetState extends State<HomeScreenLocationWidget> {
               padding: const EdgeInsets.only(left: 5, top: 20),
               child: CircleAvatar(
                 radius: 7,
-                backgroundColor: AppThemePreferences().appTheme.homeScreenTopBarRightArrowBackgroundColor,
-                child: AppThemePreferences().appTheme.homeScreenTopBarRightArrowIcon,
+                backgroundColor: AppThemePreferences()
+                    .appTheme
+                    .homeScreenTopBarRightArrowBackgroundColor,
+                child: AppThemePreferences()
+                    .appTheme
+                    .homeScreenTopBarRightArrowIcon,
               )),
         ],
       ),

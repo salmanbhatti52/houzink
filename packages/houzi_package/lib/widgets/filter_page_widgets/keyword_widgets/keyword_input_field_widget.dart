@@ -27,36 +27,39 @@ class KeywordPickerInputField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(width: 1.0, color: AppThemePreferences().appTheme.dividerColor!),
+          top: BorderSide(
+              width: 1.0, color: AppThemePreferences().appTheme.dividerColor!),
         ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0.0),
         child: Wrap(
-          children:[
+          children: [
             Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:[
+              children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: pickerIcon,
-                    ),
-                    Expanded(
-                      flex: 8,
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: pickerIcon,
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: GenericTextWidget(
-                        pickerTitle,
-                        style: AppThemePreferences().appTheme.filterPageHeadingTitleTextStyle,
+                        "Location",
+                        style: AppThemePreferences()
+                            .appTheme
+                            .filterPageHeadingTitleTextStyle,
                       ),
                     ),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: textFormFieldWidget(),
                 ),
               ],
@@ -67,16 +70,21 @@ class KeywordPickerInputField extends StatelessWidget {
     );
   }
 
-  Widget textFormFieldWidget(){
+  Widget textFormFieldWidget() {
     return Container(
-      margin: const EdgeInsets.only(top: 5.0),
+      // margin: const EdgeInsets.only(top: 5.0),
       child: TextFormField(
         enabled: true,
         readOnly: false,
         controller: controller,
         decoration: AppThemePreferences.formFieldDecoration(
-            hintText: hintText
-                ?? UtilityMethods.getLocalizedString("please_enter_keyword")),
+          hintText: hintText ??
+              UtilityMethods.getLocalizedString("please_enter_keyword2"),
+          suffixIcon: const Icon(
+            Icons.location_searching, // Location icon
+            color: Colors.blue, // Replace with your desired color
+          ),
+        ),
         onChanged: (keywordString) => listener(keywordString),
       ),
     );

@@ -5,7 +5,6 @@ import 'package:houzi_package/pages/home_page_screens/parent_home_related/home_s
 import 'package:houzi_package/pages/home_page_screens/parent_home_related/home_screen_widgets/home_screen_sliver_app_bar_widgets/home_screen_sliver_app_bar_widget.dart';
 import 'package:houzi_package/widgets/custom_widgets/refresh_indicator_widget.dart';
 
-
 class ParentSliverHome extends ParentHome {
   const ParentSliverHome({Key? key}) : super(key: key);
 
@@ -13,30 +12,23 @@ class ParentSliverHome extends ParentHome {
   ParentSliverHomeState createState() => ParentSliverHomeState();
 }
 
-class ParentSliverHomeState<T extends ParentSliverHome> extends ParentHomeState<T> {
-
+class ParentSliverHomeState<T extends ParentSliverHome>
+    extends ParentHomeState<T> {
   @override
   void initState() {
     super.initState();
+    debugPrint(
+        "Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm here in ParentSliverHomeState");
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return super.build(context);
-  }
-
-  Widget getSliverAppBarWidget(){
+  Widget getSliverAppBarWidget() {
     return HomeScreenSliverAppBarWidget(
-      onLeadingIconPressed: ()=> super.parentHomeScaffoldKey.currentState!.openEndDrawer(),
+      onLeadingIconPressed: () =>
+          super.parentHomeScaffoldKey.currentState!.openEndDrawer(),
       selectedCity: getSelectedCity(),
       selectedStatusIndex: getSelectedStatusIndex(),
-      homeScreenSliverAppBarListener: ({filterDataMap}){
-        if(filterDataMap != null && filterDataMap.isNotEmpty){
+      homeScreenSliverAppBarListener: ({filterDataMap}) {
+        if (filterDataMap != null && filterDataMap.isNotEmpty) {
           updateData(filterDataMap);
         }
       },
@@ -44,12 +36,12 @@ class ParentSliverHomeState<T extends ParentSliverHome> extends ParentHomeState<
   }
 
   @override
-  Widget getListingsWidget(dynamic item){
+  Widget getListingsWidget(dynamic item) {
     return HomeScreenListingsWidget(
       homeScreenData: item,
       refresh: super.needToRefresh,
-      homeScreenListingsWidgetListener: (bool errorOccur, bool dataRefresh){
-        if(mounted){
+      homeScreenListingsWidgetListener: (bool errorOccur, bool dataRefresh) {
+        if (mounted) {
           setState(() {
             errorWhileDataLoading = errorOccur;
             needToRefresh = dataRefresh;
@@ -59,7 +51,8 @@ class ParentSliverHomeState<T extends ParentSliverHome> extends ParentHomeState<
     );
   }
 
-  Widget getBodyWidget(){
+  @override
+  Widget getBodyWidget() {
     return RefreshIndicatorWidget(
       color: AppThemePreferences().appTheme.primaryColor,
       edgeOffset: 200.0,
@@ -98,20 +91,37 @@ class ParentSliverHomeState<T extends ParentSliverHome> extends ParentHomeState<
                     //   ],
                     // );
 
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: homeConfigList.map((item) {
-                        return getListingsWidget(item);
-                      }).toList(),
+                    return Container(
+                      color: const Color(0xFFC5EEFD),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.white, width: 10
+                              // Set the border color to blue
+                              // Set the border width
+                              ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(
+                                25.0), // Set the top left border radius
+                            topRight: Radius.circular(
+                                25.0), // Set the top right border radius
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: homeConfigList.map((item) {
+                            return getListingsWidget(item);
+                          }).toList(),
+                        ),
+                      ),
                     );
                   },
                 ),
               ),
             ],
           ),
-          if(errorWhileDataLoading) super.getInternetConnectionErrorWidget(),
+          if (errorWhileDataLoading) super.getInternetConnectionErrorWidget(),
         ],
       ),
     );

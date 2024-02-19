@@ -160,7 +160,7 @@ class UserRelatedActionsWidget extends StatelessWidget {
   void onAllUsersTap(BuildContext context) {
     UtilityMethods.navigateToRoute(
       context: context,
-      builder: (context) => AllUsers(),
+      builder: (context) => const AllUsers(),
     );
   }
 

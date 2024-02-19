@@ -18,7 +18,6 @@ import 'package:houzi_package/widgets/filter_page_widgets/term_picker_related/te
 import 'package:houzi_package/models/property_meta_data.dart';
 import 'package:houzi_package/widgets/generic_text_widget.dart';
 
-
 typedef TermPickerPickerListener = Function(
   List<dynamic> selectedTermsSlugList,
   List<dynamic> selectedTermsNameList,
@@ -55,7 +54,6 @@ class TermPicker extends StatefulWidget {
 }
 
 class _TermPickerState extends State<TermPicker> {
-
   int _selectedTermTitle = 0;
 
   bool hasNoTerms = true;
@@ -63,16 +61,16 @@ class _TermPickerState extends State<TermPicker> {
   bool tabBarOptionsAvailable = false;
   bool showDataByParentTerm = false;
 
-  List<String> selectParentTermName =  [];
+  List<String> selectParentTermName = [];
 
   String selectedTerm = PLEASE_SELECT;
 
-  Map<String, dynamic> _termsMap = {};
+  final Map<String, dynamic> _termsMap = {};
   Map<String, dynamic> tempDataHolderMap = {};
 
   List<dynamic> _tempTitleList = [];
   List<dynamic> _termsMetaData = [];
-  List<dynamic> _listOfSelectedTermSlugs= [];
+  List<dynamic> _listOfSelectedTermSlugs = [];
   List<dynamic> _listOfSelectedTerms = [];
 
   final PropertyBloc _propertyBloc = PropertyBloc();
@@ -84,7 +82,6 @@ class _TermPickerState extends State<TermPicker> {
   Function deepEq = const DeepCollectionEquality().equals;
   bool hideEmpty = false;
 
-
   @override
   void initState() {
     hideEmpty = HooksConfigurations.hideEmptyTerm != null
@@ -94,16 +91,20 @@ class _TermPickerState extends State<TermPicker> {
     generalNotifierLister = () {
       if (shouldChangeBasedOnParentTerm() && showDataByParentTerm) {
         bool parentSelectionChanged = false;
-        if ((isDataTypePropertyArea() && GeneralNotifier().change == GeneralNotifier.CITY_DATA_UPDATE)
-            || (isDataTypePropertyCity() && GeneralNotifier().change == GeneralNotifier.STATE_DATA_UPDATE)
-            || (isDataTypePropertyState() && GeneralNotifier().change == GeneralNotifier.COUNTRY_DATA_UPDATE)) {
-
+        if ((isDataTypePropertyArea() &&
+                GeneralNotifier().change == GeneralNotifier.CITY_DATA_UPDATE) ||
+            (isDataTypePropertyCity() &&
+                GeneralNotifier().change ==
+                    GeneralNotifier.STATE_DATA_UPDATE) ||
+            (isDataTypePropertyState() &&
+                GeneralNotifier().change ==
+                    GeneralNotifier.COUNTRY_DATA_UPDATE)) {
           List<String> parentTermName = [];
 
           List selectedTermNameSlug = getSelectedParentTermNameAndSlug();
           parentTermName = selectedTermNameSlug.first;
 
-          if(!deepEq(selectParentTermName, parentTermName)){
+          if (!deepEq(selectParentTermName, parentTermName)) {
             parentSelectionChanged = true;
           }
 
@@ -113,16 +114,18 @@ class _TermPickerState extends State<TermPicker> {
           //   print("Should Update Property Area: $parentSelectionChanged\n");
           // }
 
-          if(isDataTypePropertyCity() && GeneralNotifier().change == GeneralNotifier.STATE_DATA_UPDATE){
+          if (isDataTypePropertyCity() &&
+              GeneralNotifier().change == GeneralNotifier.STATE_DATA_UPDATE) {
             // print("State has changed...");
             // print("ParentTermList: $parentTermName SelectParentTermList: $selectParentTermName");
             // print("Should Update Property City: $parentSelectionChanged\n");
 
-            if(deepEq(selectParentTermName, parentTermName) && selectParentTermName.isEmpty && selectedTerm != PLEASE_SELECT){
+            if (deepEq(selectParentTermName, parentTermName) &&
+                selectParentTermName.isEmpty &&
+                selectedTerm != PLEASE_SELECT) {
               // print("States are empty so resetting the City Data...");
               parentSelectionChanged = true;
             }
-
           }
 
           // if(isDataTypePropertyState() && GeneralNotifier().change == GeneralNotifier.COUNTRY_DATA_UPDATE){
@@ -140,11 +143,11 @@ class _TermPickerState extends State<TermPicker> {
           if (mounted) setState(() {});
           readTermData();
         }
-
       }
 
-
-      if((isDataTypePropertyCity() || isDataTypePropertyState() || isDataTypePropertyArea()) &&
+      if ((isDataTypePropertyCity() ||
+              isDataTypePropertyState() ||
+              isDataTypePropertyArea()) &&
           GeneralNotifier().change == GeneralNotifier.RESET_FILTER_DATA) {
         selectedTerm = PLEASE_SELECT;
         _listOfSelectedTermSlugs.clear();
@@ -159,7 +162,7 @@ class _TermPickerState extends State<TermPicker> {
     super.initState();
   }
 
-  initializeData(){
+  initializeData() {
     if (widget.selectedTermsSlugsList.isNotEmpty) {
       _listOfSelectedTermSlugs.clear();
       _listOfSelectedTermSlugs.addAll(widget.selectedTermsSlugsList);
@@ -169,36 +172,36 @@ class _TermPickerState extends State<TermPicker> {
       _listOfSelectedTerms.addAll(widget.selectedTermsList.toSet().toList());
     }
 
-    if(_listOfSelectedTerms.isNotEmpty){
+    if (_listOfSelectedTerms.isNotEmpty) {
       selectedTerm = _listOfSelectedTerms.toSet().toList().join(", ");
     }
 
-    if(_termsMap.isNotEmpty || _termsMetaData.isNotEmpty) {
+    if (_termsMap.isNotEmpty || _termsMetaData.isNotEmpty) {
       hasNoTerms = false;
     }
 
-
     if (shouldChangeBasedOnParentTerm()) {
-      for(Term item in _termsMetaData){
-        if(item.parentTerm != null){
+      for (Term item in _termsMetaData) {
+        if (item.parentTerm != null) {
           showDataByParentTerm = true;
           break;
         }
       }
 
-      if(showDataByParentTerm){
-        List<String> parentTermName =  [];
-        List<String> parentTermSlug =  [];
+      if (showDataByParentTerm) {
+        List<String> parentTermName = [];
+        List<String> parentTermSlug = [];
 
         List selectedTermNameSlug = getSelectedParentTermNameAndSlug();
         parentTermName = selectedTermNameSlug.first;
         parentTermSlug = selectedTermNameSlug.last;
         selectParentTermName = parentTermName;
 
-        if (parentTermName.isNotEmpty && parentTermName[0] != PLEASE_SELECT &&
+        if (parentTermName.isNotEmpty &&
+            parentTermName[0] != PLEASE_SELECT &&
             _termsMetaData.isNotEmpty) {
-
-          List updatedTermsMetaData = getDataAccordingToParentTerm(parentTermName, parentTermSlug);
+          List updatedTermsMetaData =
+              getDataAccordingToParentTerm(parentTermName, parentTermSlug);
           if (updatedTermsMetaData.isNotEmpty) {
             _termsMetaData.clear();
 
@@ -214,24 +217,27 @@ class _TermPickerState extends State<TermPicker> {
                 }
               }
             }
-            if(_termsMetaData[0].name != allCapString) {
-              _termsMetaData.insert(0, Term(name: allCapString, slug: allString, parent: 0));
+            if (_termsMetaData[0].name != allCapString) {
+              _termsMetaData.insert(
+                  0, Term(name: allCapString, slug: allString, parent: 0));
             }
           } else {
-            _termsMetaData = [Term(name: allCapString, slug: allString, parent: 0)];
+            _termsMetaData = [
+              Term(name: allCapString, slug: allString, parent: 0)
+            ];
             // hasNoTerms = true;
           }
 
           if (_termsMetaData.isEmpty) {
-            _termsMetaData = [Term(name: allCapString, slug: allString, parent: 0)];
+            _termsMetaData = [
+              Term(name: allCapString, slug: allString, parent: 0)
+            ];
             // hasNoTerms = true;
           }
-
-
         }
       }
     }
-    if(_termsMap.isNotEmpty){
+    if (_termsMap.isNotEmpty) {
       tabBarOptionsAvailable = true;
       _tempTitleList = _termsMap.keys.toList();
       if (_listOfSelectedTerms.isNotEmpty) {
@@ -241,13 +247,12 @@ class _TermPickerState extends State<TermPicker> {
           //addTitleSlugToList();
         }
       } else if (_listOfSelectedTermSlugs.isNotEmpty) {
-
         //make map based on slugs, so we can get the selected index.
 
         //first get the slugs of parent categories
         List<dynamic> termSlugKeyList = [];
         for (var element in _termsMetaData) {
-          if(element.parent == 0){
+          if (element.parent == 0) {
             termSlugKeyList.add(element.slug);
           }
         }
@@ -259,23 +264,26 @@ class _TermPickerState extends State<TermPicker> {
         }
       }
     }
-    if(!tabBarOptionsAvailable){
-      if(_listOfSelectedTerms.isNotEmpty){
+    if (!tabBarOptionsAvailable) {
+      if (_listOfSelectedTerms.isNotEmpty) {
         String title = _listOfSelectedTerms[0];
-        int index = _termsMetaData.indexWhere((element) => element.name == title);
-        if(index != -1){
+        int index =
+            _termsMetaData.indexWhere((element) => element.name == title);
+        if (index != -1) {
           String slug = _termsMetaData[index].slug ?? "";
-          if(slug.isNotEmpty){
-            if(mounted) setState(() {
-              _selectedTermTitle = index;
-              _listOfSelectedTermSlugs.add(slug);
-              _listOfSelectedTerms.add(title);
-            });
+          if (slug.isNotEmpty) {
+            if (mounted) {
+              setState(() {
+                _selectedTermTitle = index;
+                _listOfSelectedTermSlugs.add(slug);
+                _listOfSelectedTerms.add(title);
+              });
+            }
           }
         }
       }
     }
-    if(mounted) {
+    if (mounted) {
       setState(() {});
     }
   }
@@ -283,8 +291,8 @@ class _TermPickerState extends State<TermPicker> {
   List<List<String>> getSelectedParentTermNameAndSlug() {
     String mapKeyName = "";
     String mapKeySlug = "";
-    List<String> parentTermName =  [];
-    List<String> parentTermSlug =  [];
+    List<String> parentTermName = [];
+    List<String> parentTermSlug = [];
     Map<String, dynamic> selectedTermMap = {};
 
     if (isDataTypePropertyArea()) {
@@ -335,28 +343,30 @@ class _TermPickerState extends State<TermPicker> {
     return [parentTermName, parentTermSlug];
   }
 
-  getDataAccordingToParentTerm(List<String> parentName, List<String> parentSlug) {
+  getDataAccordingToParentTerm(
+      List<String> parentName, List<String> parentSlug) {
     List updatedTermsMetaData = [];
-    if (parentName.length == 0) {
+    if (parentName.isEmpty) {
       updatedTermsMetaData.addAll(_termsMetaData);
       return updatedTermsMetaData;
     }
     for (Term item in _termsMetaData) {
       if (item.parentTerm != null &&
-          (parentName.contains(item.parentTerm!.toLowerCase()) || parentSlug.contains(item.parentTerm!.toLowerCase())) ) {
+          (parentName.contains(item.parentTerm!.toLowerCase()) ||
+              parentSlug.contains(item.parentTerm!.toLowerCase()))) {
         updatedTermsMetaData.add(item);
       }
     }
     return updatedTermsMetaData;
   }
 
-  void addTitleSlugToList(){
-    if(_tempTitleList.isNotEmpty){
+  void addTitleSlugToList() {
+    if (_tempTitleList.isNotEmpty) {
       String title = _tempTitleList[_selectedTermTitle] ?? "";
       int index = _termsMetaData.indexWhere((element) => element.name == title);
-      if(index != -1){
+      if (index != -1) {
         String? slug = _termsMetaData[index].slug;
-        if(slug != null && slug.isNotEmpty){
+        if (slug != null && slug.isNotEmpty) {
           setState(() {
             _listOfSelectedTermSlugs.add(slug);
             _listOfSelectedTerms.add(title);
@@ -365,7 +375,6 @@ class _TermPickerState extends State<TermPicker> {
       }
     }
   }
-
 
   @override
   void dispose() {
@@ -378,15 +387,14 @@ class _TermPickerState extends State<TermPicker> {
 
   @override
   Widget build(BuildContext context) {
-
     _listOfSelectedTerms = widget.selectedTermsList;
     _listOfSelectedTermSlugs = widget.selectedTermsSlugsList;
 
     if (widget.pickerType == dropDownPicker) {
       if (_listOfSelectedTerms.isNotEmpty &&
           _listOfSelectedTerms.toSet().toList().length == 1) {
-        dropDownTextController.text =
-            "${UtilityMethods.getLocalizedString(_listOfSelectedTerms.toSet().toList().first)}";
+        dropDownTextController.text = UtilityMethods.getLocalizedString(
+            _listOfSelectedTerms.toSet().toList().first);
       } else if (_listOfSelectedTerms.isNotEmpty &&
           _listOfSelectedTerms.toSet().toList().length > 1) {
         dropDownTextController.text = UtilityMethods.getLocalizedString(
@@ -394,12 +402,13 @@ class _TermPickerState extends State<TermPicker> {
             inputWords: [
               (_listOfSelectedTerms.toSet().toList().length.toString())
             ]);
-      }else if(_listOfSelectedTerms.isEmpty){
-        dropDownTextController.text = UtilityMethods.getLocalizedString(allCapString);
+      } else if (_listOfSelectedTerms.isEmpty) {
+        dropDownTextController.text =
+            UtilityMethods.getLocalizedString(allCapString);
       }
     }
 
-    if(_listOfSelectedTerms.isEmpty && _listOfSelectedTermSlugs.isEmpty){
+    if (_listOfSelectedTerms.isEmpty && _listOfSelectedTermSlugs.isEmpty) {
       _selectedTermTitle = 0;
       selectedTerm = PLEASE_SELECT;
     }
@@ -425,67 +434,72 @@ class _TermPickerState extends State<TermPicker> {
       listOfSelectedTerms: _listOfSelectedTerms,
       listOfSelectedTermSlugs: _listOfSelectedTermSlugs,
       tempTitleList: _tempTitleList,
-      onFullScreenTypeItemTap: ()=> termPickerFullScreenOnItemPressed(),
+      onFullScreenTypeItemTap: () => termPickerFullScreenOnItemPressed(),
       termsDataMap: _termsMap,
       showSearchBar: widget.showSearchBar,
       listener: ({selectedItemsList, selectedItemsSlugsList, selectedTab}) {
-        if(mounted) setState(() {
-
-          //onSegmentChosen
-          if(selectedTab != null){
-            onSegmentChosen(
+        if (mounted) {
+          setState(() {
+            //onSegmentChosen
+            if (selectedTab != null) {
+              onSegmentChosen(
                 selectedTab,
-                tabBarOptionsAvailable
-                    ? _tempTitleList
-                    : _termsMetaData,
-            );
-          }
+                tabBarOptionsAvailable ? _tempTitleList : _termsMetaData,
+              );
+            }
 
-          if(selectedItemsList != null && selectedItemsSlugsList != null){
-            _listOfSelectedTerms = selectedItemsList;
-            _listOfSelectedTermSlugs = selectedItemsSlugsList;
-            widget.termPickerListener(selectedItemsSlugsList, selectedItemsList);
-          }
-
-        });
+            if (selectedItemsList != null && selectedItemsSlugsList != null) {
+              _listOfSelectedTerms = selectedItemsList;
+              _listOfSelectedTermSlugs = selectedItemsSlugsList;
+              widget.termPickerListener(
+                  selectedItemsSlugsList, selectedItemsList);
+            }
+          });
+        }
       },
     );
   }
 
-  void termPickerFullScreenOnItemPressed(){
-    if(_termsMetaData.isNotEmpty) {
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) => TermPickerFullScreen(
-          title: "${UtilityMethods.getLocalizedString("select")} "
-              "${UtilityMethods.getLocalizedString(widget.pickerTitle)}",
-          termType: widget.objDataType,
-          termMetaDataList: _termsMetaData,
-          termsDataMap: _termsMap,
-          termPickerFullScreenListener: (String pickedTerm, int? pickedTermId, String pickedTermSlug){
-            if(mounted) {
-              setState(() {
-                if (pickedTerm.isNotEmpty) {
-                  selectedTerm = pickedTerm;
-                  _listOfSelectedTerms = [pickedTerm];
-                }
+  void termPickerFullScreenOnItemPressed() {
+    if (_termsMetaData.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TermPickerFullScreen(
+            title: "${UtilityMethods.getLocalizedString("select")} "
+                "${UtilityMethods.getLocalizedString(widget.pickerTitle)}",
+            termType: widget.objDataType,
+            termMetaDataList: _termsMetaData,
+            termsDataMap: _termsMap,
+            termPickerFullScreenListener:
+                (String pickedTerm, int? pickedTermId, String pickedTermSlug) {
+              if (mounted) {
+                setState(() {
+                  if (pickedTerm.isNotEmpty) {
+                    selectedTerm = pickedTerm;
+                    _listOfSelectedTerms = [pickedTerm];
+                  }
 
-                if (pickedTermSlug.isNotEmpty) {
-                  _listOfSelectedTermSlugs = [pickedTermSlug];
-                }
-              });
-            }
-            widget.termPickerListener(_listOfSelectedTermSlugs, _listOfSelectedTerms);
-          },
+                  if (pickedTermSlug.isNotEmpty) {
+                    _listOfSelectedTermSlugs = [pickedTermSlug];
+                  }
+                });
+              }
+              widget.termPickerListener(
+                  _listOfSelectedTermSlugs, _listOfSelectedTerms);
+            },
+          ),
         ),
-      ),
       );
     }
   }
 
   onSegmentChosen(int index, List<dynamic> dataList) {
-    if(mounted) setState(() {
-      _selectedTermTitle = index;
-    });
+    if (mounted) {
+      setState(() {
+        _selectedTermTitle = index;
+      });
+    }
 
     _listOfSelectedTerms.clear();
     _listOfSelectedTermSlugs.clear();
@@ -493,19 +507,19 @@ class _TermPickerState extends State<TermPicker> {
     String slug = "";
     String title = "";
 
-    if(dataList[_selectedTermTitle].runtimeType == Term){
+    if (dataList[_selectedTermTitle].runtimeType == Term) {
       title = dataList[_selectedTermTitle].name ?? "";
       slug = dataList[_selectedTermTitle].slug ?? "";
-    }else{
+    } else {
       title = dataList[_selectedTermTitle] ?? "";
-      int itemIndex = _termsMetaData.indexWhere((element) => element.name == title);
-      if(itemIndex != -1){
+      int itemIndex =
+          _termsMetaData.indexWhere((element) => element.name == title);
+      if (itemIndex != -1) {
         slug = _termsMetaData[itemIndex].slug ?? "";
       }
     }
 
-
-    if(mounted) {
+    if (mounted) {
       setState(() {
         if (title.isNotEmpty) {
           _listOfSelectedTerms.add(title);
@@ -520,9 +534,9 @@ class _TermPickerState extends State<TermPicker> {
   }
 
   bool shouldChangeBasedOnParentTerm() {
-    if (widget.objDataType == propertyStateDataType
-        || widget.objDataType == propertyCityDataType
-        || widget.objDataType == propertyAreaDataType) {
+    if (widget.objDataType == propertyStateDataType ||
+        widget.objDataType == propertyCityDataType ||
+        widget.objDataType == propertyAreaDataType) {
       return true;
     }
     return false;
@@ -534,42 +548,49 @@ class _TermPickerState extends State<TermPicker> {
     }
     return false;
   }
+
   bool isDataTypePropertyType() {
     if (widget.objDataType == propertyTypeDataType) {
       return true;
     }
     return false;
   }
+
   bool isDataTypePropertyLabel() {
     if (widget.objDataType == propertyLabelDataType) {
       return true;
     }
     return false;
   }
+
   bool isDataTypePropertyState() {
     if (widget.objDataType == propertyStateDataType) {
       return true;
     }
     return false;
   }
+
   bool isDataTypePropertyCountry() {
     if (widget.objDataType == propertyCountryDataType) {
       return true;
     }
     return false;
   }
+
   bool isDataTypePropertyFeature() {
     if (widget.objDataType == propertyFeatureDataType) {
       return true;
     }
     return false;
   }
+
   bool isDataTypePropertyCity() {
     if (widget.objDataType == propertyCityDataType) {
       return true;
     }
     return false;
   }
+
   bool isDataTypePropertyArea() {
     if (widget.objDataType == propertyAreaDataType) {
       return true;
@@ -579,52 +600,51 @@ class _TermPickerState extends State<TermPicker> {
 
   readTermData() {
     List<dynamic> termsMetaData = [];
-    if (isDataTypePropertyStatus()){
+    if (isDataTypePropertyStatus()) {
       tempDataHolderMap.clear();
       tempDataHolderMap = HiveStorageManager.readPropertyStatusMapData() ?? {};
       termsMetaData = HiveStorageManager.readPropertyStatusMetaData() ?? [];
     }
 
-    if (isDataTypePropertyType()){
+    if (isDataTypePropertyType()) {
       tempDataHolderMap.clear();
       tempDataHolderMap = HiveStorageManager.readPropertyTypesMapData() ?? {};
       termsMetaData = HiveStorageManager.readPropertyTypesMetaData() ?? [];
     }
 
-    if (isDataTypePropertyLabel()){
+    if (isDataTypePropertyLabel()) {
       termsMetaData = HiveStorageManager.readPropertyLabelsMetaData() ?? [];
     }
 
-    if (isDataTypePropertyState()){
+    if (isDataTypePropertyState()) {
       termsMetaData = HiveStorageManager.readPropertyStatesMetaData() ?? [];
     }
 
-    if (isDataTypePropertyCountry()){
+    if (isDataTypePropertyCountry()) {
       termsMetaData = HiveStorageManager.readPropertyCountriesMetaData() ?? [];
     }
 
-    if (isDataTypePropertyFeature()){
+    if (isDataTypePropertyFeature()) {
       termsMetaData = HiveStorageManager.readPropertyFeaturesMetaData() ?? [];
     }
 
-    if (isDataTypePropertyCity()){
+    if (isDataTypePropertyCity()) {
       termsMetaData = HiveStorageManager.readCitiesMetaData() ?? [];
     }
 
-    if (isDataTypePropertyArea()){
+    if (isDataTypePropertyArea()) {
       termsMetaData = HiveStorageManager.readPropertyAreaMetaData() ?? [];
     }
 
-    if(tempDataHolderMap.isNotEmpty){
+    if (tempDataHolderMap.isNotEmpty) {
       _termsMap.clear();
-      if(!_termsMap.containsKey(allCapString)){
+      if (!_termsMap.containsKey(allCapString)) {
         _termsMap[allCapString] = [];
       }
       _termsMap.addAll(tempDataHolderMap);
     }
 
-    if(termsMetaData.isNotEmpty){
-
+    if (termsMetaData.isNotEmpty) {
       _termsMetaData.clear();
 
       for (int i = 0; i < termsMetaData.length; i++) {
@@ -639,11 +659,12 @@ class _TermPickerState extends State<TermPicker> {
           }
         }
       }
-      if(_termsMetaData[0].name != allCapString) {
-        _termsMetaData.insert(0, Term(name: allCapString, slug: allString, parent: 0));
+      if (_termsMetaData[0].name != allCapString) {
+        _termsMetaData.insert(
+            0, Term(name: allCapString, slug: allString, parent: 0));
       }
       initializeData();
-    }else{
+    } else {
       getAndStoreTermData();
     }
 
@@ -651,14 +672,14 @@ class _TermPickerState extends State<TermPicker> {
     tempDataHolderMap.clear();
   }
 
-  getAndStoreTermData(){
+  getAndStoreTermData() {
     fetchTermData(widget.objDataType).then((value) {
-      if(value.isNotEmpty){
-        if(mounted){
+      if (value.isNotEmpty) {
+        if (mounted) {
           setState(() {
             List<dynamic> termsMetaData = value;
 
-            if(termsMetaData.isNotEmpty){
+            if (termsMetaData.isNotEmpty) {
               UtilityMethods.storePropertyMetaDataList(
                 dataType: widget.objDataType,
                 metaDataList: termsMetaData,
@@ -680,10 +701,12 @@ class _TermPickerState extends State<TermPicker> {
                 }
               }
 
-              tempDataHolderMap = UtilityMethods.getParentAndChildCategorizedMap(metaDataList: _termsMetaData);
-              if(tempDataHolderMap.isNotEmpty){
+              tempDataHolderMap =
+                  UtilityMethods.getParentAndChildCategorizedMap(
+                      metaDataList: _termsMetaData);
+              if (tempDataHolderMap.isNotEmpty) {
                 _termsMap.clear();
-                if(!_termsMap.containsKey(allCapString)){
+                if (!_termsMap.containsKey(allCapString)) {
                   _termsMap[allCapString] = [];
                 }
                 _termsMap.addAll(tempDataHolderMap);
@@ -700,7 +723,7 @@ class _TermPickerState extends State<TermPicker> {
   }
 
   Future<List<dynamic>> fetchTermData(String term) async {
-    if(mounted){
+    if (mounted) {
       setState(() {
         loadingData = true;
         hasNoTerms = false;
@@ -708,31 +731,29 @@ class _TermPickerState extends State<TermPicker> {
     }
     List<dynamic> termData = [];
     List<dynamic> tempTermData = await _propertyBloc.fetchTermData(term);
-    if(tempTermData == null ||
-        (tempTermData.isNotEmpty && tempTermData[0] == null) ||
-        (tempTermData.isNotEmpty && tempTermData[0].runtimeType == Response)){
-      if(mounted){
+    if ((tempTermData.isNotEmpty && tempTermData[0] == null) ||
+        (tempTermData.isNotEmpty && tempTermData[0].runtimeType == Response)) {
+      if (mounted) {
         setState(() {
           loadingData = false;
           hasNoTerms = true;
         });
       }
       return termData;
-    }else{
+    } else {
       if (mounted) {
         setState(() {
           loadingData = false;
           hasNoTerms = false;
         });
       }
-      if(tempTermData.isNotEmpty){
+      if (tempTermData.isNotEmpty) {
         termData.addAll(tempTermData);
       }
     }
 
     return termData;
   }
-
 }
 
 typedef GenericTermPickerWidgetListener = Function({
@@ -786,7 +807,8 @@ class GenericTermPickerWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<GenericTermPickerWidget> createState() => _GenericTermPickerWidgetState();
+  State<GenericTermPickerWidget> createState() =>
+      _GenericTermPickerWidgetState();
 }
 
 class _GenericTermPickerWidgetState extends State<GenericTermPickerWidget> {
@@ -796,15 +818,15 @@ class _GenericTermPickerWidgetState extends State<GenericTermPickerWidget> {
         ? Container()
         : Container(
             padding: widget.pickerType == fullScreenTermPicker
-                ? const EdgeInsets.symmetric(vertical: 10)
-                : const EdgeInsets.symmetric(vertical: 20),
-            decoration: widget.showDivider
-                ? BoxDecoration(
-              border: Border(
-                top: AppThemePreferences().appTheme.filterPageBorderSide!,
-              ),
-            )
-                : null,
+                ? const EdgeInsets.symmetric(vertical: 5)
+                : const EdgeInsets.symmetric(vertical: 10),
+            // decoration: widget.showDivider
+            //     ? BoxDecoration(
+            //         border: Border(
+            //           top: AppThemePreferences().appTheme.filterPageBorderSide!,
+            //         ),
+            //       )
+            //     : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -819,12 +841,13 @@ class _GenericTermPickerWidgetState extends State<GenericTermPickerWidget> {
                   ),
                 ),
                 widget.loadingData
-                    ? DataLoadingWidget()
+                    ? const DataLoadingWidget()
                     : Column(
                         children: [
                           if (widget.pickerType == fullScreenTermPicker)
                             FullScreenViewWidget(
-                              onFullScreenTypeItemTap: widget.onFullScreenTypeItemTap,
+                              onFullScreenTypeItemTap:
+                                  widget.onFullScreenTypeItemTap,
                               selectedTerm: widget.selectedTerm,
                               termsMetaData: widget.termsMetaData,
                             )
@@ -835,9 +858,11 @@ class _GenericTermPickerWidgetState extends State<GenericTermPickerWidget> {
                               termsDataMap: widget.termsDataMap,
                               termType: widget.objDataType!,
                               selectedItemsList: widget.listOfSelectedTerms,
-                              selectedItemsSlugsList: widget.listOfSelectedTermSlugs,
+                              selectedItemsSlugsList:
+                                  widget.listOfSelectedTermSlugs,
                               addAllinData: true,
-                              termPickerBoxListener: (selectedItems, selectedItemsSlugs) {
+                              termPickerBoxListener:
+                                  (selectedItems, selectedItemsSlugs) {
                                 widget.listener(
                                   selectedItemsList: selectedItems,
                                   selectedItemsSlugsList: selectedItemsSlugs,
@@ -848,27 +873,34 @@ class _GenericTermPickerWidgetState extends State<GenericTermPickerWidget> {
                             widget.pickerType == dropDownPicker
                                 ? DropDownViewWidget(
                                     termsMetaData: widget.termsMetaData,
-                                    dropDownTextController: widget.dropDownTextController,
-                                    listOfSelectedTerms: widget.listOfSelectedTerms,
-                                    listOfSelectedTermSlugs: widget.listOfSelectedTermSlugs,
+                                    dropDownTextController:
+                                        widget.dropDownTextController,
+                                    listOfSelectedTerms:
+                                        widget.listOfSelectedTerms,
+                                    listOfSelectedTermSlugs:
+                                        widget.listOfSelectedTermSlugs,
                                     objDataType: widget.objDataType,
                                     showSearchBar: widget.showSearchBar,
-                                    listener: (selectedItems, selectedItemsSlugs) {
+                                    listener:
+                                        (selectedItems, selectedItemsSlugs) {
                                       widget.listener(
                                         selectedItemsList: selectedItems,
-                                        selectedItemsSlugsList: selectedItemsSlugs,
+                                        selectedItemsSlugsList:
+                                            selectedItemsSlugs,
                                       );
-
                                     },
                                   )
                                 : TabBarWidget(
                                     termsMetaData: widget.termsMetaData,
                                     selectedTermTitle: widget.selectedTermTitle,
-                                    tabBarOptionsAvailable: widget.tabBarOptionsAvailable,
+                                    tabBarOptionsAvailable:
+                                        widget.tabBarOptionsAvailable,
                                     tempTitleList: widget.tempTitleList,
                                     termsDataMap: widget.termsDataMap,
-                                    listOfSelectedTerm: widget.listOfSelectedTerms,
-                                    listOfSelectedTermSlugs: widget.listOfSelectedTermSlugs,
+                                    listOfSelectedTerm:
+                                        widget.listOfSelectedTerms,
+                                    listOfSelectedTermSlugs:
+                                        widget.listOfSelectedTermSlugs,
                                     listener: widget.listener,
                                   ),
                         ],
@@ -899,18 +931,22 @@ class _TermPickerHeaderWidgetState extends State<TermPickerHeaderWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Expanded(
-          flex: 2,
-          child: widget.pickerIcon,
-        ),
-        Expanded(
-          flex: 8,
+        // Expanded(
+        //   flex: 2,
+        //   child: widget.pickerIcon,
+        // ),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 10.0,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GenericTextWidget(
                 widget.pickerTitle,
-                style: AppThemePreferences().appTheme.filterPageHeadingTitleTextStyle,
+                style: AppThemePreferences()
+                    .appTheme
+                    .filterPageHeadingTitleTextStyle,
               ),
             ],
           ),
@@ -1003,7 +1039,7 @@ class DropDownViewWidget extends StatelessWidget {
   final String? objDataType;
   final bool? showSearchBar;
 
-  DropDownViewWidget({
+  const DropDownViewWidget({
     Key? key,
     this.objDataType,
     required this.dropDownTextController,
@@ -1027,7 +1063,7 @@ class DropDownViewWidget extends StatelessWidget {
               suffixIcon: Icon(AppThemePreferences.dropDownArrowIcon),
             ),
             readOnly: true,
-            onTap: (){
+            onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
               _showMultiSelect(context);
             },
@@ -1048,7 +1084,8 @@ class DropDownViewWidget extends StatelessWidget {
           dataItemsList: termsMetaData,
           selectedItemsList: listOfSelectedTerms,
           selectedItemsSlugsList: listOfSelectedTermSlugs,
-          multiSelectDialogWidgetListener: (listOfSelectedItems, listOfSelectedItemsSlugs) {
+          multiSelectDialogWidgetListener:
+              (listOfSelectedItems, listOfSelectedItemsSlugs) {
             listener(listOfSelectedItems, listOfSelectedItemsSlugs);
           },
         );
@@ -1095,7 +1132,8 @@ class TabBarWidget extends StatelessWidget {
               TabsHeaderWidget(
                 dataList: tempTitleList,
                 selectedTermTitle: selectedTermTitle,
-                listener: (selectedTabIndex) => listener(selectedTab: selectedTabIndex),
+                listener: (selectedTabIndex) =>
+                    listener(selectedTab: selectedTabIndex),
               ),
               TabBarOptionsWidget(
                 dataList: tempTitleList,
@@ -1115,7 +1153,8 @@ class TabBarWidget extends StatelessWidget {
         : TabsHeaderWidget(
             dataList: termsMetaData,
             selectedTermTitle: selectedTermTitle,
-            listener: (selectedTabIndex) => listener(selectedTab: selectedTabIndex),
+            listener: (selectedTabIndex) =>
+                listener(selectedTab: selectedTabIndex),
           );
   }
 }
@@ -1141,77 +1180,77 @@ class TabsHeaderWidget extends StatelessWidget {
         child: SegmentedControlWidget(
           itemList: dataList,
           selectionIndex: selectedTermTitle,
-          padding: EdgeInsets.only(left: 10, right: 10),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           onSegmentChosen: listener,
         )
 
-      // SingleChildScrollView(
-      //   scrollDirection: Axis.horizontal,
-      //   child: Row(
-      //     children: [
-      //       MaterialSegmentedControl(
-      //         children: dataList.map((item) {
-      //           var index = dataList.indexOf(item);
-      //           return Container(
-      //             padding:  const EdgeInsets.only(left: 10, right: 10),
-      //             child: genericTextWidget(
-      //               item.runtimeType == Term ?
-      //               UtilityMethods.getLocalizedString(item.name) : UtilityMethods.getLocalizedString(item),
-      //               style: TextStyle(
-      //                 fontSize: AppThemePreferences.tabBarTitleFontSize,
-      //                 fontWeight: AppThemePreferences.tabBarTitleFontWeight,
-      //                 color: _selectedTermTitle == index ? AppThemePreferences().appTheme.selectedItemTextColor :
-      //                 AppThemePreferences.unSelectedItemTextColorLight,
-      //               ),),
-      //           );
-      //         },).toList().asMap(),
-      //
-      //         selectionIndex: _selectedTermTitle,
-      //         unselectedColor: AppThemePreferences().appTheme.unSelectedItemBackgroundColor,
-      //         selectedColor: AppThemePreferences().appTheme.selectedItemBackgroundColor!,
-      //         borderRadius: 5.0,
-      //         verticalOffset: 8.0,
-      //         onSegmentChosen: (index){
-      //           setState(() {
-      //             _selectedTermTitle = index;
-      //           });
-      //
-      //           _listOfSelectedTerms.clear();
-      //           _listOfSelectedTermSlugs.clear();
-      //
-      //           String slug = "";
-      //           String title = "";
-      //
-      //           if(dataList[_selectedTermTitle].runtimeType == Term){
-      //             title = dataList[_selectedTermTitle].name;
-      //             slug = dataList[_selectedTermTitle].slug;
-      //           }else{
-      //             title = dataList[_selectedTermTitle];
-      //             int itemIndex = _termsMetaData.indexWhere((element) => element.name == title);
-      //             if(itemIndex != null && itemIndex != -1){
-      //               slug = _termsMetaData[itemIndex].slug;
-      //             }
-      //           }
-      //
-      //
-      //           if(mounted) {
-      //             setState(() {
-      //               if (title != null && title.isNotEmpty) {
-      //                 _listOfSelectedTerms.add(title);
-      //               }
-      //
-      //               if (slug != null && slug.isNotEmpty) {
-      //                 _listOfSelectedTermSlugs.add(slug);
-      //               }
-      //             });
-      //           }
-      //           widget.termPickerListener(_listOfSelectedTermSlugs, _listOfSelectedTerms);
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
-    );
+        // SingleChildScrollView(
+        //   scrollDirection: Axis.horizontal,
+        //   child: Row(
+        //     children: [
+        //       MaterialSegmentedControl(
+        //         children: dataList.map((item) {
+        //           var index = dataList.indexOf(item);
+        //           return Container(
+        //             padding:  const EdgeInsets.only(left: 10, right: 10),
+        //             child: genericTextWidget(
+        //               item.runtimeType == Term ?
+        //               UtilityMethods.getLocalizedString(item.name) : UtilityMethods.getLocalizedString(item),
+        //               style: TextStyle(
+        //                 fontSize: AppThemePreferences.tabBarTitleFontSize,
+        //                 fontWeight: AppThemePreferences.tabBarTitleFontWeight,
+        //                 color: _selectedTermTitle == index ? AppThemePreferences().appTheme.selectedItemTextColor :
+        //                 AppThemePreferences.unSelectedItemTextColorLight,
+        //               ),),
+        //           );
+        //         },).toList().asMap(),
+        //
+        //         selectionIndex: _selectedTermTitle,
+        //         unselectedColor: AppThemePreferences().appTheme.unSelectedItemBackgroundColor,
+        //         selectedColor: AppThemePreferences().appTheme.selectedItemBackgroundColor!,
+        //         borderRadius: 5.0,
+        //         verticalOffset: 8.0,
+        //         onSegmentChosen: (index){
+        //           setState(() {
+        //             _selectedTermTitle = index;
+        //           });
+        //
+        //           _listOfSelectedTerms.clear();
+        //           _listOfSelectedTermSlugs.clear();
+        //
+        //           String slug = "";
+        //           String title = "";
+        //
+        //           if(dataList[_selectedTermTitle].runtimeType == Term){
+        //             title = dataList[_selectedTermTitle].name;
+        //             slug = dataList[_selectedTermTitle].slug;
+        //           }else{
+        //             title = dataList[_selectedTermTitle];
+        //             int itemIndex = _termsMetaData.indexWhere((element) => element.name == title);
+        //             if(itemIndex != null && itemIndex != -1){
+        //               slug = _termsMetaData[itemIndex].slug;
+        //             }
+        //           }
+        //
+        //
+        //           if(mounted) {
+        //             setState(() {
+        //               if (title != null && title.isNotEmpty) {
+        //                 _listOfSelectedTerms.add(title);
+        //               }
+        //
+        //               if (slug != null && slug.isNotEmpty) {
+        //                 _listOfSelectedTermSlugs.add(slug);
+        //               }
+        //             });
+        //           }
+        //           widget.termPickerListener(_listOfSelectedTermSlugs, _listOfSelectedTerms);
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        );
   }
 }
 
@@ -1252,48 +1291,52 @@ class TabBarOptionsWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
       child: Wrap(
-        children: (termsDataMap[itemKey]).map<Widget>((item) =>
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: ChoiceChipWidget(
-                label: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: GenericTextWidget(
-                    UtilityMethods.getLocalizedString(item.name),
-                    style: AppThemePreferences().appTheme
-                        .filterPageChoiceChipTextStyle,
+        children: (termsDataMap[itemKey])
+            .map<Widget>((item) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: ChoiceChipWidget(
+                    label: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: GenericTextWidget(
+                        UtilityMethods.getLocalizedString(item.name),
+                        style: AppThemePreferences()
+                            .appTheme
+                            .filterPageChoiceChipTextStyle,
+                      ),
+                    ),
+                    selected: listOfSelectedTermSlugs.contains(item.slug),
+                    selectedColor: AppThemePreferences()
+                        .appTheme
+                        .selectedItemBackgroundColor,
+                    onSelected: (bool selected) {
+                      if (selected == true) {
+                        selectedItems.add(item.name);
+                        selectedItemsSlugs.add(item.slug);
+                      }
+                      if (selected == false) {
+                        selectedItems.remove(item.name);
+                        selectedItemsSlugs.remove(item.slug);
+                      }
+
+                      listener(selectedItems, selectedItemsSlugs);
+                    },
+
+                    labelStyle: TextStyle(
+                      color: listOfSelectedTermSlugs.contains(item.slug)
+                          ? AppThemePreferences().appTheme.selectedItemTextColor
+                          : Colors.black,
+                    ),
+                    backgroundColor: AppThemePreferences()
+                        .appTheme
+                        .unSelectedItemBackgroundColor,
+                    // backgroundColor: AppThemePreferences().appTheme.searchPageChoiceChipsBackgroundColor,
+                    shape: AppThemePreferences.roundedCorners(
+                        AppThemePreferences
+                            .searchPageChoiceChipsRoundedCornersRadius),
                   ),
-                ),
-                selected: listOfSelectedTermSlugs.contains(item.slug),
-                selectedColor: AppThemePreferences().appTheme
-                    .selectedItemBackgroundColor,
-                onSelected: (bool selected) {
-                  if (selected == true) {
-                    selectedItems.add(item.name);
-                    selectedItemsSlugs.add(item.slug);
-                  }
-                  if (selected == false) {
-                    selectedItems.remove(item.name);
-                    selectedItemsSlugs.remove(item.slug);
-                  }
-
-                  listener(selectedItems, selectedItemsSlugs);
-                },
-
-                labelStyle: TextStyle(
-                  color: listOfSelectedTermSlugs.contains(item.slug)
-                      ? AppThemePreferences().appTheme.selectedItemTextColor
-                      : Colors.black,
-                ),
-                backgroundColor: AppThemePreferences().appTheme
-                    .unSelectedItemBackgroundColor,
-                // backgroundColor: AppThemePreferences().appTheme.searchPageChoiceChipsBackgroundColor,
-                shape: AppThemePreferences.roundedCorners(AppThemePreferences
-                    .searchPageChoiceChipsRoundedCornersRadius),
-              ),
-            )).toList(),
+                ))
+            .toList(),
       ),
     );
   }
 }
-

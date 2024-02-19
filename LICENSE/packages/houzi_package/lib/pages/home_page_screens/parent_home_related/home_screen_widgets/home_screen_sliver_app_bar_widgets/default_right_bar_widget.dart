@@ -11,10 +11,12 @@ class DefaultRightBarButtonIdWidget extends StatefulWidget {
   const DefaultRightBarButtonIdWidget({Key? key}) : super(key: key);
 
   @override
-  State<DefaultRightBarButtonIdWidget> createState() => _DefaultRightBarButtonIdWidgetState();
+  State<DefaultRightBarButtonIdWidget> createState() =>
+      _DefaultRightBarButtonIdWidgetState();
 }
 
-class _DefaultRightBarButtonIdWidgetState extends State<DefaultRightBarButtonIdWidget> {
+class _DefaultRightBarButtonIdWidgetState
+    extends State<DefaultRightBarButtonIdWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -50,16 +52,17 @@ class _DefaultRightBarButtonIdWidgetState extends State<DefaultRightBarButtonIdW
           // keyboardType: TextInputType.text,
           // inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly,],
           onFieldSubmitted: (text) {
-            if(formKey.currentState!.validate()){
+            if (formKey.currentState!.validate()) {
               searchByIdOnSubmit(context, propertyId);
             }
           },
-          onChanged: (text){
+          onChanged: (text) {
             propertyId = text;
           },
-          validator: (text){
-            if(text == null || text.isEmpty){
-              return UtilityMethods.getLocalizedString("this_field_cannot_be_empty");
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return UtilityMethods.getLocalizedString(
+                  "this_field_cannot_be_empty");
             }
             return null;
           },
@@ -67,14 +70,16 @@ class _DefaultRightBarButtonIdWidgetState extends State<DefaultRightBarButtonIdW
             hintText: UtilityMethods.getLocalizedString("search"),
             focusedBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-              borderSide: BorderSide(color: AppThemePreferences().appTheme.primaryColor!),
+              borderSide: BorderSide(
+                  color: AppThemePreferences().appTheme.primaryColor!),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(Radius.circular(24.0)),
               borderSide: BorderSide(color: Colors.grey[300]!),
             ),
             suffixIcon: AppThemePreferences().appTheme.searchBarIcon,
-            contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
           ),
         ),
       ),
@@ -86,7 +91,7 @@ class _DefaultRightBarButtonIdWidgetState extends State<DefaultRightBarButtonIdW
         TextButton(
           child: GenericTextWidget(UtilityMethods.getLocalizedString("go")),
           onPressed: () {
-            if(formKey.currentState!.validate()){
+            if (formKey.currentState!.validate()) {
               searchByIdOnSubmit(context, propertyId);
             }
           },
@@ -95,9 +100,10 @@ class _DefaultRightBarButtonIdWidgetState extends State<DefaultRightBarButtonIdW
     );
   }
 
-  void searchByIdOnSubmit(BuildContext context, String propertyId){
-    String heroId = propertyId + SINGLE + UtilityMethods.getRandomNumber().toString();
-    if(UtilityMethods.isNumeric(propertyId)) {
+  void searchByIdOnSubmit(BuildContext context, String propertyId) {
+    String heroId =
+        propertyId + SINGLE + UtilityMethods.getRandomNumber().toString();
+    if (UtilityMethods.isNumeric(propertyId)) {
       int id = int.parse(propertyId);
       Route route = MaterialPageRoute(
         builder: (context) => PropertyDetailsPage(
@@ -112,10 +118,10 @@ class _DefaultRightBarButtonIdWidgetState extends State<DefaultRightBarButtonIdW
         MaterialPageRoute(
           builder: (context) => SearchResult(
             searchRelatedData: UtilityMethods.isText(propertyId)
-                ? {PROPERTY_KEYWORD : propertyId}
-                : {PROPERTY_UNIQUE_ID : propertyId},
-            searchPageListener: (Map<String, dynamic> map, String closeOption){
-              if(closeOption == CLOSE){
+                ? {PROPERTY_KEYWORD: propertyId}
+                : {PROPERTY_UNIQUE_ID: propertyId},
+            searchPageListener: (Map<String, dynamic> map, String closeOption) {
+              if (closeOption == CLOSE) {
                 Navigator.of(context).pop();
               }
             },

@@ -19,14 +19,13 @@ typedef FilterPageListener = void Function(
   String closeOption,
 );
 
-class FilterPage extends StatefulWidget{
-
+class FilterPage extends StatefulWidget {
   final FilterPageListener filterPageListener;
-  final Map<String,dynamic> mapInitializeData;
+  final Map<String, dynamic> mapInitializeData;
   final bool hasBottomNavigationBar;
 
-  FilterPage({
-    Key? key,
+  const FilterPage({
+    super.key,
     required this.mapInitializeData,
     required this.filterPageListener,
     this.hasBottomNavigationBar = false,
@@ -36,13 +35,11 @@ class FilterPage extends StatefulWidget{
   State<FilterPage> createState() => _FilterPageState();
 }
 
-class _FilterPageState extends State<FilterPage>{
-
+class _FilterPageState extends State<FilterPage> {
   Map<String, dynamic> _dataInitializationMap = {};
   List<dynamic> filterPageConfigElementsList = [];
 
   VoidCallback? generalNotifierListener;
-
 
   @override
   void initState() {
@@ -50,7 +47,8 @@ class _FilterPageState extends State<FilterPage>{
 
     /// General Notifier Listener
     generalNotifierListener = () {
-      if (GeneralNotifier().change == GeneralNotifier.APP_CONFIGURATIONS_UPDATED) {
+      if (GeneralNotifier().change ==
+          GeneralNotifier.APP_CONFIGURATIONS_UPDATED) {
         getFilterPageConfigFile();
       }
     };
@@ -60,12 +58,14 @@ class _FilterPageState extends State<FilterPage>{
   }
 
   getFilterPageConfigFile() {
-    var filterConfigListData = HiveStorageManager.readFilterConfigListData() ?? [];
+    var filterConfigListData =
+        HiveStorageManager.readFilterConfigListData() ?? [];
     if (filterConfigListData != null && filterConfigListData.isNotEmpty) {
       filterPageConfigElementsList.clear();
-      if(mounted) {
+      if (mounted) {
         setState(() {
-          filterPageConfigElementsList = FilterPageElement.decode(jsonDecode(filterConfigListData));
+          filterPageConfigElementsList =
+              FilterPageElement.decode(jsonDecode(filterConfigListData));
         });
       }
     }
@@ -84,25 +84,42 @@ class _FilterPageState extends State<FilterPage>{
         backgroundColor: AppThemePreferences().appTheme.backgroundColor,
         appBar: AppBar(
           elevation: 0,
-          centerTitle: true,
-          backgroundColor: AppThemePreferences().appTheme.backgroundColor,
-          leading: GestureDetector(
-            onTap: () {
-              HiveStorageManager.storeFilterDataInfo(map: _dataInitializationMap);
-              widget.filterPageListener(_dataInitializationMap, CLOSE);
-              Navigator.of(context).pop();
-            },
-            child: SvgPicture.asset(
-              AppThemePreferences.backIconImagePath,
-              width: 20,
-              height: 20,
-              fit: BoxFit.scaleDown,
-            ),
-          ),
+          centerTitle: false,
           title: GenericTextWidget(
             UtilityMethods.getLocalizedString("filters"),
-            style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+            style: AppThemePreferences()
+                .appTheme
+                .propertyDetailsPagePropertyTitleTextStyle,
           ),
+          backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.close,
+                  color: AppThemePreferences()
+                      .appTheme
+                      .primaryColor), // Cross icon
+              onPressed: () {
+                // HiveStorageManager.storeFilterDataInfo(
+                //     map: _dataInitializationMap);
+                // widget.filterPageListener(_dataInitializationMap, CLOSE);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+          // leading: GestureDetector(
+          //   onTap: () {
+          //     HiveStorageManager.storeFilterDataInfo(
+          //         map: _dataInitializationMap);
+          //     widget.filterPageListener(_dataInitializationMap, CLOSE);
+          //     Navigator.of(context).pop();
+          //   },
+          //   child: SvgPicture.asset(
+          //     AppThemePreferences.backIconImagePath,
+          //     width: 20,
+          //     height: 20,
+          //     fit: BoxFit.scaleDown,
+          //   ),
+          // ),
         ),
         // appBar: AppBarWidget(
         //     appBarTitle: UtilityMethods.getLocalizedString("filters"),
@@ -113,22 +130,26 @@ class _FilterPageState extends State<FilterPage>{
         // ),
         body: SafeArea(
           child: Stack(
-            children:[
+            children: [
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
                     Column(
-                      children: filterPageConfigElementsList.map((filterPageConfigElement) {
+                      children: filterPageConfigElementsList
+                          .map((filterPageConfigElement) {
                         return FilterPageWidgets(
                           filterPageConfigData: filterPageConfigElement,
                           mapInitializeData: _dataInitializationMap,
                           // mapInitializeData: widget.mapInitializeData,
-                          filterPageWidgetsListener: (Map<String,dynamic> dataMap, String closeOption){
+                          filterPageWidgetsListener:
+                              (Map<String, dynamic> dataMap,
+                                  String closeOption) {
                             if (mounted) {
                               setState(() {
                                 _dataInitializationMap.addAll(dataMap);
-                                HiveStorageManager.storeFilterDataInfo(map: _dataInitializationMap);
+                                HiveStorageManager.storeFilterDataInfo(
+                                    map: _dataInitializationMap);
                               });
                             }
                           },
@@ -137,8 +158,9 @@ class _FilterPageState extends State<FilterPage>{
                     ),
                     SizedBox(
                       height: widget.hasBottomNavigationBar
-                        ?  kFilterPageBottomActionBarHeight + kBottomNavigationBarHeight
-                        : kFilterPageBottomActionBarHeight,
+                          ? kFilterPageBottomActionBarHeight +
+                              kBottomNavigationBarHeight
+                          : kFilterPageBottomActionBarHeight,
                     ),
                   ],
                 ),
@@ -155,6 +177,3 @@ class _FilterPageState extends State<FilterPage>{
     );
   }
 }
-
-
-

@@ -26,20 +26,23 @@ class BottomNavigationBarWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<BottomNavigationBarWidget> createState() => _BottomNavigationBarWidgetState();
+  State<BottomNavigationBarWidget> createState() =>
+      _BottomNavigationBarWidgetState();
 }
 
 class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
-
   @override
   void initState() {
-
     super.initState();
+    debugPrint(
+        "Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm here in BottomNavigationBarWidget ");
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.design == DESIGN_02){
+    if (widget.design == DESIGN_02) {
+      debugPrint("Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, DESIGN_02 Run");
+
       return BottomNavyBar(
         showElevation: true,
         backgroundColor: widget.backgroundColor,
@@ -48,7 +51,9 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
         items: getBottomNavyBarItemsList(widget.itemsMap),
         curve: Curves.ease,
       );
-    }else if(widget.design == DESIGN_03){
+    } else if (widget.design == DESIGN_03) {
+      debugPrint("Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, DESIGN_03 Run");
+
       return DotNavigationBar(
         backgroundColor: widget.backgroundColor,
         dotIndicatorColor: widget.selectedItemColor,
@@ -61,6 +66,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
         marginR: EdgeInsets.zero,
       );
     }
+    debugPrint("Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, BottomNavigationBar Run");
 
     return BottomNavigationBar(
       backgroundColor: widget.backgroundColor,
@@ -68,14 +74,16 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       unselectedItemColor: widget.unselectedItemColor,
       currentIndex: widget.currentIndex,
       onTap: widget.onTap,
-      type: BottomNavigationBarType.fixed, //For 4 or more items, set the type to fixed.
+      type: BottomNavigationBarType
+          .fixed, //For 4 or more items, set the type to fixed.
       items: getBottomNavigationBarItemsList(widget.itemsMap),
     );
   }
 
-  List<BottomNavigationBarItem> getBottomNavigationBarItemsList(Map<String, dynamic> itemsMap){
+  List<BottomNavigationBarItem> getBottomNavigationBarItemsList(
+      Map<String, dynamic> itemsMap) {
     List<BottomNavigationBarItem> list = [];
-    if(itemsMap.isNotEmpty){
+    if (itemsMap.isNotEmpty) {
       itemsMap.forEach((key, value) {
         list.add(
           BottomNavigationBarItem(
@@ -88,14 +96,19 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
     return list;
   }
 
-  List<BottomNavyBarItem> getBottomNavyBarItemsList(Map<String, dynamic> itemsMap){
+  List<BottomNavyBarItem> getBottomNavyBarItemsList(
+      Map<String, dynamic> itemsMap) {
     List<BottomNavyBarItem> list = [];
-    if(itemsMap != null && itemsMap.isNotEmpty){
+    if (itemsMap.isNotEmpty) {
       itemsMap.forEach((key, value) {
         list.add(
           BottomNavyBarItem(
-            icon: Icon(value, color: value == Icons.fiber_manual_record_outlined
-                ? Colors.transparent : null,),
+            icon: Icon(
+              value,
+              color: value == Icons.fiber_manual_record_outlined
+                  ? Colors.transparent
+                  : null,
+            ),
             title: GenericTextWidget(UtilityMethods.getLocalizedString(key)),
             activeColor: widget.selectedItemColor!,
             inactiveColor: widget.unselectedItemColor,
@@ -106,9 +119,10 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
     return list;
   }
 
-  List<DotNavigationBarItem> getDotNavigationBarItemsList(Map<String, dynamic> itemsMap){
+  List<DotNavigationBarItem> getDotNavigationBarItemsList(
+      Map<String, dynamic> itemsMap) {
     List<DotNavigationBarItem> list = [];
-    if(itemsMap != null && itemsMap.isNotEmpty){
+    if (itemsMap.isNotEmpty) {
       itemsMap.forEach((key, value) {
         list.add(
           DotNavigationBarItem(

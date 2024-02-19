@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:houzi_package/files/hooks_files/hooks_configurations.dart';
 
-
 class HomeLocationTopBarWidget extends StatefulWidget {
-
   const HomeLocationTopBarWidget({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<HomeLocationTopBarWidget> createState() => _HomeLocationTopBarWidgetState();
+  State<HomeLocationTopBarWidget> createState() =>
+      _HomeLocationTopBarWidgetState();
 }
 
 class _HomeLocationTopBarWidgetState extends State<HomeLocationTopBarWidget> {
+  HomeRightBarButtonWidgetHook? rightBarButtonIdWidgetHook =
+      HooksConfigurations.homeRightBarButtonWidget;
 
-  HomeRightBarButtonWidgetHook? rightBarButtonIdWidgetHook = HooksConfigurations.homeRightBarButtonWidget;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(
+        "Zainnnnnnnnnnnnnnnnnnnnnnnnnnnnn, I'm here in HomeLocationTopBarWidget");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,8 @@ class _HomeLocationTopBarWidgetState extends State<HomeLocationTopBarWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          rightBarButtonIdWidgetHook!(context) ?? Container(padding: const EdgeInsets.only(top: 25.0)),
+          rightBarButtonIdWidgetHook!(context) ??
+              Container(padding: const EdgeInsets.only(top: 25.0)),
         ],
       ),
     );

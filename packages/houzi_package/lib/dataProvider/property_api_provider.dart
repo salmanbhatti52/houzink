@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-
+import 'package:houzi_package/models/api/api_request.dart' as api1;
+import 'package:houzi_package/models/api_request.dart' as api2;
 import 'package:houzi_package/common/constants.dart';
 import 'package:houzi_package/files/generic_methods/utility_methods.dart';
 import 'package:houzi_package/files/hive_storage_files/hive_storage_manager.dart';
@@ -341,7 +342,7 @@ class PropertyApiProvider{
   }
 
   Future<Response> fetchLoginResponse(Map<String, dynamic> dataMap) async {
-    ApiRequest request = _apiProviderInterface.provideLoginApiRequest(dataMap);
+    api1.ApiRequest request = _apiProviderInterface.provideLoginApiRequest(dataMap);
     Dio dio = Dio();
       // ..interceptors.add(DioCacheManager(CacheConfig()).interceptor);
     return doRequestOnRoute(request.uri, dio: dio, type: POST, dataMap: request.params, tag: "login", handle403: false);
@@ -577,13 +578,12 @@ class PropertyApiProvider{
     return doRequestOnRoute(uri, tag: "is fav property");
   }
 
-  Future<Response> fetchSocialSignOnResponse(Map<String, dynamic> dataMap) async {
-    ApiRequest apiRequest = _apiProviderInterface.provideSocialLoginApi(dataMap);
+Future<Response> fetchSocialSignOnResponse(Map<String, dynamic> dataMap) async {
+    api1.ApiRequest apiRequest = _apiProviderInterface.provideSocialLoginApi(dataMap);
     Dio dio = Dio();
-      // ..interceptors.add(DioCacheManager(CacheConfig()).interceptor);
+    // ..interceptors.add(DioCacheManager(CacheConfig()).interceptor);
     return doRequestOnRoute(apiRequest.uri, dio: dio, type: POST, dataMap: apiRequest.params, tag: "social-login", handle403: false);
-
-  }
+}
 
   Future<Response> fetchPropertiesByTypeResponse(int page,int id,String type) async {
     var uri = _apiProviderInterface.providePropertiesByTypeApi(page, id, type);
@@ -772,7 +772,7 @@ class PropertyApiProvider{
     Map<String, dynamic> dataMap = {kCreateNonceKey: nonceName};
 
     Response response = await doRequestOnRoute(uri, type: POST, dataMap: dataMap, tag: "Create Nonce", handle403: false);
-    ApiResponse<String> nonce = _apiProviderInterface.getParser().parseNonceResponse(response);
+    ApiResponse<String> nonce = _apiProviderInterface.getParser().parseNonceResponse(response) as ApiResponse<String>;
     return nonce;
 
   }

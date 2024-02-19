@@ -23,7 +23,8 @@ class TermPickerBox extends StatefulWidget {
   final List<dynamic> selectedItemsList;
   final List<dynamic>? selectedItemsSlugsList;
 
-  TermPickerBox({
+  const TermPickerBox({
+    super.key,
     required this.title,
     required this.termMetaDataList,
     required this.termsDataMap,
@@ -32,8 +33,7 @@ class TermPickerBox extends StatefulWidget {
     required this.selectedItemsList,
     this.selectedItemsSlugsList,
     this.addAllinData = true,
-  })  : assert(title != null),
-        assert(termMetaDataList != null);
+  });
 
   @override
   State<StatefulWidget> createState() => TermPickerBoxState();
@@ -47,7 +47,6 @@ class TermPickerBoxState extends State<TermPickerBox> {
 
   List<dynamic> selectedItemsList = [];
   List<dynamic> selectedItemsSlugsList = [];
-
 
   int? selectedIndex;
   bool _showList = false;
@@ -145,11 +144,12 @@ class TermPickerBoxState extends State<TermPickerBox> {
       termMetaDataList.insert(0, allTermObject);
     }
 
-    if(widget.selectedItemsList != null && widget.selectedItemsList.isNotEmpty){
+    if (widget.selectedItemsList.isNotEmpty) {
       selectedItemsList = widget.selectedItemsList;
     }
 
-    if(widget.selectedItemsSlugsList != null && widget.selectedItemsSlugsList!.isNotEmpty){
+    if (widget.selectedItemsSlugsList != null &&
+        widget.selectedItemsSlugsList!.isNotEmpty) {
       selectedItemsSlugsList = widget.selectedItemsSlugsList!;
     }
 
@@ -178,6 +178,7 @@ class TermPickerBoxState extends State<TermPickerBox> {
 
     return dataList;
   }
+
   List<int> selectedIndices = [];
 
   @override
@@ -199,7 +200,8 @@ class TermPickerBoxState extends State<TermPickerBox> {
         itemBuilder: (context, int index) {
           String item = termMetaDataList[index].name;
           String listItem = UtilityMethods.getLocalizedString(item);
-          if (termDataMapKeysList.isNotEmpty && !(termDataMapKeysList.contains(item))) {
+          if (termDataMapKeysList.isNotEmpty &&
+              !(termDataMapKeysList.contains(item))) {
             // listItem = " - ${UtilityMethods.getLocalizedString(item)}";
             listItem = UtilityMethods.getLocalizedString(item);
           }
@@ -220,20 +222,17 @@ class TermPickerBoxState extends State<TermPickerBox> {
                   if (isSelected) {
                     // If item is already selected, unselect it
                     selectedItemsList.remove(item);
-                    if (selectedItemsSlugsList != null) {
-                      selectedItemsSlugsList.remove(termMetaDataList[index].slug);
-                    }
+                    selectedItemsSlugsList.remove(termMetaDataList[index].slug);
                   } else {
                     // If item is not selected, select it
                     selectedItemsList.add(item);
-                    if (selectedItemsSlugsList != null) {
-                      selectedItemsSlugsList.add(termMetaDataList[index].slug);
-                    }
+                    selectedItemsSlugsList.add(termMetaDataList[index].slug);
                   }
                 });
 
                 // Notify listeners with selected items
-                widget.termPickerBoxListener!(selectedItemsList, selectedItemsSlugsList);
+                widget.termPickerBoxListener!(
+                    selectedItemsList, selectedItemsSlugsList);
               },
               child: Column(
                 children: [
@@ -242,7 +241,8 @@ class TermPickerBoxState extends State<TermPickerBox> {
                     child: buildIcon(termMetaDataList[index].slug, isSelected),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 0.0, vertical: 0.0),
                     child: GenericTextWidget(
                       UtilityMethods.getLocalizedString(listItem),
                       style: isSelected
@@ -277,6 +277,4 @@ class TermPickerBoxState extends State<TermPickerBox> {
       );
     }
   }
-
-
 }

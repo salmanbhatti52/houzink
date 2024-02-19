@@ -67,105 +67,104 @@ class HomeScreenDrawerWidgetState extends State<HomeScreenDrawerWidget> {
           topLeft: Radius.circular(40),
         ),
       ),
-    surfaceTintColor: Colors.transparent,
-    width: MediaQuery.of(context).size.width * 0.75,
-    backgroundColor: AppThemePreferences().appTheme.backgroundColor,
-    child: ListView(
-    children: <Widget>[
-    HooksConfigurations.drawerHeaderHook(
-    context,
-    APP_NAME,
-    AppThemePreferences.drawerImagePath,
-    widget.userInfoData[USER_PROFILE_NAME],
-    widget.userInfoData[USER_PROFILE_IMAGE],
-    ) ??
-    DrawerHeader(
-    // decoration: BoxDecoration(color: AppThemePreferences().appTheme.primaryColor),
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-    Image.asset(
-    AppThemePreferences.logoIconImagePath,
-    width: 180,
-    height: 100,
-    ),
-    // Row(
-    //   children: [
-    //     AppThemePreferences().appTheme.drawerImage!,
-    //     Expanded(
-    //       child: Container(
-    //         margin: const EdgeInsets.only(top: 8.0),
-    //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    //         child: GenericTextWidget(
-    //           APP_NAME,
-    //           style: AppThemePreferences().appTheme.homeScreenDrawerTextStyle,
-    //           strutStyle: StrutStyle(height: 1.7, forceStrutHeight: true),
-    //         ),
-    //       ),
-    //     ),
-    //   ],
-    // ),
-    // Container(
-    //   margin: const EdgeInsets.fromLTRB(5, 40, 5, 0),
-    //   child: Row(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       widget.userInfoData[USER_PROFILE_NAME] == null ||
-    //           widget.userInfoData[USER_PROFILE_NAME].isEmpty
-    //       // _userName == null || _userName.isEmpty
-    //           ? Container()
-    //           : GestureDetector(
-    //         child: ClipRRect(
-    //           borderRadius: const BorderRadius.all(Radius.circular(10)),
-    //           child: FancyShimmerImage(
-    //             imageUrl: widget.userInfoData[USER_PROFILE_IMAGE],
-    //             boxFit: BoxFit.cover,
-    //             shimmerBaseColor: AppThemePreferences().appTheme.shimmerEffectBaseColor,
-    //             shimmerHighlightColor: AppThemePreferences().appTheme.shimmerEffectHighLightColor,
-    //             width: 40,
-    //             height: 40,
-    //             errorWidget: ShimmerEffectErrorWidget(iconSize: 15),
-    //           ),
-    //         ),
-    //         onTap: () => onUserProfileTap(),
-    //       ),
-    //       widget.userInfoData[USER_PROFILE_NAME] == null || widget.userInfoData[USER_PROFILE_NAME].isEmpty
-    //       // _userName == null || _userName.isEmpty
-    //           ? Container()
-    //           : Container(
-    //         margin: const EdgeInsets.symmetric(horizontal: 10.0),
-    //         child: GestureDetector(
-    //           onTap: () => onUserProfileTap(),
-    //           child: Padding(
-    //             padding: const EdgeInsets.only(top: 13.0),
-    //             child: GenericTextWidget(
-    //               widget.userInfoData[USER_PROFILE_NAME],
-    //               style: AppThemePreferences().appTheme.homeScreenDrawerUserNameTextStyle,
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // ),
-    ],
-    ),
-    ),
-    if (drawerConfigDataList.isNotEmpty)
-    Column(
-    children: drawerConfigDataList.map((itemMap) {
-    return HomeScreenDrawerWidgetsListing(
-    userInfoMap: widget.userInfoData,
-    drawerItemMap: itemMap,
-    homeScreenDrawerWidgetsListingListener:
-    widget.homeScreenDrawerWidgetListener,
-    );
-    }).toList(),
-    ),
-    ],
-    )
-    ,
+      surfaceTintColor: Colors.transparent,
+      width: MediaQuery.of(context).size.width * 0.75,
+      backgroundColor: AppThemePreferences().appTheme.backgroundColor,
+      child: ListView(
+        children: <Widget>[
+          HooksConfigurations.drawerHeaderHook(
+                context,
+                APP_NAME,
+                AppThemePreferences.drawerImagePath,
+                widget.userInfoData[USER_PROFILE_NAME],
+                widget.userInfoData[USER_PROFILE_IMAGE],
+              ) ??
+              DrawerHeader(
+                // decoration: BoxDecoration(color: AppThemePreferences().appTheme.primaryColor),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      AppThemePreferences.logoIconImagePath,
+                      width: 180,
+                      height: 100,
+                    ),
+                    // Row(
+                    //   children: [
+                    //     AppThemePreferences().appTheme.drawerImage!,
+                    //     Expanded(
+                    //       child: Container(
+                    //         margin: const EdgeInsets.only(top: 8.0),
+                    //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    //         child: GenericTextWidget(
+                    //           APP_NAME,
+                    //           style: AppThemePreferences().appTheme.homeScreenDrawerTextStyle,
+                    //           strutStyle: StrutStyle(height: 1.7, forceStrutHeight: true),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // Container(
+                    //   margin: const EdgeInsets.fromLTRB(5, 40, 5, 0),
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       widget.userInfoData[USER_PROFILE_NAME] == null ||
+                    //           widget.userInfoData[USER_PROFILE_NAME].isEmpty
+                    //       // _userName == null || _userName.isEmpty
+                    //           ? Container()
+                    //           : GestureDetector(
+                    //         child: ClipRRect(
+                    //           borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    //           child: FancyShimmerImage(
+                    //             imageUrl: widget.userInfoData[USER_PROFILE_IMAGE],
+                    //             boxFit: BoxFit.cover,
+                    //             shimmerBaseColor: AppThemePreferences().appTheme.shimmerEffectBaseColor,
+                    //             shimmerHighlightColor: AppThemePreferences().appTheme.shimmerEffectHighLightColor,
+                    //             width: 40,
+                    //             height: 40,
+                    //             errorWidget: ShimmerEffectErrorWidget(iconSize: 15),
+                    //           ),
+                    //         ),
+                    //         onTap: () => onUserProfileTap(),
+                    //       ),
+                    //       widget.userInfoData[USER_PROFILE_NAME] == null || widget.userInfoData[USER_PROFILE_NAME].isEmpty
+                    //       // _userName == null || _userName.isEmpty
+                    //           ? Container()
+                    //           : Container(
+                    //         margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    //         child: GestureDetector(
+                    //           onTap: () => onUserProfileTap(),
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.only(top: 13.0),
+                    //             child: GenericTextWidget(
+                    //               widget.userInfoData[USER_PROFILE_NAME],
+                    //               style: AppThemePreferences().appTheme.homeScreenDrawerUserNameTextStyle,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+          if (drawerConfigDataList.isNotEmpty)
+            Column(
+              children: drawerConfigDataList.map((itemMap) {
+                return HomeScreenDrawerWidgetsListing(
+                  userInfoMap: widget.userInfoData,
+                  drawerItemMap: itemMap,
+                  homeScreenDrawerWidgetsListingListener:
+                      widget.homeScreenDrawerWidgetListener,
+                );
+              }).toList(),
+            ),
+        ],
+      ),
     );
   }
 
@@ -173,7 +172,7 @@ class HomeScreenDrawerWidgetState extends State<HomeScreenDrawerWidget> {
     UtilityMethods.navigateToRoute(
       context: context,
       builder: (context) =>
-      (UserProfile(userProfilePageListener: (String closeOption) {
+          (UserProfile(userProfilePageListener: (String closeOption) {
         if (closeOption == CLOSE) {
           Navigator.pop(context);
         }

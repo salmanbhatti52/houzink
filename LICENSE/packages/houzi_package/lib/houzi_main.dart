@@ -1,14 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+//zain
+// import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:houzi_package/files/app_preferences/app_preferences.dart';
 import 'package:houzi_package/files/configurations/app_configurations.dart';
 import 'package:houzi_package/files/generic_methods/utility_methods.dart';
 import 'package:houzi_package/files/item_design_files/item_design_notifier.dart';
 import 'package:houzi_package/files/theme_service_files/theme_notifier.dart';
 import 'package:houzi_package/files/user_log_provider.dart';
-import 'package:houzi_spackage/widgets/deep_link_widget.dart';
+import 'package:houzi_package/widgets/deep_link_widget.dart';
+//zain
+// import 'package:houzi_spackage/widgets/deep_link_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -112,13 +115,13 @@ class _MyAppState extends State<MyApp> {
                 title: APP_NAME,
                 locale: localeProvider.locale,
                 supportedLocales: L10n.getAllLanguagesLocale(),
-                localizationsDelegates: [
-                  // AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  CustomLocalisationDelegate(),
-                ],
+              //zain  // localizationsDelegates: [
+                //   // AppLocalizations.delegate,
+                //   GlobalMaterialLocalizations.delegate,
+                //   GlobalCupertinoLocalizations.delegate,
+                //   GlobalWidgetsLocalizations.delegate,
+                //   CustomLocalisationDelegate(),
+                // ],
                 darkTheme: ThemeData(
                   useMaterial3: false,
                   appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Brightness.dark)),
@@ -170,7 +173,7 @@ class _MyAppState extends State<MyApp> {
                 home: Provider<DeepLinkBloc>(
                   create: (context) => _bloc,
                   dispose: (context, bloc) => bloc.dispose(),
-                  child: DeepLinkWidget(),
+               child: DeepLinkWidget(),
                 ),
                 // home: MyHomePage(),
               );

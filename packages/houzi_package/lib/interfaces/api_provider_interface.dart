@@ -2,6 +2,10 @@ import 'package:houzi_package/interfaces/api_parser_interface.dart';
 import 'package:houzi_package/models/api/api_request.dart';
 
 abstract class ApiProviderInterface {
+   provideLoginApiRequest(Map<String,dynamic> postData);
+
+   provideSocialLoginApi(Map<String, dynamic> params);
+
   Uri provideLatestPropertiesApi(int page);
 
   Uri provideFilteredPropertiesApi();
@@ -44,9 +48,7 @@ abstract class ApiProviderInterface {
   Uri provideSavePropertyApi();
 
   Uri provideSavePropertyImagesApi();
-
-  ApiRequest provideLoginApiRequest(Map<String,dynamic> postData);
-
+  
   Uri provideSignUpApi();
 
   Uri provideForgetPasswordApi();
@@ -106,7 +108,6 @@ abstract class ApiProviderInterface {
 
   Uri provideIsFavPropertyAp(String listingId);
 
-  ApiRequest provideSocialLoginApi(Map<String, dynamic> params);
 
   Uri providePropertiesByTypeApi(int page, int id, String type);
 

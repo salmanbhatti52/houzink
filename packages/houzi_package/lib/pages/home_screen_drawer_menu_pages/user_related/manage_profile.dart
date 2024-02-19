@@ -25,20 +25,20 @@ import 'package:houzi_package/widgets/generic_settings_row_widget.dart';
 import 'package:houzi_package/pages/main_screen_pages/my_home_page.dart';
 
 class ManageProfile extends StatefulWidget {
+  const ManageProfile({super.key});
 
   @override
   _ManageProfileState createState() => _ManageProfileState();
 }
 
 class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
-
   File? imageFile;
 
   final picker = ImagePicker();
 
   bool _isInternetConnected = true;
   bool _showWaitingWidget = false;
-  bool _showWaitingWidgetForPicUpload = false;
+  final bool _showWaitingWidgetForPicUpload = false;
   bool _showUploadPhotoButton = false;
 
   String userRole = "";
@@ -63,12 +63,14 @@ class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
     GeneralNotifier().addListener(generalNotifierLister!);
   }
 
-  fetchUserData(){
-    if(mounted) setState(() {
-      userEmail = HiveStorageManager.getUserEmail() ?? "";
-      userName = HiveStorageManager.getUserName() ?? "";
-      userAvatar = HiveStorageManager.getUserAvatar() ?? "";
-    });
+  fetchUserData() {
+    if (mounted) {
+      setState(() {
+        userEmail = HiveStorageManager.getUserEmail() ?? "";
+        userName = HiveStorageManager.getUserName() ?? "";
+        userAvatar = HiveStorageManager.getUserAvatar() ?? "";
+      });
+    }
   }
 
   @override
@@ -90,8 +92,10 @@ class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
             ),
           ),
           title: GenericTextWidget(
-            UtilityMethods.getLocalizedString("manage_profile"),
-            style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
+            UtilityMethods.getLocalizedString("manage_profile2"),
+            style: AppThemePreferences()
+                .appTheme
+                .propertyDetailsPagePropertyTitleTextStyle,
           ),
         ),
         // appBar: AppBarWidget(
@@ -110,12 +114,15 @@ class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
                     children: [
                       ManageProfileUserImageWidget(
                         userAvatar: userAvatar,
-                        showWaitingWidgetForPicUpload: _showWaitingWidgetForPicUpload,
-                        listener: (bool showUploadPhotoButton, File? imgFile){
-                          if(mounted) setState(() {
-                            _showUploadPhotoButton = true;
-                            imageFile = imgFile;
-                          });
+                        showWaitingWidgetForPicUpload:
+                            _showWaitingWidgetForPicUpload,
+                        listener: (bool showUploadPhotoButton, File? imgFile) {
+                          if (mounted) {
+                            setState(() {
+                              _showUploadPhotoButton = true;
+                              imageFile = imgFile;
+                            });
+                          }
                         },
                       ),
                       // UserInfoWidget(
@@ -156,7 +163,8 @@ class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
                       NewGenericWidgetRow(
                         icon: AppThemePreferences.changePasswordImagePath,
                         icon2: AppThemePreferences.rightArrowImagePath,
-                        text: UtilityMethods.getLocalizedString("change_password"),
+                        text: UtilityMethods.getLocalizedString(
+                            "change_password"),
                         onTap: onChangePasswordTap,
                       ),
                       // GenericWidgetRow(
@@ -172,7 +180,8 @@ class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: DeleteAccountButtonWidget(onPressed: onPositiveButtonPressed),
+                  child: DeleteAccountButtonWidget(
+                      onPressed: onPositiveButtonPressed),
                 ),
               ),
               WaitingWidget(showWaitingWidget: _showWaitingWidget),
@@ -198,25 +207,27 @@ class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
   }
 
   void onEditProfileTap() {
-    navigateToRoute((context) => EditProfile());
+    navigateToRoute((context) => const EditProfile());
   }
 
   Future<void> onPositiveButtonPressed() async {
     Navigator.of(context).pop();
-    if(mounted) setState(() {
-      _showWaitingWidget = true;
-    });
+    if (mounted) {
+      setState(() {
+        _showWaitingWidget = true;
+      });
+    }
     final response = await _propertyBloc.fetchDeleteUserAccountResponse();
 
-    if(response == null || response.statusCode == null){
-      if(mounted){
+    if (response.statusCode == null) {
+      if (mounted) {
         setState(() {
           _isInternetConnected = false;
           _showWaitingWidget = false;
         });
       }
-    }else{
-      if(mounted){
+    } else {
+      if (mounted) {
         setState(() {
           _isInternetConnected = true;
           _showWaitingWidget = false;
@@ -224,12 +235,12 @@ class _ManageProfileState extends State<ManageProfile> with ValidationMixin {
       }
       String tempResponseString = response.toString().split("{")[1];
       Map map = jsonDecode("{${tempResponseString.split("}")[0]}}");
-      if(map["success"] == true){
+      if (map["success"] == true) {
         UtilityMethods.userLogOut(
           context: context,
           builder: (context) => const MyHomePage(),
         );
-      }else{
+      } else {
         ShowToastWidget(
           buildContext: context,
           text: map["msg"],

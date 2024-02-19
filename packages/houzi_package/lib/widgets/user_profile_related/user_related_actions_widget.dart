@@ -10,6 +10,7 @@ import 'package:houzi_package/pages/home_screen_drawer_menu_pages/properties.dar
 import 'package:houzi_package/pages/home_screen_drawer_menu_pages/request_demo.dart';
 import 'package:houzi_package/pages/home_screen_drawer_menu_pages/settings_page.dart';
 import 'package:houzi_package/pages/home_screen_drawer_menu_pages/user_related/all_users.dart';
+import 'package:houzi_package/pages/home_screen_drawer_menu_pages/user_related/edit_pofile.dart';
 import 'package:houzi_package/pages/home_screen_drawer_menu_pages/user_related/manage_profile.dart';
 import 'package:houzi_package/pages/home_screen_drawer_menu_pages/user_related/user_signin.dart';
 import 'package:houzi_package/pages/in_app_purchase/membership_plan_page.dart';
@@ -20,6 +21,7 @@ import 'package:houzi_package/widgets/dialog_box_widget.dart';
 import 'package:houzi_package/widgets/generic_settings_row_widget.dart';
 import 'package:houzi_package/widgets/generic_text_widget.dart';
 import 'package:houzi_package/widgets/user_profile_related/app_info_widget.dart';
+import 'package:path/path.dart';
 
 class UserRelatedActionsWidget extends StatelessWidget {
   final bool isUserLogged;
@@ -50,36 +52,55 @@ class UserRelatedActionsWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               children: [
-                if(isUserLogged)
+                if (isUserLogged)
                   NewGenericWidgetRow(
-                      icon: AppThemePreferences.personImagePath,
-                      icon2: AppThemePreferences.rightArrowImagePath,
-                      text: UtilityMethods.getLocalizedString("manage_profile"),
-                      onTap: () => onEditProfileTap(context),
+                    icon: AppThemePreferences.personImagePath,
+                    icon2: AppThemePreferences.rightArrowImagePath,
+                    text: UtilityMethods.getLocalizedString("manage_profile"),
+                    onTap: () => onEditProfileTap2(context),
                   ),
+                // NewGenericWidgetRow(
+                //   icon: AppThemePreferences.propertiesImagePath,
+                //   icon2: AppThemePreferences.rightArrowImagePath,
+                //   text: UtilityMethods.getLocalizedString("properties"),
+                //   onTap: () => onPropertiesTap(context),
+                // ),
+                // NewGenericWidgetRow(
+                //   icon: AppThemePreferences.addPropertiesImagePath,
+                //   icon2: AppThemePreferences.rightArrowImagePath,
+                //   text: UtilityMethods.getLocalizedString("add_property"),
+                //   removeDecoration:
+                //       userRole == ROLE_ADMINISTRATOR ? false : true,
+                //   onTap: () => onAddPropertyTap(context),
+                // ),
+
                 // GenericWidgetRow(
                 //       iconData: AppThemePreferences.manageProfile,
                 //       text: UtilityMethods.getLocalizedString("manage_profile"),
                 //       onTap: () => onEditProfileTap(context),
                 //   ),
-                if(userRole.isNotEmpty && userRole != USER_ROLE_HOUZEZ_BUYER_VALUE)
+                if (userRole.isNotEmpty &&
+                    userRole != USER_ROLE_HOUZEZ_BUYER_VALUE)
                   NewGenericWidgetRow(
                     icon: AppThemePreferences.propertiesImagePath,
                     icon2: AppThemePreferences.rightArrowImagePath,
                     text: UtilityMethods.getLocalizedString("properties"),
                     onTap: () => onPropertiesTap(context),
                   ),
-                  // GenericWidgetRow(
-                  //   iconData: AppThemePreferences.propertiesIcon,
-                  //   text: UtilityMethods.getLocalizedString("properties"),
-                  //   onTap: () => onPropertiesTap(context),
-                  // ),
-                if(SHOW_ADD_PROPERTY && userRole.isNotEmpty && userRole != USER_ROLE_HOUZEZ_BUYER_VALUE)
+                // GenericWidgetRow(
+                //   iconData: AppThemePreferences.propertiesIcon,
+                //   text: UtilityMethods.getLocalizedString("properties"),
+                //   onTap: () => onPropertiesTap(context),
+                // ),
+                if (SHOW_ADD_PROPERTY &&
+                    userRole.isNotEmpty &&
+                    userRole != USER_ROLE_HOUZEZ_BUYER_VALUE)
                   NewGenericWidgetRow(
                     icon: AppThemePreferences.addPropertiesImagePath,
                     icon2: AppThemePreferences.rightArrowImagePath,
                     text: UtilityMethods.getLocalizedString("add_property"),
-                    removeDecoration: userRole == ROLE_ADMINISTRATOR ? false : true,
+                    removeDecoration:
+                        userRole == ROLE_ADMINISTRATOR ? false : true,
                     onTap: () => onAddPropertyTap(context),
                   ),
                 // GenericWidgetRow(
@@ -90,20 +111,21 @@ class UserRelatedActionsWidget extends StatelessWidget {
                 //     onTap: () => onAddPropertyTap(context),
                 //   ),
                 // if(isUserLogged && TOUCH_BASE_PAYMENT_ENABLED_STATUS == membership && paymentStatus == membership)
-                if(isUserLogged && paymentStatus == membership)
+                if (isUserLogged && paymentStatus == membership)
                   NewGenericWidgetRow(
                     icon: AppThemePreferences.membershipImagePath,
                     icon2: AppThemePreferences.rightArrowImagePath,
                     text: UtilityMethods.getLocalizedString("Membership"),
                     onTap: () => onMembershipTap(context),
                   ),
+
                 // GenericWidgetRow(
                 //     padding: const EdgeInsets.only(top: 20.0, bottom: 15.0),
                 //     iconData: AppThemePreferences.membership,
                 //     text: UtilityMethods.getLocalizedString("Membership"),
                 //     onTap: () => onMembershipTap(context),
                 //   ),
-                if(userRole.isNotEmpty && userRole == ROLE_ADMINISTRATOR)
+                if (userRole.isNotEmpty && userRole == ROLE_ADMINISTRATOR)
                   NewGenericWidgetRow(
                     icon: AppThemePreferences.allUserImagePath,
                     icon2: AppThemePreferences.rightArrowImagePath,
@@ -111,6 +133,7 @@ class UserRelatedActionsWidget extends StatelessWidget {
                     removeDecoration: true,
                     onTap: () => onAllUsersTap(context),
                   ),
+
                 // GenericWidgetRow(
                 //     padding: const EdgeInsets.only(top: 20.0, bottom: 15.0),
                 //     iconData: AppThemePreferences.allUsers,
@@ -118,7 +141,6 @@ class UserRelatedActionsWidget extends StatelessWidget {
                 //     removeDecoration: true,
                 //     onTap: () => onAllUsersTap(context),
                 //   ),
-
               ],
             ),
           ),
@@ -150,33 +172,34 @@ class UserRelatedActionsWidget extends StatelessWidget {
                 //   text: UtilityMethods.getLocalizedString("settings"),
                 //   onTap: () => onSettingsTap(context),
                 // ),
-                if(SHOW_DEMO_CONFIGURATIONS) NewGenericWidgetRow(
-                  icon: AppThemePreferences.requestDemoImagePath,
-                  icon2: AppThemePreferences.rightArrowImagePath,
-                  text: UtilityMethods.getLocalizedString("request_demo"),
-                  onTap: () => onRequestDemoTap(context),
-                ),
+                if (SHOW_DEMO_CONFIGURATIONS)
+                  NewGenericWidgetRow(
+                    icon: AppThemePreferences.requestDemoImagePath,
+                    icon2: AppThemePreferences.rightArrowImagePath,
+                    text: UtilityMethods.getLocalizedString("request_demo"),
+                    onTap: () => onRequestDemoTap(context),
+                  ),
                 // if(SHOW_DEMO_CONFIGURATIONS) GenericWidgetRow(
                 //   iconData: AppThemePreferences.requestDemoIcon,
                 //   text: UtilityMethods.getLocalizedString("request_demo"),
                 //   onTap: () => onRequestDemoTap(context),
                 // ),
-                isUserLogged ?
-                    const SizedBox()
-                // GenericWidgetRow(
-                //   padding: const EdgeInsets.only(top: 20.0, bottom: 15.0),
-                //   iconData: AppThemePreferences.logOutIcon,
-                //   text: UtilityMethods.getLocalizedString("log_out"),
-                //   removeDecoration: true,
-                //   onTap: () => onLogOutTap(context),
-                // )
+                isUserLogged
+                    ? const SizedBox()
+                    // GenericWidgetRow(
+                    //   padding: const EdgeInsets.only(top: 20.0, bottom: 15.0),
+                    //   iconData: AppThemePreferences.logOutIcon,
+                    //   text: UtilityMethods.getLocalizedString("log_out"),
+                    //   removeDecoration: true,
+                    //   onTap: () => onLogOutTap(context),
+                    // )
                     : NewGenericWidgetRow(
-                  icon: AppThemePreferences.logInImagePath,
-                  icon2: AppThemePreferences.rightArrowImagePath,
-                  text: UtilityMethods.getLocalizedString("login"),
-                  removeDecoration: true,
-                  onTap: () => onLogInTap(context),
-                ),
+                        icon: AppThemePreferences.logInImagePath,
+                        icon2: AppThemePreferences.rightArrowImagePath,
+                        text: UtilityMethods.getLocalizedString("login"),
+                        removeDecoration: true,
+                        onTap: () => onLogInTap(context),
+                      ),
                 // GenericWidgetRow(
                 //   padding: const EdgeInsets.only(top: 20.0, bottom: 15.0),
                 //   iconData: AppThemePreferences.loginIcon,
@@ -197,14 +220,21 @@ class UserRelatedActionsWidget extends StatelessWidget {
     );
   }
 
-  void onEditProfileTap(BuildContext context){
+  void onEditProfileTap(BuildContext context) {
     UtilityMethods.navigateToRoute(
-        context: context,
-        builder: (context) => ManageProfile(),
+      context: context,
+      builder: (context) => const ManageProfile(),
     );
   }
 
-  void onPropertiesTap(BuildContext context){
+  void onEditProfileTap2(BuildContext context) {
+    UtilityMethods.navigateToRoute(
+      context: context,
+      builder: (context) => const EditProfile(),
+    );
+  }
+
+  void onPropertiesTap(BuildContext context) {
     isUserLogged
         ? UtilityMethods.navigateToRoute(
             context: context,
@@ -218,7 +248,6 @@ class UserRelatedActionsWidget extends StatelessWidget {
         ? UtilityMethods.navigateToRoute(
             context: context,
             builder: (context) {
-
               return UtilityMethods.navigateToAddPropertyPage();
             },
             // builder: (context) => AddPropertyV2(),
@@ -230,7 +259,7 @@ class UserRelatedActionsWidget extends StatelessWidget {
   void onAllUsersTap(BuildContext context) {
     UtilityMethods.navigateToRoute(
       context: context,
-      builder: (context) => AllUsers(),
+      builder: (context) => const AllUsers(),
     );
   }
 
@@ -238,24 +267,26 @@ class UserRelatedActionsWidget extends StatelessWidget {
     bool loadUserCurrentMembershipPackage = true;
     Map userPaymentStatusMap = HiveStorageManager.readUserPaymentStatus() ?? {};
     bool hasMembership = userPaymentStatusMap[userHasMembershipKey] ?? false;
-    int remainingListing = int.tryParse(userPaymentStatusMap[remainingListingKey]) ?? 0;
+    int remainingListing =
+        int.tryParse(userPaymentStatusMap[remainingListingKey]) ?? 0;
     if (remainingListing != -1 && (!hasMembership || remainingListing <= 0)) {
       loadUserCurrentMembershipPackage = false;
     }
     UtilityMethods.navigateToRoute(
       context: context,
-      builder: (context) => MembershipPlanPage(fetchMembershipDetail: loadUserCurrentMembershipPackage),
+      builder: (context) => MembershipPlanPage(
+          fetchMembershipDetail: loadUserCurrentMembershipPackage),
     );
   }
 
-  void onSettingsTap(BuildContext context){
+  void onSettingsTap(BuildContext context) {
     UtilityMethods.navigateToRoute(
       context: context,
       builder: (context) => HomePageSettings(),
     );
   }
 
-  void onRequestDemoTap(BuildContext context){
+  void onRequestDemoTap(BuildContext context) {
     UtilityMethods.navigateToRoute(
       context: context,
       builder: (context) => ContactDeveloper(),
@@ -266,7 +297,7 @@ class UserRelatedActionsWidget extends StatelessWidget {
     UtilityMethods.navigateToRoute(
       context: context,
       builder: (context) => UserSignIn(
-            (String closeOption) {
+        (String closeOption) {
           if (closeOption == CLOSE) {
             Navigator.pop(context);
           }
@@ -275,12 +306,12 @@ class UserRelatedActionsWidget extends StatelessWidget {
     );
   }
 
-  onLogOutTap(BuildContext context){
+  onLogOutTap(BuildContext context) {
     ShowDialogBoxWidget(
       context,
       title: UtilityMethods.getLocalizedString("log_out"),
-      content:
-      GenericTextWidget(UtilityMethods.getLocalizedString("are_you_sure_you_want_to_log_out")),
+      content: GenericTextWidget(UtilityMethods.getLocalizedString(
+          "are_you_sure_you_want_to_log_out")),
       actions: <Widget>[
         TextButtonWidget(
           onPressed: () => Navigator.pop(context),

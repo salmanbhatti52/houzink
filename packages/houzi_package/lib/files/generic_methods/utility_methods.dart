@@ -45,6 +45,13 @@ import 'package:houzi_package/pages/app_settings_pages/web_page.dart';
 
 class UtilityMethods{
   // Platform messages are asynchronous, so we initialize in an async method.
+
+    static String defaultLanguageCode() {
+    // Return the default language code here.
+    // For example, if the default language is English, you might return 'en'.
+    return 'en';
+  }
+
   static Future<void> initTrackingPermissionAndInitializeMobileAds(AppTrackingPermissionCallback trackingCallback) async {
     final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
     if (trackingCallback != null) {

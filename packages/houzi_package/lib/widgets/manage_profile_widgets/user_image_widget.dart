@@ -12,7 +12,8 @@ import 'package:houzi_package/widgets/generic_text_widget.dart';
 import 'package:houzi_package/widgets/shimmer_effect_error_widget.dart';
 import 'package:image_picker/image_picker.dart';
 
-typedef ManageProfileUserImageWidgetListener = Function(bool showUploadPhotoButton, File? imageFile);
+typedef ManageProfileUserImageWidgetListener = Function(
+    bool showUploadPhotoButton, File? imageFile);
 
 class ManageProfileUserImageWidget extends StatefulWidget {
   final String userAvatar;
@@ -27,13 +28,14 @@ class ManageProfileUserImageWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ManageProfileUserImageWidget> createState() => _ManageProfileUserImageWidgetState();
+  State<ManageProfileUserImageWidget> createState() =>
+      _ManageProfileUserImageWidgetState();
 }
 
-class _ManageProfileUserImageWidgetState extends State<ManageProfileUserImageWidget> {
-
+class _ManageProfileUserImageWidgetState
+    extends State<ManageProfileUserImageWidget> {
   File? imageFile;
-  
+
   final picker = ImagePicker();
 
   @override
@@ -42,12 +44,12 @@ class _ManageProfileUserImageWidgetState extends State<ManageProfileUserImageWid
       children: [
         Center(
           child: GestureDetector(
-              onTap: () => chooseImageDialog(context),
-              child: ImageWidget(
-                userAvatar: widget.userAvatar,
-                imageFile: imageFile,
-                showLoadingWidget: widget.showWaitingWidgetForPicUpload,
-              ),
+            onTap: () => chooseImageDialog(context),
+            child: ImageWidget(
+              userAvatar: widget.userAvatar,
+              imageFile: imageFile,
+              showLoadingWidget: widget.showWaitingWidgetForPicUpload,
+            ),
           ),
         ),
         Positioned(
@@ -58,7 +60,8 @@ class _ManageProfileUserImageWidgetState extends State<ManageProfileUserImageWid
             onTap: () => chooseImageDialog(context),
             child: CircleAvatar(
               radius: 20,
-              backgroundColor: AppThemePreferences().appTheme.selectedItemTextColor,
+              backgroundColor:
+                  AppThemePreferences().appTheme.selectedItemTextColor,
               child: SvgPicture.asset(
                 AppThemePreferences.uploadImagePath,
               ),
@@ -120,16 +123,18 @@ class _ManageProfileUserImageWidgetState extends State<ManageProfileUserImageWid
 
   Future _getImageFile(ImageSource source) async {
     var pickedFile = await picker.pickImage(
-        source: source,
-        maxHeight: 1000,
-        maxWidth: 1000,
+      source: source,
+      maxHeight: 1000,
+      maxWidth: 1000,
     );
 
     if (pickedFile != null) {
-      if(mounted) setState(() {
-        imageFile = File(pickedFile.path);
-        widget.listener(true, imageFile);
-      });
+      if (mounted) {
+        setState(() {
+          imageFile = File(pickedFile.path);
+          widget.listener(true, imageFile);
+        });
+      }
       ImageWidget(
         userAvatar: widget.userAvatar,
         imageFile: imageFile,
@@ -164,29 +169,29 @@ class ImageWidget extends StatelessWidget {
           imageUrl: userAvatar,
           boxFit: BoxFit.cover,
           shimmerBaseColor:
-          AppThemePreferences().appTheme.shimmerEffectBaseColor,
+              AppThemePreferences().appTheme.shimmerEffectBaseColor,
           shimmerHighlightColor:
-          AppThemePreferences().appTheme.shimmerEffectHighLightColor,
-          width: 200,
-          height: 200,
-          errorWidget: ShimmerEffectErrorWidget(),
+              AppThemePreferences().appTheme.shimmerEffectHighLightColor,
+          width: 150,
+          height: 150,
+          errorWidget: const ShimmerEffectErrorWidget(),
         ),
       );
     } else {
       return ClipRRect(
         borderRadius: BorderRadius.circular(100.0),
         child: SizedBox(
-          width: 200,
-          height: 200,
+          width: 150,
+          height: 150,
           child: Stack(
             children: [
               Image.file(
                 imageFile!,
                 fit: BoxFit.cover,
-                width: 200,
-                height: 200,
+                width: 150,
+                height: 150,
               ),
-              if(showLoadingWidget) LoadingIndicatorWidget(),
+              if (showLoadingWidget) const LoadingIndicatorWidget(),
             ],
           ),
         ),
@@ -194,7 +199,6 @@ class ImageWidget extends StatelessWidget {
     }
   }
 }
-
 
 class LoadingIndicatorWidget extends StatelessWidget {
   const LoadingIndicatorWidget({Key? key}) : super(key: key);
@@ -205,7 +209,7 @@ class LoadingIndicatorWidget extends StatelessWidget {
       height: (MediaQuery.of(context).size.height) / 2,
       margin: const EdgeInsets.only(top: 50),
       alignment: Alignment.center,
-      child: SizedBox(
+      child: const SizedBox(
         width: 80,
         height: 20,
         child: BallBeatLoadingWidget(),
@@ -213,4 +217,3 @@ class LoadingIndicatorWidget extends StatelessWidget {
     );
   }
 }
-

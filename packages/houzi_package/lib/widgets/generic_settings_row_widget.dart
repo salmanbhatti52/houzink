@@ -17,30 +17,43 @@ class NewGenericWidgetRow extends StatelessWidget {
     required this.text,
     required this.icon2,
     required this.onTap,
-    this.padding = const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 10.0, right: 10.0),
+    this.padding =
+        const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 10.0, right: 10.0),
     this.removeDecoration = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: (removeDecoration ?? false) ? null : null,
-      child: GestureDetector(
-        child: Card(
-          elevation: 3,
+    return Padding(
+      padding: const EdgeInsets.all(14.0),
+      child: Container(
+        // decoration: (removeDecoration ?? false) ? null : null,
+        decoration: ShapeDecoration(
+          color: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(16),
           ),
+          shadows: const [
+            BoxShadow(
+              color: Color(0x0F312E23),
+              blurRadius: 16,
+              offset: Offset(0, 8),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        child: GestureDetector(
           child: Container(
             padding: padding,
             child: Row(
               children: [
                 SvgPicture.asset(icon),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20,right: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
                   child: GenericTextWidget(
                     text,
-                    style: AppThemePreferences().appTheme.settingOptionsTextStyle,
+                    style:
+                        AppThemePreferences().appTheme.settingOptionsTextStyle,
                   ),
                 ),
                 const Spacer(),
@@ -48,10 +61,9 @@ class NewGenericWidgetRow extends StatelessWidget {
               ],
             ),
           ),
+          onTap: onTap,
         ),
-        onTap: onTap,
       ),
-
     );
   }
 }
@@ -75,7 +87,9 @@ class GenericWidgetRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: (removeDecoration ?? false) ? null : AppThemePreferences.dividerDecoration(),
+      decoration: (removeDecoration ?? false)
+          ? null
+          : AppThemePreferences.dividerDecoration(),
       child: InkWell(
         child: Container(
           padding: padding,
@@ -87,7 +101,7 @@ class GenericWidgetRow extends StatelessWidget {
                 size: AppThemePreferences.settingsIconSize,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: GenericTextWidget(
                   text,
                   style: AppThemePreferences().appTheme.settingOptionsTextStyle,
@@ -98,7 +112,6 @@ class GenericWidgetRow extends StatelessWidget {
         ),
         onTap: onTap,
       ),
-
     );
   }
 }
@@ -124,17 +137,19 @@ class GenericSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: removeDecoration ? null : AppThemePreferences.dividerDecoration(
-        bottom: enableBottomDecoration,
-        top: enableTopDecoration,
-      ),
+      decoration: removeDecoration
+          ? null
+          : AppThemePreferences.dividerDecoration(
+              bottom: enableBottomDecoration,
+              top: enableTopDecoration,
+            ),
       // decoration: AppThemePreferences.dividerDecoration(top: enableTopDecoration),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HeadingWidget(text: headingText),
-          if(headingSubTitleText != null && headingSubTitleText!.isNotEmpty )
+          if (headingSubTitleText != null && headingSubTitleText!.isNotEmpty)
             HeadingSubTitleWidget(text: headingSubTitleText!),
           body,
         ],
@@ -145,7 +160,7 @@ class GenericSettingsWidget extends StatelessWidget {
 
 class HeadingWidget extends StatelessWidget {
   final String text;
-  
+
   const HeadingWidget({
     Key? key,
     required this.text,
@@ -163,7 +178,7 @@ class HeadingWidget extends StatelessWidget {
 
 class HeadingSubTitleWidget extends StatelessWidget {
   final String text;
-  
+
   const HeadingSubTitleWidget({
     Key? key,
     required this.text,
