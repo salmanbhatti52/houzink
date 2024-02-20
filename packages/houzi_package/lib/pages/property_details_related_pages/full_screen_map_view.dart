@@ -63,7 +63,6 @@ class _FullScreenMapViewArticleState extends State<FullScreenMapViewArticle>
   }
 
   setupMarkersIfPossible() {
-
     Article item = widget.article;
     final heroId = item.id.toString() + "-marker";
     final propId = item.id;
@@ -83,27 +82,27 @@ class _FullScreenMapViewArticleState extends State<FullScreenMapViewArticle>
       }
 
       Marker marker = Marker(
-          markerId: MarkerId(heroId),
-          position: LatLng(lat, lng),
-          infoWindow: InfoWindow(
-              title: item.title.toString(),
-              onTap: () {
-                if (item.propertyInfo!.requiredLogin) {
-                  isUserLoggedIn
-                      ? UtilityMethods.navigateToPropertyDetailPage(
-                    context: context,
-                    propertyID: item.id!,
-                    heroId: heroId,
-                  )
-                      : UtilityMethods.navigateToLoginPage(context, false);
-                } else {
-                  UtilityMethods.navigateToPropertyDetailPage(
-                    context: context,
-                    propertyID: item.id!,
-                    heroId: heroId,
-                  );
-                }
-              }),
+        markerId: MarkerId(heroId),
+        position: LatLng(lat, lng),
+        infoWindow: InfoWindow(
+            title: item.title.toString(),
+            onTap: () {
+              if (item.propertyInfo!.requiredLogin) {
+                isUserLoggedIn
+                    ? UtilityMethods.navigateToPropertyDetailPage(
+                        context: context,
+                        propertyID: item.id!,
+                        heroId: heroId,
+                      )
+                    : UtilityMethods.navigateToLoginPage(context, false);
+              } else {
+                UtilityMethods.navigateToPropertyDetailPage(
+                  context: context,
+                  propertyID: item.id!,
+                  heroId: heroId,
+                );
+              }
+            }),
       );
       if (mounted) {
         setState(() {
@@ -116,8 +115,6 @@ class _FullScreenMapViewArticleState extends State<FullScreenMapViewArticle>
         });
       }
     }
-
-
   }
 
   @override
@@ -134,14 +131,12 @@ class _FullScreenMapViewArticleState extends State<FullScreenMapViewArticle>
   Widget build(BuildContext context) {
     super.build(context);
 
-
     map = GoogleMap(
       myLocationButtonEnabled: false,
       zoomGesturesEnabled: true,
       tiltGesturesEnabled: false,
       zoomControlsEnabled: false,
       mapToolbarEnabled: false,
-
       onMapCreated: (controller) {
         _googleMapController = controller;
         // return _googleMapController!;
@@ -149,7 +144,6 @@ class _FullScreenMapViewArticleState extends State<FullScreenMapViewArticle>
       onCameraMove: (CameraPosition cameraPosition) {
         mapZoom = cameraPosition.zoom;
       },
-
       markers: googleMapMarkers,
       initialCameraPosition: _initialCameraPosition,
     );
@@ -230,7 +224,6 @@ class _FullScreenMapViewArticleState extends State<FullScreenMapViewArticle>
       ),
     );
   }
-
 }
 
 class DirectionsWidget extends StatelessWidget {
@@ -253,8 +246,9 @@ class DirectionsWidget extends StatelessWidget {
               context: context,
               children: [
                 GenericBottomSheetTitleWidget(
-                  title: UtilityMethods.getLocalizedString("Choose application"),
-                  padding: EdgeInsets.only(bottom: 20),
+                  title:
+                      UtilityMethods.getLocalizedString("Choose application"),
+                  padding: const EdgeInsets.only(bottom: 20),
                 ),
                 GenericBottomSheetOptionWidget(
                   label: UtilityMethods.getLocalizedString("Maps"),
@@ -286,7 +280,7 @@ class DirectionsWidget extends StatelessWidget {
             color: AppThemePreferences().appTheme.backgroundColor,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Icon(Icons.directions, color: Colors.blue, size: 30),
+          child: const Icon(Icons.directions, color: Colors.blue, size: 30),
         ),
       ),
     );

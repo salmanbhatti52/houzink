@@ -27,8 +27,8 @@ class PropertyDetailPageRelatedListing extends StatefulWidget {
       _PropertyDetailPageRelatedListingState();
 }
 
-class _PropertyDetailPageRelatedListingState extends State<PropertyDetailPageRelatedListing> {
-
+class _PropertyDetailPageRelatedListingState
+    extends State<PropertyDetailPageRelatedListing> {
   List<dynamic> relatedArticles = [];
 
   Future<List<dynamic>>? _futureRelatedArticles;
@@ -39,10 +39,12 @@ class _PropertyDetailPageRelatedListingState extends State<PropertyDetailPageRel
   @override
   void initState() {
     loadData();
+
     /// General Notifier Listener
     generalNotifierListener = () {
-      if (GeneralNotifier().change == GeneralNotifier.PROPERTY_DETAILS_RELOADED) {
-        if(mounted) {
+      if (GeneralNotifier().change ==
+          GeneralNotifier.PROPERTY_DETAILS_RELOADED) {
+        if (mounted) {
           setState(() {
             loadData();
           });
@@ -54,9 +56,11 @@ class _PropertyDetailPageRelatedListingState extends State<PropertyDetailPageRel
     super.initState();
   }
 
-  loadData(){
+  loadData() {
     _futureRelatedArticles = fetchRelatedArticles(widget.propertyID);
-    if(mounted)setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Future<List<dynamic>> fetchRelatedArticles(int propertyId) async {
@@ -65,53 +69,60 @@ class _PropertyDetailPageRelatedListingState extends State<PropertyDetailPageRel
 
     tempList = await _propertyBloc.fetchSimilarArticles(propertyId);
 
-    if(tempList != null && tempList.isNotEmpty && tempList[0] != null && tempList[0].runtimeType != Response){
+    if (tempList != null &&
+        tempList.isNotEmpty &&
+        tempList[0] != null &&
+        tempList[0].runtimeType != Response) {
       relatedArticles.addAll(tempList);
     }
 
     return relatedArticles;
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return relatedPosts(_futureRelatedArticles, widget.title, widget.widgetViewType);
+    return relatedPosts(
+        _futureRelatedArticles, widget.title, widget.widgetViewType);
   }
 
-  Widget relatedPosts(Future<List<dynamic>>? futureRelatedArticles, String title, String widgetViewType) {
+  Widget relatedPosts(Future<List<dynamic>>? futureRelatedArticles,
+      String title, String widgetViewType) {
     if (title == null || title.isEmpty) {
       title = UtilityMethods.getLocalizedString("related_properties");
     }
 
-    return futureRelatedArticles == null ? Container() : FutureBuilder<List<dynamic>>(
-      future: futureRelatedArticles,
-      builder: (context, articleSnapshot) {
-        if (articleSnapshot.hasData) {
-          if (articleSnapshot.data!.isEmpty) return Container();
+    return futureRelatedArticles == null
+        ? Container()
+        : FutureBuilder<List<dynamic>>(
+            future: futureRelatedArticles,
+            builder: (context, articleSnapshot) {
+              if (articleSnapshot.hasData) {
+                if (articleSnapshot.data!.isEmpty) return Container();
 
-          List dataList = articleSnapshot.data!;
-          return Column(
-            children: <Widget>[
-              textHeadingWidget(
-                  text: UtilityMethods.getLocalizedString(title)),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: widgetViewType.isNotEmpty && widgetViewType == similarPropertiesCarouselView
-                    ? relatedPostsCarouselView(dataList)
-                    : relatedPostsListView(dataList),
-              ),
-              const SizedBox(
-                height: 24,
-              )
-            ],
+                List dataList = articleSnapshot.data!;
+                return Column(
+                  children: <Widget>[
+                    textHeadingWidget(
+                        text: UtilityMethods.getLocalizedString(title)),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: widgetViewType.isNotEmpty &&
+                              widgetViewType == similarPropertiesCarouselView
+                          ? relatedPostsCarouselView(dataList)
+                          : relatedPostsListView(dataList),
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    )
+                  ],
+                );
+              } else if (articleSnapshot.hasError) {
+                return Container();
+              }
+              return Container();
+              // return loadingWidgetForRelatedProperties();
+            },
           );
-        } else if (articleSnapshot.hasError) {
-          return Container();
-        }
-        return Container();
-        // return loadingWidgetForRelatedProperties();
-      },
-    );
   }
 
   Widget relatedPostsListView(List dataList) {
@@ -142,6 +153,4 @@ class _PropertyDetailPageRelatedListingState extends State<PropertyDetailPageRel
       design: RELATED_PROPERTIES_DESIGN,
     );
   }
-
-
 }

@@ -25,7 +25,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 typedef MapViewListener = void Function({
-  Map<String,String>? coordinatesMap,
+  Map<String, String>? coordinatesMap,
   int? selectedMarkerPropertyId,
   bool? snapCameraToSelectedIndex,
   bool? showWaitingWidget,
@@ -33,7 +33,6 @@ typedef MapViewListener = void Function({
 });
 
 class MapView extends StatefulWidget {
-
   final List<dynamic> listArticles;
   final MapViewListener? mapViewListener;
   final bool showWaitingWidget;
@@ -54,25 +53,25 @@ class MapView extends StatefulWidget {
     required this.snapCameraToSelectedIndex,
     required this.googleMapsKey,
     required this.hideMap,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   State<MapView> createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<MapView> {
-
+class _MapViewState extends State<MapView>
+    with AutomaticKeepAliveClientMixin<MapView> {
   bool isUserLoggedIn = false;
   bool showSearchInThisArea = false;
 
   int counter = 0;
 
   //MAP_IMPROVES_BY_ADIL - Keep the first ever camera center, and last ever camera center, it'll help us in distance counting.
-  double? cameraStartLat = null;
-  double? cameraStartLng = null;
-  double? cameraEndLat = null;
-  double? cameraEndLng = null;
-  
+  double? cameraStartLat;
+  double? cameraStartLng;
+  double? cameraEndLat;
+  double? cameraEndLng;
+
   double mapZoom = 3;
   double? x0, x1, y0, y1;
 
@@ -83,7 +82,6 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
   String lastProcessedHash = "";
 
   LatLng? _lastMapPosition;
-
 
   GoogleMap? map, tempMap;
 
@@ -101,9 +99,10 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
   List<Marker> googleMarkers = [];
   Map<int, MapMarker> mapMarkerCache = {};
 
-
-  ClusterMarkerIconHook clusterMarkerIconHook = HooksConfigurations.clusterMarkerIconHook;
-  CustomClusterMarkerIconHook customClusterMarkerIconHook = HooksConfigurations.customClusterMarkerIconHook;
+  ClusterMarkerIconHook clusterMarkerIconHook =
+      HooksConfigurations.clusterMarkerIconHook;
+  CustomClusterMarkerIconHook customClusterMarkerIconHook =
+      HooksConfigurations.customClusterMarkerIconHook;
 
   String CLUSTER_COLOR = "clusterColor";
   String CLUSTER_TEXT_COLOR = "clusterTextColor";
@@ -112,7 +111,7 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
   String CLUSTER_BORDER_WIDTH = "clusterBorderWidth";
 
   bool hideMap = false;
-  final _initialCameraPosition = CameraPosition(
+  final _initialCameraPosition = const CameraPosition(
     target: LatLng(37.4219999, -122.0862462),
     zoom: 8,
   );
@@ -130,7 +129,6 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     }
 
     setupMarkersIfPossible();
-
   }
 
   Future<BitmapDescriptor> setCustomImageIcons(Article article) async {
@@ -139,17 +137,19 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     BitmapDescriptor? icon;
     if (iconStr != null && iconStr.isNotEmpty) {
       icon = await BitmapDescriptor.fromAssetImage(
-          ImageConfiguration(devicePixelRatio: 3.2), iconStr);
+          const ImageConfiguration(devicePixelRatio: 3.2), iconStr);
       return icon;
     }
     double height = MediaQuery.of(context).size.height;
     MapMarkerData? markerData = customMarkerHook(context, article);
     if (markerData != null) {
-      Color textColor = markerData.textColor == null ?  Colors.white : markerData.textColor!;
-      TextStyle style = markerData.textStyle ?? TextStyle(
-        fontSize: height * 5/100.0,
-        color: textColor,
-      );
+      Color textColor =
+          markerData.textColor == null ? Colors.white : markerData.textColor!;
+      TextStyle style = markerData.textStyle ??
+          TextStyle(
+            fontSize: height * 5 / 100.0,
+            color: textColor,
+          );
       icon = await createCustomMarkerBitmap(
         markerData.text,
         backgroundColor: markerData.backgroundColor,
@@ -169,7 +169,6 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     Color borderColor = Colors.white,
     double borderWidth = 10.0,
   }) async {
-
     if (customClusterMarkerIconHook(context, clusterSize) != null) {
       return customClusterMarkerIconHook(context, clusterSize)!;
     }
@@ -206,14 +205,16 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
 
     // Draw the border circle
     canvas.drawCircle(
-      Offset(radius + borderWidth, radius + borderWidth), // Adjust the Offset for the border
+      Offset(radius + borderWidth,
+          radius + borderWidth), // Adjust the Offset for the border
       radius + borderWidth,
       paintBorder,
     );
 
     // Draw the actual cluster circle
     canvas.drawCircle(
-      Offset(radius + borderWidth, radius + borderWidth), // Adjust the Offset for the border
+      Offset(radius + borderWidth,
+          radius + borderWidth), // Adjust the Offset for the border
       radius,
       paintCluster,
     );
@@ -236,26 +237,31 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     textPainter.paint(
       canvas,
       Offset(
-        radius + borderWidth - textPainter.width / 2, // Adjust the Offset for the border
-        radius + borderWidth - textPainter.height / 2, // Adjust the Offset for the border
+        radius +
+            borderWidth -
+            textPainter.width / 2, // Adjust the Offset for the border
+        radius +
+            borderWidth -
+            textPainter.height / 2, // Adjust the Offset for the border
       ),
     );
 
     final image = await pictureRecorder.endRecording().toImage(
-      ((radius + borderWidth) * 2).toInt(), // Adjust the image size to account for the border
-      ((radius + borderWidth) * 2).toInt(), // Adjust the image size to account for the border
-    );
+          ((radius + borderWidth) * 2)
+              .toInt(), // Adjust the image size to account for the border
+          ((radius + borderWidth) * 2)
+              .toInt(), // Adjust the image size to account for the border
+        );
 
     final data = await image.toByteData(format: ImageByteFormat.png);
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-
   setupMarkersIfPossible() async {
     widget.listArticles.removeWhere((element) => element is AdWidget);
     String hash = computeHash(widget.listArticles);
 
-    if(lastProcessedHash == hash) {
+    if (lastProcessedHash == hash) {
       //if they're same, then return.. so we don't need to compute things in each cycle.
       //just update the clusters from Fluster
       updateGoogleMapMarkers();
@@ -265,7 +271,6 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
 
     googleMapMarkers.clear();
     markers.clear();
-
 
     x0 = null;
     x1 = null;
@@ -277,7 +282,7 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
 
       final heroId = item.id.toString() + "-marker";
       var tempAddress = item.address;
-      if(tempAddress != null) {
+      if (tempAddress != null) {
         var address = tempAddress.coordinates.toString();
         if ((address.isNotEmpty) && (address != ',')) {
           var temp = address.split(",");
@@ -308,19 +313,18 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
             onTap: () {
               widget.mapViewListener!(
                   selectedMarkerPropertyId: item.id,
-                  snapCameraToSelectedIndex: true
-              );
+                  snapCameraToSelectedIndex: true);
             },
             infoWindow: InfoWindow(
                 title: markerTitleHook(context, item),
                 onTap: () {
                   bool requireLogin = item.propertyInfo!.requiredLogin;
                   if (!requireLogin || (requireLogin && isUserLoggedIn)) {
-                      UtilityMethods.navigateToPropertyDetailPage(
-                          context: context,
-                          propertyID: item.id!,
-                          heroId: heroId,
-                        );
+                    UtilityMethods.navigateToPropertyDetailPage(
+                      context: context,
+                      propertyID: item.id!,
+                      heroId: heroId,
+                    );
                   } else {
                     UtilityMethods.navigateToLoginPage(context, false);
                   }
@@ -331,11 +335,10 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
           markers.add(mapMarker);
         }
       }
-
     });
 
-  if (markers.isNotEmpty) {
-    _isFlusterInitialized = true;
+    if (markers.isNotEmpty) {
+      _isFlusterInitialized = true;
       fluster = Fluster<MapMarker>(
         minZoom: minZoomCluster,
         // The min zoom at clusters will show
@@ -350,21 +353,21 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
         points: markers,
         createCluster: (BaseCluster? cluster, double? lng, double? lat) {
           return MapMarker(
-              id: cluster?.id.toString() ?? '',
-              position: LatLng(lat ?? 0, lng ?? 0),
-              icon: getClusterMarker(
-                clusterSize: cluster?.pointsSize ?? 0,
-                clusterColor: AppThemePreferences.appPrimaryColor,
-              ),
+            id: cluster?.id.toString() ?? '',
+            position: LatLng(lat ?? 0, lng ?? 0),
+            icon: getClusterMarker(
+              clusterSize: cluster?.pointsSize ?? 0,
+              clusterColor: AppThemePreferences.appPrimaryColor,
+            ),
             isCluster: cluster?.isCluster ?? false,
-              clusterId: cluster?.id ?? 0,
-              pointsSize: cluster?.pointsSize ?? 0,
-              childMarkerId: cluster?.childMarkerId ?? 0,
+            clusterId: cluster?.id ?? 0,
+            pointsSize: cluster?.pointsSize ?? 0,
+            childMarkerId: cluster?.childMarkerId ?? 0,
             onTap: () {
-                String? childMarkerId = cluster?.childMarkerId;
-                if (childMarkerId != null) {
-                  zoomInOnChildMarker(childMarkerId);
-                }
+              String? childMarkerId = cluster?.childMarkerId;
+              if (childMarkerId != null) {
+                zoomInOnChildMarker(childMarkerId);
+              }
             },
           );
         },
@@ -379,29 +382,25 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     MapMarker targetMarker = findMarkerById(childMarkerId);
 
     // Check if the marker is found
-    if (targetMarker != null) {
-      // Zoom in on the target marker
-      if (mapZoom < maxZoomCluster && mapZoom >= 8) {
-        mapZoom = 13;
-      } else if (mapZoom >= minZoomCluster && mapZoom < 8) {
-        mapZoom = 11;
-      }
-      _zoomingToOneCluster = true;
-      // mapZoom = 14.0;
-      _googleMapController!.animateCamera(
-        CameraUpdate.newLatLngZoom(targetMarker.position, mapZoom),
-        // CameraUpdate.newLatLngZoom(targetMarker.position, 11.0),
-      );
-
-
-
+    // Zoom in on the target marker
+    if (mapZoom < maxZoomCluster && mapZoom >= 8) {
+      mapZoom = 13;
+    } else if (mapZoom >= minZoomCluster && mapZoom < 8) {
+      mapZoom = 11;
     }
+    _zoomingToOneCluster = true;
+    // mapZoom = 14.0;
+    _googleMapController!.animateCamera(
+      CameraUpdate.newLatLngZoom(targetMarker.position, mapZoom),
+      // CameraUpdate.newLatLngZoom(targetMarker.position, 11.0),
+    );
   }
 
   MapMarker findMarkerById(String markerId) {
     return markers.firstWhere(
-          (marker) => marker.id == markerId,
-      orElse: () => MapMarker(id: '', position: LatLng(0, 0)), // Default if not found
+      (marker) => marker.id == markerId,
+      orElse: () => MapMarker(
+          id: '', position: const LatLng(0, 0)), // Default if not found
     );
   }
 
@@ -409,24 +408,31 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     if (!_isFlusterInitialized) return;
     LatLngBounds bounds = await _googleMapController!.getVisibleRegion();
 
-    List<MapMarker> _tempMapMarkersList = fluster.clusters([bounds.southwest.longitude, bounds.southwest.latitude,
-      bounds.northeast.longitude, bounds.northeast.latitude], mapZoom.toInt());
+    List<MapMarker> _tempMapMarkersList = fluster.clusters([
+      bounds.southwest.longitude,
+      bounds.southwest.latitude,
+      bounds.northeast.longitude,
+      bounds.northeast.latitude
+    ], mapZoom.toInt());
     List<Marker> _tempMarkersList = [];
-    print("updateGoogleMapMarkers():: got cluster with count: ${_tempMapMarkersList.length}");
-    for(MapMarker item in _tempMapMarkersList) {
+    print(
+        "updateGoogleMapMarkers():: got cluster with count: ${_tempMapMarkersList.length}");
+    print(
+        "updateGoogleMapMarkers():: got cluster with count: ${_tempMapMarkersList.length}");
+    for (MapMarker item in _tempMapMarkersList) {
       Marker marker = await item.toMarker();
 
       _tempMarkersList.add(marker);
     }
 
-    googleMarkers  = _tempMarkersList;
+    googleMarkers = _tempMarkersList;
 
     // Release the memory:
     _tempMapMarkersList = [];
     _tempMarkersList = [];
   }
 
-  animateCameraToSelectedProperty(){
+  animateCameraToSelectedProperty() {
     if (_googleMapController != null) {
       if (widget.selectedArticleIndex != lastSelectedIndex &&
           lastSelectedIndex != -1 &&
@@ -441,8 +447,9 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
           if (address != null && address.isNotEmpty) {
             final heroId = item.id.toString() + "-marker";
             var markerId = MarkerId(heroId);
-            _googleMapController?.isMarkerInfoWindowShown(markerId).then((
-                shown) {
+            _googleMapController
+                ?.isMarkerInfoWindowShown(markerId)
+                .then((shown) {
               _googleMapController!.hideMarkerInfoWindow(markerId);
             });
             lastSelectedIndex = -1;
@@ -482,27 +489,30 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     }
   }
 
-  attemptZoomToAllProperties(){
+  attemptZoomToAllProperties() {
     if (widget.showWaitingWidget) {
       //print("attemptZoomToAllProperties():: something in progress, bailing");
       //if we're doing some web service work, don't attempt zoom.
       return;
     }
-    if (widget.selectedArticleIndex != -1 && widget.listArticles.isNotEmpty &&
+    if (widget.selectedArticleIndex != -1 &&
+        widget.listArticles.isNotEmpty &&
         widget.listArticles.length > widget.selectedArticleIndex) {
-        //print("attemptZoomToAllProperties():: selectedArticleIndex available:: ${widget.selectedArticleIndex}");
-        //if we're focusing on a single property, we should not zoom on all properties.
-        return;
+      //print("attemptZoomToAllProperties():: selectedArticleIndex available:: ${widget.selectedArticleIndex}");
+      //if we're focusing on a single property, we should not zoom on all properties.
+      return;
     }
 
-    if(widget.zoomToAllLocations && _googleMapController != null
-        && (x1 != null && x0 != null && y1 != null && x0 != null)){
+    if (widget.zoomToAllLocations &&
+        _googleMapController != null &&
+        (x1 != null && x0 != null && y1 != null && x0 != null)) {
       LatLngBounds latLngBounds = LatLngBounds(
         northeast: LatLng(x1!, y1!),
         southwest: LatLng(x0!, y0!),
       );
 
-      CameraUpdate cameraUpdate = CameraUpdate.newLatLngBounds(latLngBounds, 50.0); // 190.0
+      CameraUpdate cameraUpdate =
+          CameraUpdate.newLatLngBounds(latLngBounds, 50.0); // 190.0
       // _googleMapController!.animateCamera(cameraUpdate);
       _googleMapController!.animateCamera(cameraUpdate).then((value) {
         //print("calling  widget.mapViewListener" );
@@ -520,14 +530,11 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
         cameraStartLng = centerLatLng.longitude;
       }
     }
-
-
   }
 
   @override
   void dispose() {
-
-    if(_googleMapController != null){
+    if (_googleMapController != null) {
       _googleMapController!.dispose();
     }
     super.dispose();
@@ -542,8 +549,6 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
     attemptZoomToAllProperties();
 
     // animateCameraToSelectedProperty();
-
-
 
     return WillPopScope(
       onWillPop: () {
@@ -564,142 +569,153 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
                 widget.mapViewListener!(someActivityOnMap: true);
 
                 //MAP_IMPROVES_BY_ADIL - we don't want to deal with nulls.
-                if (cameraStartLat == null || cameraStartLng == null || cameraEndLat == null || cameraEndLng == null) return;
+                if (cameraStartLat == null ||
+                    cameraStartLng == null ||
+                    cameraEndLat == null ||
+                    cameraEndLng == null) return;
 
                 //MAP_IMPROVES_BY_ADIL - calculate distance from start point to end point.
-                double distance = findDistance(cameraStartLat!, cameraStartLng!, cameraEndLat!, cameraEndLng!);
+                double distance = findDistance(cameraStartLat!, cameraStartLng!,
+                    cameraEndLat!, cameraEndLng!);
                 //MAP_IMPROVES_BY_ADIL - the minimum distance that should show Search In this Area button
                 double threshold = 1;
                 //MAP_IMPROVES_BY_ADIL - hide or show only when we pass or fail this threshold
                 //MAP_IMPROVES_BY_ADIL - don't cause the set state to be called too much. only when threshold crossed
-                if (distance < threshold && showSearchInThisArea){
-                  if(mounted) {
+                if (distance < threshold && showSearchInThisArea) {
+                  if (mounted) {
                     setState(() {
-                    showSearchInThisArea = false;
-                  });
+                      showSearchInThisArea = false;
+                    });
                   }
                 }
-                if (distance > threshold && !showSearchInThisArea){
-                  if(mounted) {
+                if (distance > threshold && !showSearchInThisArea) {
+                  if (mounted) {
                     setState(() {
-                    showSearchInThisArea = true;
-                  });
+                      showSearchInThisArea = true;
+                    });
                   }
                 }
               },
-              child: (hideMap || widget.hideMap) ? Container() : GoogleMap(
-                key: widget.googleMapsKey,
-                myLocationButtonEnabled: false,
-                zoomGesturesEnabled: true,
-                tiltGesturesEnabled: false,
-                zoomControlsEnabled: false,
-                mapToolbarEnabled: false,
-                markers: googleMarkers.toSet(),
-                // markers: googleMapMarkers,
-                initialCameraPosition: _initialCameraPosition,
-                padding: _googleMapController == null
-                    ? EdgeInsets.zero
-                    //MAP_IMPROVES_BY_ADIL - the padding for map marker should consider available real estate of screen
-                    : EdgeInsets.only(left: 20, right: 20, top: 250, bottom: 60),
-                    // : EdgeInsets.only(left: 80, right: 80, top: 250, bottom: 250),
-                onMapCreated: (controller) {
-                  _googleMapController = controller;
-                  if (mounted) setState(() {});
-                },
-                onCameraMove: (CameraPosition cameraPosition) async {
-                  mapZoom = cameraPosition.zoom;
-                  // print("mapZoom: $mapZoom..........");
-
-                  _lastMapPosition = cameraPosition.target;
-                  double targetLat = cameraPosition.target.latitude;
-                  double targetLon = cameraPosition.target.longitude;
-
-                  //MAP_IMPROVES_BY_ADIL - every camera move can be last, so keep it recorded.
-                  cameraEndLat = targetLat;
-                  cameraEndLng = targetLon;
-
-                  updateGoogleMapMarkers();
-                },
-                onTap: (LatLng latLng) {
-                  //when we get this event, it means, we're not tapping a marker.
-                  //So if there's any marker showing window right now, hide that.
-                  //print("map tapped");
-                  widget.mapViewListener!(
-                      selectedMarkerPropertyId: -1,
-                      snapCameraToSelectedIndex: false,
-                      showWaitingWidget: false
-                  );
-                },
-                onCameraIdle: () {
-                  // if(mounted){
-                  //   setState(() {});
-                  // }
-                  if(mounted && _zoomingToOneCluster) {
-                    _zoomingToOneCluster = false;
-                    setState(() {
-                      updateGoogleMapMarkers();
-                    });
-                  }
-                },
-
-                gestureRecognizers: Set()
-                  ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()),
-                ),
-
-              ),
-            ),
-            if(showSearchInThisArea)
-              Container(
-                    margin: EdgeInsets.only(top: 120),
-                    alignment: Alignment.topCenter,
-                    child: FloatingActionButton.extended(
-                      elevation: 0.0,
-                      backgroundColor: AppThemePreferences().appTheme.searchBarBackgroundColor,
-                      onPressed: () {
-                        var visibleRegion = _googleMapController!.getVisibleRegion();
-                        visibleRegion.then((value) {
-                          var distance = Geolocator.distanceBetween(
-                              value.northeast.latitude,
-                              value.northeast.longitude,
-                              value.southwest.latitude,
-                              value.southwest.longitude,
-                          );
-                          //MAP_IMPROVES_BY_ADIL - save current center as start point for next camera move distance
-                          cameraStartLat = _lastMapPosition!.latitude;
-                          cameraStartLng = _lastMapPosition!.longitude;
-
-                          double distanceInKiloMeters = distance / 1000;
-                          double roundDistanceInKM = double.parse((distanceInKiloMeters).toStringAsFixed(2));
-
-                          Map<String, String> coordinatesMap = {
-                            LATITUDE: _lastMapPosition!.latitude.toString(),
-                            LONGITUDE: _lastMapPosition!.longitude.toString(),
-                            RADIUS: roundDistanceInKM.toString(),
-                          };
-                          if(mounted) {
-                            setState(() {
-                              showSearchInThisArea = false;
-                            });
-                          }
-                          widget.mapViewListener!(
-
-                              coordinatesMap: coordinatesMap,
-                              showWaitingWidget: true
-                          );
-                        });
+              child: (hideMap || widget.hideMap)
+                  ? Container()
+                  : GoogleMap(
+                      key: widget.googleMapsKey,
+                      myLocationButtonEnabled: false,
+                      zoomGesturesEnabled: true,
+                      tiltGesturesEnabled: false,
+                      zoomControlsEnabled: false,
+                      mapToolbarEnabled: false,
+                      markers: googleMarkers.toSet(),
+                      // markers: googleMapMarkers,
+                      initialCameraPosition: _initialCameraPosition,
+                      padding: _googleMapController == null
+                          ? EdgeInsets.zero
+                          //MAP_IMPROVES_BY_ADIL - the padding for map marker should consider available real estate of screen
+                          : const EdgeInsets.only(
+                              left: 20, right: 20, top: 250, bottom: 60),
+                      // : EdgeInsets.only(left: 80, right: 80, top: 250, bottom: 250),
+                      onMapCreated: (controller) {
+                        _googleMapController = controller;
+                        if (mounted) setState(() {});
                       },
-                      label: GenericTextWidget(
-                          UtilityMethods.getLocalizedString("search_in_this_area"),
-                          style: AppThemePreferences().appTheme.filterPageChoiceChipTextStyle,
-                      ),
+                      onCameraMove: (CameraPosition cameraPosition) async {
+                        mapZoom = cameraPosition.zoom;
+                        // print("mapZoom: $mapZoom..........");
+
+                        _lastMapPosition = cameraPosition.target;
+                        double targetLat = cameraPosition.target.latitude;
+                        double targetLon = cameraPosition.target.longitude;
+
+                        //MAP_IMPROVES_BY_ADIL - every camera move can be last, so keep it recorded.
+                        cameraEndLat = targetLat;
+                        cameraEndLng = targetLon;
+
+                        updateGoogleMapMarkers();
+                      },
+                      onTap: (LatLng latLng) {
+                        //when we get this event, it means, we're not tapping a marker.
+                        //So if there's any marker showing window right now, hide that.
+                        //print("map tapped");
+                        widget.mapViewListener!(
+                            selectedMarkerPropertyId: -1,
+                            snapCameraToSelectedIndex: false,
+                            showWaitingWidget: false);
+                      },
+                      onCameraIdle: () {
+                        // if(mounted){
+                        //   setState(() {});
+                        // }
+                        if (mounted && _zoomingToOneCluster) {
+                          _zoomingToOneCluster = false;
+                          setState(() {
+                            updateGoogleMapMarkers();
+                          });
+                        }
+                      },
+
+                      // ignore: prefer_collection_literals
+                      gestureRecognizers: Set()
+                        ..add(
+                          Factory<PanGestureRecognizer>(
+                              () => PanGestureRecognizer()),
+                        ),
                     ),
+            ),
+            if (showSearchInThisArea)
+              Container(
+                margin: const EdgeInsets.only(top: 140),
+                alignment: Alignment.topCenter,
+                child: FloatingActionButton.extended(
+                  elevation: 0.0,
+                  backgroundColor:
+                      AppThemePreferences().appTheme.searchBarBackgroundColor,
+                  onPressed: () {
+                    var visibleRegion =
+                        _googleMapController!.getVisibleRegion();
+                    visibleRegion.then((value) {
+                      var distance = Geolocator.distanceBetween(
+                        value.northeast.latitude,
+                        value.northeast.longitude,
+                        value.southwest.latitude,
+                        value.southwest.longitude,
+                      );
+                      //MAP_IMPROVES_BY_ADIL - save current center as start point for next camera move distance
+                      cameraStartLat = _lastMapPosition!.latitude;
+                      cameraStartLng = _lastMapPosition!.longitude;
+
+                      double distanceInKiloMeters = distance / 1000;
+                      double roundDistanceInKM = double.parse(
+                          (distanceInKiloMeters).toStringAsFixed(2));
+
+                      Map<String, String> coordinatesMap = {
+                        LATITUDE: _lastMapPosition!.latitude.toString(),
+                        LONGITUDE: _lastMapPosition!.longitude.toString(),
+                        RADIUS: roundDistanceInKM.toString(),
+                      };
+                      if (mounted) {
+                        setState(() {
+                          showSearchInThisArea = false;
+                        });
+                      }
+                      widget.mapViewListener!(
+                          coordinatesMap: coordinatesMap,
+                          showWaitingWidget: true);
+                    });
+                  },
+                  label: GenericTextWidget(
+                    UtilityMethods.getLocalizedString("search_in_this_area"),
+                    style: AppThemePreferences()
+                        .appTheme
+                        .filterPageChoiceChipTextStyle,
                   ),
+                ),
+              ),
 
             if (widget.showWaitingWidget)
               Container(
                 margin: const EdgeInsets.only(top: 160),
                 alignment: Alignment.topCenter,
-                child: SizedBox(
+                child: const SizedBox(
                   width: 70,
                   height: 70,
                   child: BallBeatLoadingWidget(),
@@ -714,18 +730,16 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin<Ma
   @override
   bool get wantKeepAlive => true;
 
-  static double findDistance(double lat1, double lon1, double lat2, double lon2){
-    double distance = Geolocator.distanceBetween(
-        lat1,
-        lon1,
-        lat2,
-        lon2
-    );
+  static double findDistance(
+      double lat1, double lon1, double lat2, double lon2) {
+    double distance = Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
     return distance / 1000;
   }
+
   // Function to compute SHA-256 hash of a list of articles
   String computeHash(List<dynamic> articles) {
-    List<String> articleStrings = articles.map((article) => article.id.toString()).toList();
+    List<String> articleStrings =
+        articles.map((article) => article.id.toString()).toList();
     String concatenatedData = articleStrings.join();
     Digest hash = sha256.convert(utf8.encode(concatenatedData));
     return hash.toString();

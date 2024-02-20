@@ -59,11 +59,12 @@ class SearchResultsSearchBarWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SearchResultsSearchBarWidget> createState() => _SearchResultsSearchBarWidgetState();
+  State<SearchResultsSearchBarWidget> createState() =>
+      _SearchResultsSearchBarWidgetState();
 }
 
-class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWidget> {
-
+class _SearchResultsSearchBarWidgetState
+    extends State<SearchResultsSearchBarWidget> {
   final PropertyBloc _propertyBloc = PropertyBloc();
 
   AnimateIconController refreshIconController = AnimateIconController();
@@ -86,14 +87,11 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     mapListAnimateIconController = widget.mapListAnimateIconController;
 
     return Positioned(
@@ -104,172 +102,233 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Row(
-              children: [
-                GenericTextWidget(
-                  "Explore",
-                  style: AppThemePreferences().appTheme.propertyDetailsPagePropertyTitleTextStyle,
-                ),
-                Row(
-                  children: [
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Favorites(
-                              showAppBar: true,
-                              favoritesPageListener: (String closeOption) {
-                                if (closeOption == CLOSE) {
-                                  Navigator.pop(context);
-                                }
-                              },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GenericTextWidget(
+                    "Explore",
+                    style: AppThemePreferences()
+                        .appTheme
+                        .propertyDetailsPagePropertyTitleTextStyle,
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Favorites(
+                                showAppBar: true,
+                                favoritesPageListener: (String closeOption) {
+                                  if (closeOption == CLOSE) {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              ),
                             ),
+                          );
+                        },
+                        child: SvgPicture.asset(
+                            AppThemePreferences.drawerFavoriteImagePath),
+                      ),
+                      const SizedBox(width: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Tooltip(
+                          message: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
+                          child: GestureDetector(
+                            onTap: () {
+                              Scaffold.of(context).openDrawer();
+                              // widget.scaffoldKey!.currentState!.openEndDrawer();
+                            },
+                            child: SvgPicture.asset(
+                                AppThemePreferences.drawerMenuImagePath),
                           ),
-                        );
-                      },
-                      child:
-                      SvgPicture.asset(AppThemePreferences.drawerFavoriteImagePath),
-                    ),
-                    const SizedBox(width: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: Tooltip(
-                        message: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                        child: GestureDetector(
-                          onTap: () {
-                            widget.scaffoldKey!.currentState!.openEndDrawer();
-                          },
-                          child: SvgPicture.asset(AppThemePreferences.drawerMenuImagePath),
                         ),
                       ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            // color: Colors.green,
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 0,
+                          child: IconButton(
+                            onPressed: widget.onBackPressed,
+                            icon: Icon(
+                              AppThemePreferences.searchIcon,
+                              color: AppThemePreferences().appTheme.iconsColor,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 8,
+                          child: GenericTextWidget(
+                            UtilityMethods.getLocalizedString("search"),
+                            style: AppThemePreferences()
+                                .appTheme
+                                .searchBarTextStyle,
+                          ),
+                        ),
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: GenericAnimateIcons(
+                        //     startIcon: Icons.refresh_outlined,
+                        //     endIcon: Icons.refresh_outlined,
+                        //     size: 24.0,
+                        //     clockwise: true,
+                        //     controller: refreshIconController,
+                        //     onStartIconPress: onRefreshAnimatedButtonPressed,
+                        //     onEndIconPress: onRefreshAnimatedButtonPressed,
+                        //   ),
+                        // ),
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: GenericAnimateIcons(
+                        //     startIcon: SHOW_MAP_INSTEAD_FILTER
+                        //         ? Icons.list_outlined
+                        //         : Icons.map_outlined,
+                        //     endIcon: SHOW_MAP_INSTEAD_FILTER
+                        //         ? Icons.map_outlined
+                        //         : Icons.list_outlined,
+                        //     size: 24.0,
+                        //     clockwise: false,
+                        //     controller: mapListAnimateIconController,
+                        //     onStartIconPress: SHOW_MAP_INSTEAD_FILTER
+                        //         ? onMapAnimatedButtonEndPressed
+                        //         : onMapAnimatedButtonStartPressed,
+                        //     onEndIconPress: SHOW_MAP_INSTEAD_FILTER
+                        //         ? onMapAnimatedButtonStartPressed
+                        //         : onMapAnimatedButtonEndPressed,
+                        //   ),
+                        // ),
+                        Expanded(
+                          flex: 3,
+                          child: SearchResultsChoiceChipsWidget(
+                            label: "",
+                            iconData: AppThemePreferences()
+                                .appTheme
+                                .homeScreenSearchBarFilterIcon
+                                ?.icon,
+                            onSelected: (value) => navigateToFilterPage(),
+                          ),
+                        ),
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: GenericPopupMenuButton(
+                        //     offset: const Offset(0, 50),
+                        //     elevation: AppThemePreferences.popupMenuElevation,
+                        //     icon: Icon(
+                        //       Icons.more_horiz_rounded,
+                        //       color: AppThemePreferences().appTheme.primaryColor,
+                        //     ),
+                        //     onSelected: (value) => onPopupOptionSelected(value),
+                        //     itemBuilder: (context) => [
+                        //       GenericPopupMenuItem(
+                        //         value: OPTION_SAVE,
+                        //         text: UtilityMethods.getLocalizedString(OPTION_SAVE),
+                        //         iconData: Icons.bookmark_outline_outlined,
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
                     ),
-                  ],
+                    decoration: BoxDecoration(
+                      // color: Colors.red,
+                      color: widget.opacity < 0.6
+                          ? AppThemePreferences()
+                              .appTheme
+                              .searchBarBackgroundColor
+                          : AppThemePreferences()
+                              .appTheme
+                              .searchBar02BackgroundColor,
+                      borderRadius: BorderRadius.circular(12.0), //24.0
+                      // boxShadow: [opacity < 0.6 ? const BoxShadow(color: Color.fromRGBO(0, 0, 0, .25), blurRadius: 16.0) : const BoxShadow(color: Colors.transparent),],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 0,
+                  child: GenericAnimateIcons(
+                    startIcon: SHOW_MAP_INSTEAD_FILTER
+                        ? Icons.list_outlined
+                        : Icons.location_on_outlined,
+                    endIcon: SHOW_MAP_INSTEAD_FILTER
+                        ? Icons.location_on_outlined
+                        : Icons.list_outlined,
+                    size: 24.0,
+                    clockwise: false,
+                    controller: mapListAnimateIconController,
+                    onStartIconPress: SHOW_MAP_INSTEAD_FILTER
+                        ? onMapAnimatedButtonEndPressed
+                        : onMapAnimatedButtonStartPressed,
+                    onEndIconPress: SHOW_MAP_INSTEAD_FILTER
+                        ? onMapAnimatedButtonStartPressed
+                        : onMapAnimatedButtonEndPressed,
+                  ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 0,
-                    child: IconButton(
-                      onPressed: widget.onBackPressed,
-                      icon: Icon(
-                        AppThemePreferences.arrowBackIcon,
-                        color: AppThemePreferences().appTheme.iconsColor,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: GenericTextWidget(
-                      UtilityMethods.getLocalizedString("search"),
-                      style: AppThemePreferences().appTheme.searchBarTextStyle,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: GenericAnimateIcons(
-                      startIcon: Icons.refresh_outlined,
-                      endIcon: Icons.refresh_outlined,
-                      size: 24.0,
-                      clockwise: true,
-                      controller: refreshIconController,
-                      onStartIconPress: onRefreshAnimatedButtonPressed,
-                      onEndIconPress: onRefreshAnimatedButtonPressed,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: GenericAnimateIcons(
-                      startIcon: SHOW_MAP_INSTEAD_FILTER ? Icons.list_outlined : Icons.map_outlined,
-                      endIcon: SHOW_MAP_INSTEAD_FILTER ? Icons.map_outlined : Icons.list_outlined,
-                      size: 24.0,
-                      clockwise: false,
-                      controller: mapListAnimateIconController,
-                      onStartIconPress: SHOW_MAP_INSTEAD_FILTER
-                          ? onMapAnimatedButtonEndPressed
-                          : onMapAnimatedButtonStartPressed,
-                      onEndIconPress: SHOW_MAP_INSTEAD_FILTER
-                          ? onMapAnimatedButtonStartPressed
-                          : onMapAnimatedButtonEndPressed,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: GenericPopupMenuButton(
-                      offset: const Offset(0, 50),
-                      elevation: AppThemePreferences.popupMenuElevation,
-                      icon: Icon(
-                        Icons.more_horiz_rounded,
-                        color: AppThemePreferences().appTheme.primaryColor,
-                      ),
-                      onSelected: (value) => onPopupOptionSelected(value),
-                      itemBuilder: (context) => [
-                        GenericPopupMenuItem(
-                          value: OPTION_SAVE,
-                          text: UtilityMethods.getLocalizedString(OPTION_SAVE),
-                          iconData: Icons.bookmark_outline_outlined,
+          if (widget.opacity > 0)
+            Opacity(
+              opacity: widget.opacity,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // SearchResultsChoiceChipsWidget(
+                      //   label: "",
+                      //   iconData: Icons.filter_alt_outlined,
+                      //   onSelected: (value) => navigateToFilterPage(),
+                      // ),
+                      if (widget.filterChipsRelatedList.isNotEmpty)
+                        Row(
+                          children: widget.filterChipsRelatedList.map((item) {
+                            String key = item.keys.toList()[0];
+
+                            String value = item[key] is List
+                                ? handleChipValueForList(item[key])
+                                : handleChipValueForString(item[key]);
+
+                            // String value = item[key] is List
+                            //     ? handleChipValueForList(item[key])
+                            //     : item[key];
+                            return GenericFilterRelatedChipWidget(
+                              iconData: getFilterChipIcon(key),
+                              label: UtilityMethods.getLocalizedString(value),
+                              filterMap: widget.chipsSearchDataMap,
+                              onTap: () => navigateToFilterPage(
+                                  dataMap: widget.chipsSearchDataMap, key: key),
+                            );
+                          }).toList(),
                         ),
-                      ],
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: widget.opacity < 0.6 ?  AppThemePreferences().appTheme.searchBarBackgroundColor :
-                AppThemePreferences().appTheme.searchBar02BackgroundColor,
-                borderRadius: BorderRadius.circular(12.0),//24.0
-                // boxShadow: [opacity < 0.6 ? const BoxShadow(color: Color.fromRGBO(0, 0, 0, .25), blurRadius: 16.0) : const BoxShadow(color: Colors.transparent),],
-              ),
-            ),
-          ),
-          if(widget.opacity > 0) Opacity(
-            opacity: widget.opacity,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SearchResultsChoiceChipsWidget(
-                      label: "",
-                      iconData: Icons.filter_alt_outlined,
-                      onSelected: (value)=> navigateToFilterPage(),
-                    ),
-
-                    if(widget.filterChipsRelatedList.isNotEmpty) Row(
-                      children: widget.filterChipsRelatedList.map((item) {
-                        String key = item.keys.toList()[0];
-
-                        String value = item[key] is List
-                            ? handleChipValueForList(item[key])
-                            : handleChipValueForString(item[key]);
-
-                        // String value = item[key] is List
-                        //     ? handleChipValueForList(item[key])
-                        //     : item[key];
-                        return GenericFilterRelatedChipWidget(
-                          iconData: getFilterChipIcon(key),
-                          label: UtilityMethods.getLocalizedString(value),
-                          filterMap: widget.chipsSearchDataMap,
-                          onTap: ()=> navigateToFilterPage(dataMap: widget.chipsSearchDataMap,key: key),
-                        );
-                      }).toList(),
-                    ),
-                  ],
                 ),
               ),
             ),
-          ),
           // if (_isBannerAdReady)
           //   Padding(
           //     padding: const EdgeInsets.only(top: 8.0),
@@ -290,63 +349,66 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
     );
   }
 
-  bool onMapAnimatedButtonStartPressed(){
+  bool onMapAnimatedButtonStartPressed() {
     mapListAnimateIconController.animateToEnd();
     widget.listener(showPanel: false);
     return true;
   }
 
-  bool onMapAnimatedButtonEndPressed(){
+  bool onMapAnimatedButtonEndPressed() {
     mapListAnimateIconController.animateToStart();
     widget.listener(showPanel: true);
     return true;
   }
 
-  bool onRefreshAnimatedButtonPressed(){
+  bool onRefreshAnimatedButtonPressed() {
     refreshIconController.animateToEnd();
     widget.listener(onRefresh: true);
     return true;
   }
 
-  onPopupOptionSelected(dynamic value){
+  onPopupOptionSelected(dynamic value) {
     if (value == OPTION_SAVE) {
       onSavedSearchTap();
     }
   }
 
   onSavedSearchTap() async {
-
-    if( widget.isLoggedIn && widget.canSaveSearch ) {
+    if (widget.isLoggedIn && widget.canSaveSearch) {
       Map<String, dynamic> _queryDataMap = {};
       Map<String, dynamic> _filteredDataMap = widget.filteredDataMap;
 
-      if ( _filteredDataMap[SEARCH_RESULTS_MIN_PRICE] != null
-          && _filteredDataMap[SEARCH_RESULTS_MIN_PRICE] is String
-          && _filteredDataMap[SEARCH_RESULTS_MIN_PRICE].isNotEmpty ) {
-        _queryDataMap[SAVE_SEARCH_MIN_PRICE] = _filteredDataMap[SEARCH_RESULTS_MIN_PRICE];
+      if (_filteredDataMap[SEARCH_RESULTS_MIN_PRICE] != null &&
+          _filteredDataMap[SEARCH_RESULTS_MIN_PRICE] is String &&
+          _filteredDataMap[SEARCH_RESULTS_MIN_PRICE].isNotEmpty) {
+        _queryDataMap[SAVE_SEARCH_MIN_PRICE] =
+            _filteredDataMap[SEARCH_RESULTS_MIN_PRICE];
       }
 
-      if ( _filteredDataMap[SEARCH_RESULTS_MAX_PRICE] != null
-          && _filteredDataMap[SEARCH_RESULTS_MAX_PRICE] is String
-          && _filteredDataMap[SEARCH_RESULTS_MAX_PRICE].isNotEmpty ) {
-        _queryDataMap[SAVE_SEARCH_MAX_PRICE] = _filteredDataMap[SEARCH_RESULTS_MAX_PRICE];
+      if (_filteredDataMap[SEARCH_RESULTS_MAX_PRICE] != null &&
+          _filteredDataMap[SEARCH_RESULTS_MAX_PRICE] is String &&
+          _filteredDataMap[SEARCH_RESULTS_MAX_PRICE].isNotEmpty) {
+        _queryDataMap[SAVE_SEARCH_MAX_PRICE] =
+            _filteredDataMap[SEARCH_RESULTS_MAX_PRICE];
       }
 
-      if ( _filteredDataMap[SEARCH_RESULTS_MIN_AREA] != null
-          && _filteredDataMap[SEARCH_RESULTS_MIN_AREA] is String
-          && _filteredDataMap[SEARCH_RESULTS_MIN_AREA].isNotEmpty ) {
-        _queryDataMap[SAVE_SEARCH_MIN_AREA] = _filteredDataMap[SEARCH_RESULTS_MIN_AREA];
+      if (_filteredDataMap[SEARCH_RESULTS_MIN_AREA] != null &&
+          _filteredDataMap[SEARCH_RESULTS_MIN_AREA] is String &&
+          _filteredDataMap[SEARCH_RESULTS_MIN_AREA].isNotEmpty) {
+        _queryDataMap[SAVE_SEARCH_MIN_AREA] =
+            _filteredDataMap[SEARCH_RESULTS_MIN_AREA];
       }
 
-      if ( _filteredDataMap[SEARCH_RESULTS_MAX_AREA] != null
-          && _filteredDataMap[SEARCH_RESULTS_MAX_AREA] is String
-          && _filteredDataMap[SEARCH_RESULTS_MAX_AREA].isNotEmpty ) {
-        _queryDataMap[SAVE_SEARCH_MAX_AREA] = _filteredDataMap[SEARCH_RESULTS_MAX_AREA];
+      if (_filteredDataMap[SEARCH_RESULTS_MAX_AREA] != null &&
+          _filteredDataMap[SEARCH_RESULTS_MAX_AREA] is String &&
+          _filteredDataMap[SEARCH_RESULTS_MAX_AREA].isNotEmpty) {
+        _queryDataMap[SAVE_SEARCH_MAX_AREA] =
+            _filteredDataMap[SEARCH_RESULTS_MAX_AREA];
       }
 
-      if ( _filteredDataMap[metaKeyFiltersKey] != null
-          && _filteredDataMap[metaKeyFiltersKey] is String
-          && _filteredDataMap[metaKeyFiltersKey].isNotEmpty ) {
+      if (_filteredDataMap[metaKeyFiltersKey] != null &&
+          _filteredDataMap[metaKeyFiltersKey] is String &&
+          _filteredDataMap[metaKeyFiltersKey].isNotEmpty) {
         // metaKeyFiltersKey
         String _metaKeyFiltersJson = _filteredDataMap[metaKeyFiltersKey];
 
@@ -358,15 +420,15 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
 
         // extract required data
         if (_decodedJson is Map) {
-          Map<String, dynamic> _metaMap = Map<String, dynamic>.from(_decodedJson);
+          Map<String, dynamic> _metaMap =
+              Map<String, dynamic>.from(_decodedJson);
 
-          if (_metaMap[metaKeyFiltersKey] is List
-              && _metaMap[metaKeyFiltersKey].isNotEmpty) {
-
-            List<Map> _metaMapsList = List<Map>.from(_metaMap[metaKeyFiltersKey]);
+          if (_metaMap[metaKeyFiltersKey] is List &&
+              _metaMap[metaKeyFiltersKey].isNotEmpty) {
+            List<Map> _metaMapsList =
+                List<Map>.from(_metaMap[metaKeyFiltersKey]);
 
             for (Map metaQueryItem in _metaMapsList) {
-
               String apiKey = metaQueryItem[metaApiKey];
               String _pickerType = metaQueryItem[metaPickerTypeKey];
               String _value = metaQueryItem[metaValueKey] ?? "";
@@ -374,125 +436,119 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
               String _maxRange = metaQueryItem[metaMaxValueKey] ?? "";
 
               switch (apiKey) {
+                case (favPropertyBedroomsKey):
+                  {
+                    _filteredDataMap.remove(SEARCH_RESULTS_BEDROOMS);
 
-                case (favPropertyBedroomsKey): {
+                    if (_pickerType == stringPickerKey ||
+                        _pickerType == dropDownPicker ||
+                        _pickerType == textFieldKey) {
+                      _queryDataMap[SAVE_SEARCH_BEDROOMS] =
+                          getMaxValueFromString(_value);
+                    } else if (_pickerType == rangePickerKey) {
+                      _queryDataMap[SAVE_SEARCH_BEDROOMS] = _maxRange;
+                    }
 
-                  _filteredDataMap.remove(SEARCH_RESULTS_BEDROOMS);
-
-                  if ( _pickerType == stringPickerKey
-                      || _pickerType == dropDownPicker
-                      || _pickerType == textFieldKey ) {
-                    _queryDataMap[SAVE_SEARCH_BEDROOMS] =
-                        getMaxValueFromString(_value);
-                  }
-                  else if ( _pickerType == rangePickerKey ) {
-                    _queryDataMap[SAVE_SEARCH_BEDROOMS] = _maxRange;
-                  }
-
-                  break;
-                }
-
-                case (favPropertyBathroomsKey): {
-
-                  _filteredDataMap.remove(SEARCH_RESULTS_BATHROOMS);
-
-                  if ( _pickerType == stringPickerKey
-                      || _pickerType == dropDownPicker
-                      || _pickerType == textFieldKey ) {
-                    _queryDataMap[SAVE_SEARCH_BATHROOMS] =
-                        getMaxValueFromString(_value);
-                  }
-                  else if ( _pickerType == rangePickerKey ) {
-                    _queryDataMap[SAVE_SEARCH_BATHROOMS] = _maxRange;
+                    break;
                   }
 
-                  break;
-                }
+                case (favPropertyBathroomsKey):
+                  {
+                    _filteredDataMap.remove(SEARCH_RESULTS_BATHROOMS);
 
-                case (favPropertyPriceKey): {
+                    if (_pickerType == stringPickerKey ||
+                        _pickerType == dropDownPicker ||
+                        _pickerType == textFieldKey) {
+                      _queryDataMap[SAVE_SEARCH_BATHROOMS] =
+                          getMaxValueFromString(_value);
+                    } else if (_pickerType == rangePickerKey) {
+                      _queryDataMap[SAVE_SEARCH_BATHROOMS] = _maxRange;
+                    }
 
-                  _filteredDataMap.remove(SEARCH_RESULTS_MIN_PRICE);
-                  _filteredDataMap.remove(SEARCH_RESULTS_MAX_PRICE);
-
-                  if ( _pickerType == stringPickerKey
-                      || _pickerType == dropDownPicker
-                      || _pickerType == textFieldKey ) {
-                    _queryDataMap[SAVE_SEARCH_MAX_PRICE] =
-                        getMaxValueFromString(_value);
-                  }
-                  else if ( _pickerType == rangePickerKey ) {
-                    _queryDataMap[SAVE_SEARCH_MIN_PRICE] = _minRange;
-                    _queryDataMap[SAVE_SEARCH_MAX_PRICE] = _maxRange;
+                    break;
                   }
 
-                  break;
-                }
+                case (favPropertyPriceKey):
+                  {
+                    _filteredDataMap.remove(SEARCH_RESULTS_MIN_PRICE);
+                    _filteredDataMap.remove(SEARCH_RESULTS_MAX_PRICE);
 
-                case (favPropertySizeKey): {
+                    if (_pickerType == stringPickerKey ||
+                        _pickerType == dropDownPicker ||
+                        _pickerType == textFieldKey) {
+                      _queryDataMap[SAVE_SEARCH_MAX_PRICE] =
+                          getMaxValueFromString(_value);
+                    } else if (_pickerType == rangePickerKey) {
+                      _queryDataMap[SAVE_SEARCH_MIN_PRICE] = _minRange;
+                      _queryDataMap[SAVE_SEARCH_MAX_PRICE] = _maxRange;
+                    }
 
-                  _filteredDataMap.remove(SEARCH_RESULTS_MIN_AREA);
-                  _filteredDataMap.remove(SEARCH_RESULTS_MAX_AREA);
-
-                  if ( _pickerType == stringPickerKey
-                      || _pickerType == dropDownPicker
-                      || _pickerType == textFieldKey ) {
-                    _queryDataMap[SAVE_SEARCH_MAX_AREA] =
-                        getMaxValueFromString(_value);
-                  }
-                  else if ( _pickerType == rangePickerKey ) {
-                    _queryDataMap[SAVE_SEARCH_MIN_AREA] = _minRange;
-                    _queryDataMap[SAVE_SEARCH_MAX_AREA] = _maxRange;
-                  }
-
-                  break;
-                }
-
-                case (favPropertyGarageKey): {
-
-                  if ( _pickerType == stringPickerKey
-                      || _pickerType == dropDownPicker
-                      || _pickerType == textFieldKey ) {
-                    _queryDataMap[SAVE_SEARCH_GARAGE] =
-                        getMaxValueFromString(_value);
-                  }
-                  else if ( _pickerType == rangePickerKey ) {
-                    _queryDataMap[SAVE_SEARCH_GARAGE] = _maxRange;
+                    break;
                   }
 
-                  break;
-                }
+                case (favPropertySizeKey):
+                  {
+                    _filteredDataMap.remove(SEARCH_RESULTS_MIN_AREA);
+                    _filteredDataMap.remove(SEARCH_RESULTS_MAX_AREA);
 
-                case (favPropertyYearKey): {
+                    if (_pickerType == stringPickerKey ||
+                        _pickerType == dropDownPicker ||
+                        _pickerType == textFieldKey) {
+                      _queryDataMap[SAVE_SEARCH_MAX_AREA] =
+                          getMaxValueFromString(_value);
+                    } else if (_pickerType == rangePickerKey) {
+                      _queryDataMap[SAVE_SEARCH_MIN_AREA] = _minRange;
+                      _queryDataMap[SAVE_SEARCH_MAX_AREA] = _maxRange;
+                    }
 
-                  if ( _pickerType == stringPickerKey
-                      || _pickerType == dropDownPicker
-                      || _pickerType == textFieldKey ) {
-                    _queryDataMap[SAVE_SEARCH_YAER_BUILT] =
-                        getMaxValueFromString(_value);
+                    break;
                   }
-                  else if ( _pickerType == rangePickerKey ) {
-                    _queryDataMap[SAVE_SEARCH_YAER_BUILT] = _maxRange;
+
+                case (favPropertyGarageKey):
+                  {
+                    if (_pickerType == stringPickerKey ||
+                        _pickerType == dropDownPicker ||
+                        _pickerType == textFieldKey) {
+                      _queryDataMap[SAVE_SEARCH_GARAGE] =
+                          getMaxValueFromString(_value);
+                    } else if (_pickerType == rangePickerKey) {
+                      _queryDataMap[SAVE_SEARCH_GARAGE] = _maxRange;
+                    }
+
+                    break;
                   }
 
-                  break;
-                }
+                case (favPropertyYearKey):
+                  {
+                    if (_pickerType == stringPickerKey ||
+                        _pickerType == dropDownPicker ||
+                        _pickerType == textFieldKey) {
+                      _queryDataMap[SAVE_SEARCH_YAER_BUILT] =
+                          getMaxValueFromString(_value);
+                    } else if (_pickerType == rangePickerKey) {
+                      _queryDataMap[SAVE_SEARCH_YAER_BUILT] = _maxRange;
+                    }
 
-                default : {
-                  break;
-                }
+                    break;
+                  }
+
+                default:
+                  {
+                    break;
+                  }
               }
             }
           }
         }
       }
 
-
       _queryDataMap.addAll(_filteredDataMap);
 
       // print("save search query map: $_queryDataMap");
 
       // final response = await _propertyBloc.fetchAddSavedSearch(widget.filteredDataMap, nonce);
-      final response = await _propertyBloc.fetchAddSavedSearch(_queryDataMap, nonce);
+      final response =
+          await _propertyBloc.fetchAddSavedSearch(_queryDataMap, nonce);
 
       String tempResponseString = response.toString().split("{")[1];
       Map map = jsonDecode("{${tempResponseString.split("}")[0]}}");
@@ -501,26 +557,28 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
         GeneralNotifier().publishChange(GeneralNotifier.NEW_SAVED_SEARCH_ADDED);
         widget.listener(canSave: false);
         // HiveStorageManager.storeLastSaveSearch(filteredDataMap);
-      } else{
+      } else {
         if (map["msg"] != null) {
           _showToast(map["msg"], false);
         } else if (map["reason"] != null) {
           _showToast(map["reason"], false);
         } else {
-          _showToast(UtilityMethods.getLocalizedString("error_occurred"), false);
+          _showToast(
+              UtilityMethods.getLocalizedString("error_occurred"), false);
         }
-
       }
-    }
-    else{
-      _showToast(UtilityMethods.getLocalizedString("you_must_login") + UtilityMethods.getLocalizedString("before_saving_search"),true);
+    } else {
+      _showToast(
+          UtilityMethods.getLocalizedString("you_must_login") +
+              UtilityMethods.getLocalizedString("before_saving_search"),
+          true);
     }
   }
 
   String getMaxValueFromString(String input) {
     input = input.replaceAll(RegExp("[^\\d,]"), "");
 
-    if ( input.contains(",") ) {
+    if (input.contains(",")) {
       List<String> _tempStrList = input.split(",");
       List<int> _tempIntList = _tempStrList.map((item) {
         return int.tryParse(item) ?? 1;
@@ -562,25 +620,31 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
   }
 
   navigateToFilterPage({Map<String, dynamic>? dataMap, String key = ""}) {
-    if (dataMap != null && (key == propertyTypeDataType || key == propertyStatusDataType)) {
+    if (dataMap != null &&
+        (key == propertyTypeDataType || key == propertyStatusDataType)) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return MultiSelectDialogWidget(
-            title: UtilityMethods.getLocalizedString(key == propertyTypeDataType ? PROPERTY_DETAILS_PROPERTY_TYPE : PROPERTY_DETAILS_PROPERTY_STATUS),
+            title: UtilityMethods.getLocalizedString(key == propertyTypeDataType
+                ? PROPERTY_DETAILS_PROPERTY_TYPE
+                : PROPERTY_DETAILS_PROPERTY_STATUS),
             showSearchBar: false,
             addAllinData: true,
             objDataType: key,
             dataItemsList: FilterPageFunctions.getTermDataFromStorage(key),
             selectedItemsList: dataMap[key],
             selectedItemsSlugsList: dataMap[key + "_slug"],
-            multiSelectDialogWidgetListener: (listOfSelectedItems, listOfSelectedItemsSlugs) {
+            multiSelectDialogWidgetListener:
+                (listOfSelectedItems, listOfSelectedItemsSlugs) {
               Map<String, dynamic> updatedMap = {
                 key: listOfSelectedItems,
                 key + "_slug": listOfSelectedItemsSlugs,
               };
 
-              Map<String, dynamic> mergedMap = UtilityMethods.mergeMapsWithPrecedence(dataMap, updatedMap);
+              Map<String, dynamic> mergedMap =
+                  UtilityMethods.mergeMapsWithPrecedence(dataMap, updatedMap);
+
               /// If want to remove "All" from the list.
               // mergedMap = UtilityMethods.removeElementFromLists(mergedMap);
               widget.listener(updatedSearchMap: mergedMap);
@@ -596,14 +660,17 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
               title: "${UtilityMethods.getLocalizedString("select")} "
                   "${UtilityMethods.getLocalizedString("City")}",
               termType: key,
-              termMetaDataList: FilterPageFunctions.getTermDataFromStorage(propertyCityDataType),
-              termsDataMap: {},
-              termPickerFullScreenListener: (String pickedTerm, int? pickedTermId, String pickedTermSlug) {
+              termMetaDataList: FilterPageFunctions.getTermDataFromStorage(
+                  propertyCityDataType),
+              termsDataMap: const {},
+              termPickerFullScreenListener: (String pickedTerm,
+                  int? pickedTermId, String pickedTermSlug) {
                 Map<String, dynamic> updatedMap = {
                   CITY: [pickedTerm],
                   CITY_SLUG: [pickedTermSlug],
                 };
-                Map<String, dynamic> mergedMap = UtilityMethods.mergeMapsWithPrecedence(dataMap, updatedMap);
+                Map<String, dynamic> mergedMap =
+                    UtilityMethods.mergeMapsWithPrecedence(dataMap, updatedMap);
                 mergedMap = UtilityMethods.removeElementFromLists(mergedMap);
                 widget.listener(updatedSearchMap: mergedMap);
               },
@@ -631,7 +698,7 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
     }
   }
 
-  String handleChipValueForList(List inputList){
+  String handleChipValueForList(List inputList) {
     String value = "";
     if (inputList.length == 1) {
       value = UtilityMethods.getLocalizedString(inputList[0]);
@@ -655,7 +722,7 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
     return value;
   }
 
-  String handleChipValueForString(String inputString){
+  String handleChipValueForString(String inputString) {
     String value = "";
     List<String> dataList = UtilityMethods.getListFromString(inputString);
     if (dataList.isNotEmpty) {
@@ -665,82 +732,104 @@ class _SearchResultsSearchBarWidgetState extends State<SearchResultsSearchBarWid
     return value;
   }
 
-  IconData? getFilterChipIcon(String key){
+  IconData? getFilterChipIcon(String key) {
     switch (key) {
-      case (PROPERTY_TYPE): {
-        return AppThemePreferences.locationCityIcon;
-      }
-      case (PROPERTY_STATUS): {
-        return AppThemePreferences.checkCircleIcon;
-      }
-      case (PROPERTY_LABEL): {
-        return AppThemePreferences.labelIcon;
-      }
-      case (PROPERTY_FEATURES): {
-        return AppThemePreferences.featureChipIcon;
-      }
-      case (PROPERTY_KEYWORD): {
-        return AppThemePreferences.keywordCupertinoIcon;
-      }
-      case (CITY): {
-        return AppThemePreferences.locationIcon;
-      }
-      case (PROPERTY_COUNTRY): {
-        return AppThemePreferences.locationCountryIcon;
-      }
-      case (PROPERTY_STATE): {
-        return AppThemePreferences.locationStateIcon;
-      }
-      case (PROPERTY_AREA): {
-        return AppThemePreferences.locationAreaIcon;
-      }
-      case (BEDROOMS): {
-        return AppThemePreferences.bedIcon;
-      }
-      case (BATHROOMS): {
-        return AppThemePreferences.bathtubIcon;
-      }
-      case (PRICE_MIN): {
-        return AppThemePreferences.priceTagIcon;
-      }
-      case (PRICE_MAX): {
-        return AppThemePreferences.priceTagIcon;
-      }
-      case (AREA_MIN): {
-        return AppThemePreferences.areaSizeIcon;
-      }
-      case (AREA_MAX): {
-        return AppThemePreferences.areaSizeIcon;
-      }
-      case (FEATURED_CHIP_KEY): {
-        return AppThemePreferences.featureChipIcon;
-      }
-      case (favPropertyBedroomsKey): {
-        return AppThemePreferences.bedIcon;
-      }
-      case (favPropertyBathroomsKey): {
-        return AppThemePreferences.bathtubIcon;
-      }
-      case (favPropertyPriceKey): {
-        return AppThemePreferences.priceTagIcon;
-      }
-      case (favPropertySizeKey): {
-        return AppThemePreferences.areaSizeIcon;
-      }
-      case (favPropertyGarageKey): {
-        return AppThemePreferences.garageIcon;
-      }
-      case (favPropertyYearKey): {
-        return AppThemePreferences.dateRangeIcon;
-      }
-      default: {
-        if (key.contains(KEYWORD_PREFIX)) {
+      case (PROPERTY_TYPE):
+        {
+          return AppThemePreferences.locationCityIcon;
+        }
+      case (PROPERTY_STATUS):
+        {
+          return AppThemePreferences.checkCircleIcon;
+        }
+      case (PROPERTY_LABEL):
+        {
+          return AppThemePreferences.labelIcon;
+        }
+      case (PROPERTY_FEATURES):
+        {
+          return AppThemePreferences.featureChipIcon;
+        }
+      case (PROPERTY_KEYWORD):
+        {
           return AppThemePreferences.keywordCupertinoIcon;
         }
-        return null;
-      }
+      case (CITY):
+        {
+          return AppThemePreferences.locationIcon;
+        }
+      case (PROPERTY_COUNTRY):
+        {
+          return AppThemePreferences.locationCountryIcon;
+        }
+      case (PROPERTY_STATE):
+        {
+          return AppThemePreferences.locationStateIcon;
+        }
+      case (PROPERTY_AREA):
+        {
+          return AppThemePreferences.locationAreaIcon;
+        }
+      case (BEDROOMS):
+        {
+          return AppThemePreferences.bedIcon;
+        }
+      case (BATHROOMS):
+        {
+          return AppThemePreferences.bathtubIcon;
+        }
+      case (PRICE_MIN):
+        {
+          return AppThemePreferences.priceTagIcon;
+        }
+      case (PRICE_MAX):
+        {
+          return AppThemePreferences.priceTagIcon;
+        }
+      case (AREA_MIN):
+        {
+          return AppThemePreferences.areaSizeIcon;
+        }
+      case (AREA_MAX):
+        {
+          return AppThemePreferences.areaSizeIcon;
+        }
+      case (FEATURED_CHIP_KEY):
+        {
+          return AppThemePreferences.featureChipIcon;
+        }
+      case (favPropertyBedroomsKey):
+        {
+          return AppThemePreferences.bedIcon;
+        }
+      case (favPropertyBathroomsKey):
+        {
+          return AppThemePreferences.bathtubIcon;
+        }
+      case (favPropertyPriceKey):
+        {
+          return AppThemePreferences.priceTagIcon;
+        }
+      case (favPropertySizeKey):
+        {
+          return AppThemePreferences.areaSizeIcon;
+        }
+      case (favPropertyGarageKey):
+        {
+          return AppThemePreferences.garageIcon;
+        }
+      case (favPropertyYearKey):
+        {
+          return AppThemePreferences.dateRangeIcon;
+        }
+      default:
+        {
+          if (key.contains(KEYWORD_PREFIX)) {
+            return AppThemePreferences.keywordCupertinoIcon;
+          }
+          return null;
+        }
     }
-
   }
 }
 
@@ -760,11 +849,12 @@ class GenericFilterRelatedChipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return label.isEmpty ? Container() : SearchResultsChoiceChipsWidget(
-      label: label,
-      iconData: iconData,
-      onSelected: (value) => onTap!(),
-    );
+    return label.isEmpty
+        ? Container()
+        : SearchResultsChoiceChipsWidget(
+            label: label,
+            iconData: iconData,
+            onSelected: (value) => onTap!(),
+          );
   }
 }
-

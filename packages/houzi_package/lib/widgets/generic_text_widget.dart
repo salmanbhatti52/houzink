@@ -17,25 +17,25 @@ class GenericTextWidget extends StatelessWidget {
   final TextHeightBehavior? textHeightBehavior;
   final bool enableCopy;
   final void Function()? onLongPress;
-  
+
   const GenericTextWidget(
-      this.text, {
-        Key? key,
-        this.locale,
-        this.strutStyle = const StrutStyle(height: 1.2, forceStrutHeight: true),
-        this.style,
-        this.textAlign,
-        this.textDirection,
-        this.softWrap,
-        this.overflow,
-        this.textScaleFactor,
-        this.maxLines,
-        this.semanticsLabel,
-        this.textWidthBasis,
-        this.textHeightBehavior,
-        this.enableCopy = false,
-        this.onLongPress,
-      }) : super(key: key);
+    this.text, {
+    Key? key,
+    this.locale,
+    this.strutStyle = const StrutStyle(height: 1.2, forceStrutHeight: true),
+    this.style,
+    this.textAlign,
+    this.textDirection,
+    this.softWrap,
+    this.overflow,
+    this.textScaleFactor,
+    this.maxLines,
+    this.semanticsLabel,
+    this.textWidthBasis,
+    this.textHeightBehavior,
+    this.enableCopy = false,
+    this.onLongPress,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

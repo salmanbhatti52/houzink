@@ -66,7 +66,7 @@ const String APPLE_SIGN_ON_CLIENT_ID = "com.houzi.app.signin";
 String APPLE_SIGN_ON_REDIRECT_URI = "https://example-app.com/redirect";
 
 /// Provide Tabbed Home Quote here
-String TABBED_HOME_QUOTE = "What are you looking for Today?";
+String TABBED_HOME_QUOTE = "What are you looking for Today?...";
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -820,13 +820,13 @@ class _GenericTermPickerWidgetState extends State<GenericTermPickerWidget> {
             padding: widget.pickerType == fullScreenTermPicker
                 ? const EdgeInsets.symmetric(vertical: 5)
                 : const EdgeInsets.symmetric(vertical: 10),
-            // decoration: widget.showDivider
-            //     ? BoxDecoration(
-            //         border: Border(
-            //           top: AppThemePreferences().appTheme.filterPageBorderSide!,
-            //         ),
-            //       )
-            //     : null,
+            decoration: widget.showDivider
+                ? BoxDecoration(
+                    border: Border(
+                      top: AppThemePreferences().appTheme.filterPageBorderSide!,
+                    ),
+                  )
+                : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,

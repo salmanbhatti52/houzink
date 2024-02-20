@@ -80,7 +80,7 @@ class _HomeLocationSliverAppBarWidgetState
       backgroundColor: const Color(0xFFC5EEFD),
       pinned: true,
       leadingWidth: 140,
-      expandedHeight: extendedHeight,
+      expandedHeight: 50,
       leading: Padding(
         padding: const EdgeInsets.only(left: 15),
         child: Image.asset(

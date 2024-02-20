@@ -32,7 +32,8 @@ class MapPropertiesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     propArticlesList.removeWhere((element) => element is AdWidget);
 
-    if (opacity < 0.5) return SafeArea(
+    if (opacity < 0.5) {
+      return SafeArea(
         child: Stack(
           children: [
             Positioned(
@@ -57,6 +58,7 @@ class MapPropertiesWidget extends StatelessWidget {
           ],
         ),
       );
+    }
 
     return Container();
   }
@@ -94,10 +96,8 @@ class PropertiesCarouselWidget extends StatelessWidget {
           // }
           // _snapCameraToSelectedIndex = true;
         },
-
         controller: carouselPageController,
         itemCount: propArticlesList.length,
-
         itemBuilder: (BuildContext context, int itemIndex) {
           var item = propArticlesList[itemIndex];
           return CarouselItemWidget(
@@ -128,7 +128,8 @@ class CarouselItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var item = propArticleItem;
     int propId = item.id;
-    var heroId = "${item.id}-${UtilityMethods.getRandomNumber()}-MAP-PROP-CAROUSEL";
+    var heroId =
+        "${item.id}-${UtilityMethods.getRandomNumber()}-MAP-PROP-CAROUSEL";
 
     return articleBoxDesign.getArticleBoxDesign(
       buildContext: context,
@@ -139,9 +140,3 @@ class CarouselItemWidget extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
