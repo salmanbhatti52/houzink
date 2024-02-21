@@ -75,7 +75,7 @@ Widget imageWidget({
   bool _validURL = UtilityMethods.validateURL(_imageUrl);
 
   return SizedBox(
-    height: 150,
+    height: 152,
     width: double.infinity,
     child: Hero(
       tag: _heroId,

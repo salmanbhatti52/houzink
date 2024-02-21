@@ -56,6 +56,7 @@ class _FullScreenMapViewArticleState extends State<FullScreenMapViewArticle>
   @override
   void initState() {
     super.initState();
+    print("Hi Zainnnnnnnnnnnnnnnnnnnnnnnnn! i'm in the full Screen Map ");
     if (Provider.of<UserLoggedProvider>(context, listen: false).isLoggedIn!) {
       isUserLoggedIn = true;
     }
