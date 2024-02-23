@@ -572,43 +572,43 @@ class _HomeScreenListingsWidgetState extends State<HomeScreenListingsWidget>
                       child: const HomeLocationSearchBarWidget(),
                     ),
 
-                  if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 10,
-                          left: UtilityMethods.isRTL(context) ? 10 : 10,
-                          bottom: 10,
-                          right: UtilityMethods.isRTL(context) ? 10 : 10),
-                      child: ButtonWidget(
-                        color: AppThemePreferences().appTheme.primaryColor,
-                        text: UtilityMethods.getLocalizedString(
-                            "request_property"),
-                        onPressed: () {
-                          UtilityMethods.navigateToRoute(
-                            context: context,
-                            builder: (context) => AddPropertyRequest(),
-                          );
-                        },
-                      ),
-                    ),
+                  // if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
+                  //   Padding(
+                  //     padding: EdgeInsets.only(
+                  //         top: 10,
+                  //         left: UtilityMethods.isRTL(context) ? 10 : 10,
+                  //         bottom: 10,
+                  //         right: UtilityMethods.isRTL(context) ? 10 : 10),
+                  //     child: ButtonWidget(
+                  //       color: AppThemePreferences().appTheme.primaryColor,
+                  //       text: UtilityMethods.getLocalizedString(
+                  //           "request_property"),
+                  //       onPressed: () {
+                  //         UtilityMethods.navigateToRoute(
+                  //           context: context,
+                  //           builder: (context) => AddPropertyRequest(),
+                  //         );
+                  //       },
+                  //     ),
+                  //   ),
 
-                  if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 10,
-                          left: UtilityMethods.isRTL(context) ? 10 : 10,
-                          bottom: 10,
-                          right: UtilityMethods.isRTL(context) ? 10 : 10),
-                      child: TransparentButtonWidget(
-                        color: AppThemePreferences().appTheme.backgroundColor,
-                        text: UtilityMethods.getLocalizedString(
-                            "search_property"),
-                        textColor: AppThemePreferences().appTheme.primaryColor,
-                        onPressed: () {
-                          onSearchPressed();
-                        },
-                      ),
-                    ),
+                  // if (homeConfigMap[sectionTypeKey] == termWithIconsTermKey)
+                  //   Padding(
+                  //     padding: EdgeInsets.only(
+                  //         top: 10,
+                  //         left: UtilityMethods.isRTL(context) ? 10 : 10,
+                  //         bottom: 10,
+                  //         right: UtilityMethods.isRTL(context) ? 10 : 10),
+                  //     child: TransparentButtonWidget(
+                  //       color: AppThemePreferences().appTheme.backgroundColor,
+                  //       text: UtilityMethods.getLocalizedString(
+                  //           "search_property"),
+                  //       textColor: AppThemePreferences().appTheme.primaryColor,
+                  //       onPressed: () {
+                  //         onSearchPressed();
+                  //       },
+                  //     ),
+                  //   ),
 
                   if (homeConfigMap[sectionTypeKey] == recentSearchKey)
                     HomeScreenRecentSearchesWidget(

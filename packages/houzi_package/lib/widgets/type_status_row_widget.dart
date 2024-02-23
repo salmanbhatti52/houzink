@@ -210,6 +210,7 @@ class TermWithIconsBodyWidget extends StatelessWidget {
   }
 
   Widget _buildIconWidget(String slug) {
+    print('Contents of iconMap: $iconMap');
     if (iconMap.containsKey(slug)) {
       final icon = iconMap[slug];
       if (icon is IconData) {
