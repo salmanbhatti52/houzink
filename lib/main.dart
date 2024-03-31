@@ -6,6 +6,7 @@ Future<void> main() async {
   Map<String,dynamic> hooksMap = {};
 
   hooksMap["headers"] = v2Hooks.getHeaderMap();
+
   hooksMap["propertyDetailPageIcons"] = v2Hooks.getPropertyDetailPageIconsMap();
   hooksMap["elegantHomeTermsIcons"] = v2Hooks.getElegantHomeTermsIconMap();
   hooksMap["drawerItems"] = v2Hooks.getDrawerItems();
